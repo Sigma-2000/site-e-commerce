@@ -1,3 +1,11 @@
 {
-    "Welcome": "Bienvenue"
+    "Welcome": "Bienvenue",
+    "Menu": {
+        "home": "Accueil",
+        "gallery": "Galerie",
+        "shop": "Boutique",
+        "about": "A propos",
+        "account": "Votre compte",
+        "logout": "Déconnexion"
+    }
 }
