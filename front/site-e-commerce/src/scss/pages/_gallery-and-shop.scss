@@ -1,0 +1,61 @@
+.categories-overview {
+    margin: 20px 40px;
+
+    .underline-long {
+        @include underline(0%, 0%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 20%, null);
+        }
+        @include respond-to('desktop') {
+            @include underline(0%, 30%, null);
+        }
+    }
+
+    .underline-short {
+        @include underline(0%, 40%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 60%, null);
+        }
+    }
+    .pages-link {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+    }
+    h2,
+    h3 {
+        font-weight: $font-weight-medium;
+    }
+    .underline-extra-short {
+        @include underline(0%, 40%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 70%, null);
+        }
+    }
+    .categories-items {
+        margin: 20px 20px;
+        .category-item {
+            img {
+                width: 100%;
+                height: 200px;
+                object-fit: contain;
+                border-radius: 5px;
+                margin: 20px 0px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                @include respond-to('tablet') {
+                    width: 50%;
+                    height: 500px;
+                }
+            }
+        }
+        .underline-ultra-long {
+            @include underline(0%, 0%, null);
+            @include respond-to('tablet') {
+                @include underline(0%, 20%, null);
+            }
+            @include respond-to('desktop') {
+                @include underline(0%, 30%, null);
+            }
+        }
+    }
+}
