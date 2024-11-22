@@ -1,11 +1,50 @@
 {
     "Welcome": "Bienvenue",
-    "Menu": {
+    "menu": {
         "home": "Accueil",
         "gallery": "Galerie",
         "shop": "Boutique",
         "about": "A propos",
         "account": "Votre compte",
         "logout": "Déconnexion"
+    },
+    "homepage": {
+        "presentation": "Sigma.2000 est une jeune artiste pluridisciplinaire Nantaise, issue du graffiti et évoluant jusqu'à l'art numérique"
+    },
+    "about": {
+        "pratices": "Chacune de ses pratiques s'influencent et interagissent, formant un style unique, marqué par une ligne dansante et acerbe. ",
+        "abstraction": "Son travail déforme souvent la réalité, mue par un véritable maelstrom qui conduit ses œuvres jusqu'à l’abstraction pure.",
+        "conclusion": "Animée par une envie viscérale de capturer l'instant, Sigma.2000 fige les fragments d’un monde en perpétuelle transformation. ",
+        "exhibition": "Parcours et Exposition"
+    },
+    "exhibitions-sales": "Expositions et ventes",
+    "exhibitions": {
+        "vacarmes": "<strong>Exposition collective</strong> <em>'Vacarmes'</em> au <strong> Rita Plage </strong> à Villeurbanne du 13 novembre 2023 au 14 janvier 2024.",
+        "auction-sale": "<strong>Vente aux enchères</strong> organisé par <strong> Graffart et Drouot</strong> suite à l'exposition <em>'7éme continent'</em>.",
+        "7th-continent": "<strong>Exposition collective</strong> <em>'le 7éme continent'</em> organisé par <strong> Graffart à la galerie Amarrage</strong> à Saint Ouen, 7 juin au 21 septembre 2021.",
+        "bloc-13": "<strong>Vente</strong> de monotypes et de photographies au <strong> marché estival de Bloc 13</strong> à Nantes.",
+        "green-tide": "<strong>Exposition solo</strong> <em>'Marée Vertes'</em> organisé par <strong>IGEM </strong> (compétition internationale de biologie de synthèse) à la <strong>Bibliothèque Universitaire de Sciences</strong> de Nantes, octobre 2021.",
+        "igem": "<strong>Exposition collective</strong> avec <strong>IGEM à la maison des Hommes et techniques</strong> de Nantes, septembre et octobre 2020."
+    },
+    "career": {
+        "presentation": "Formation",
+        "intro": "Titulaire d’une licence en histoire de l’art et passionnée par l’auto-formation, j’ai enrichi mes connaissances en suivant divers cours du soir aux Beaux-Arts, notamment en dessin et en peinture à l’huile.",
+        "beginning": "Pendant trois ans, j’ai participé à un cours de modèle vivant avec Emmanuel Billeaud, qui m’a beaucoup apporté. J’ai commencé à créer en explorant de nombreux médiums à Centrale 7, sous la direction, entre autres, de Christophe Forget.",
+        "digital-art": "J’ai découvert l’art numérique grâce à de nombreux workshops organisés par Stereolux ou AADN, ce qui m’a permis d’élargir mes horizons créatifs.",
+        "conclusion": "Depuis peu, je suis également devenue développeuse web, ce qui me permet de combiner mon parcours artistique avec le monde numérique."
+    },
+    "categories": {
+        "painting": "Peinture",
+        "graffiti": "Graffiti",
+        "photography": "Photographie",
+        "digital-art": "Art numérique"
+    },
+    "shop-categories": {
+        "print": "Prints",
+        "original": "Originaux"
+    },
+    "not-found": {
+        "404": "404 - Page introuvable",
+        "redirection": "Vous serez redirigé sur la page d'accueil dans {seconds} secondes !"
     }
 }
