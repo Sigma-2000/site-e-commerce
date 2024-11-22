@@ -9,7 +9,9 @@
     background-color: var(--color-background);
     box-sizing: border-box;
     z-index: 1000;
-
+    .content-footer .selected {
+        font-weight: $font-weight-semibold;
+    }
     span {
         font-size: $font-size-medium;
         margin-right: 8px;
