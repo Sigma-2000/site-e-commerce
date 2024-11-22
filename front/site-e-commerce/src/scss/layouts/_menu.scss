@@ -19,10 +19,13 @@
 }
 
 .menu-item {
+    display: block;
     padding: 8px 16px;
     cursor: pointer;
     margin-bottom: 8px;
     font-size: $font-size-x-large;
+    text-decoration: none;
+    color: inherit;
 
     @include underline(25%, 25%, var(--color-primary));
 
@@ -37,7 +40,6 @@
     &:hover {
         background-color: var(--color-primary);
     }
-
     .menu-close {
         text-align: right;
         cursor: pointer;

@@ -7,5 +7,44 @@
         "about": "About",
         "account": "Your account",
         "logout": "Deconnexion"
+    },
+    "homepage": {
+        "presentation": "Sigma.2000 is a young multidisciplinary artist from Nantes, originating from graffiti and evolving into digital art."
+    },
+    "about": {
+        "pratices": "Each of her practices influences and interacts with the others, forming a unique style characterized by a dancing and sharp line.",
+        "abstraction": "Her work often distorts reality, driven by a genuine maelstrom that leads her creations toward pure abstraction.",
+        "conclusion": "Fueled by a visceral desire to capture the moment, Sigma.2000 freezes fragments of a world in constant transformation.",
+        "exhibition": "Career and Exhibitions"
+    },
+    "exhibitions-sales": "Exhibitions and sales",
+    "exhibitions": {
+        "vacarmes": "<strong> Group exhibition </strong> <em>'Vacarmes'</em> at <strong>Rita Plage</strong> in Villeurbanne from November 13, 2023, to January 14, 2024.",
+        "auction-sale": "<strong>Auction</strong> organized by <strong>Graffart and Drouot</strong> following the exhibition <em>'7th Continent'</em>.",
+        "7th-continent": "<strong>Group exhibition</strong> <em>'The 7th Continent'</em> organized by <strong>Graffart at Galerie Amarrage</strong> in Saint Ouen, from June 7 to September 21, 2021.",
+        "bloc-13": "<strong>Sale</strong> of monotypes and photographs at the <strong>summer market of Bloc 13</strong> in Nantes.",
+        "green-tide": "<strong>Solo</strong> exhibition <em>'Green Tides'</em> organized by <strong>IGEM</strong> (International Genetically Engineered Machine competition) at the <strong>University Science Library</strong> in Nantes, October 2021.",
+        "igem": "<strong>Group exhibition</strong> with <strong>IGEM at the Maison des Hommes et Techniques</strong> in Nantes, September and October 2020."
+    },
+    "career": {
+        "presentation": "Formation",
+        "intro": "Holder of a degree in art history and passionate about self-learning, I have enriched my knowledge through various evening classes at fine arts schools, particularly in drawing and oil painting.",
+        "beginning": "For three years, I attended a life drawing class with Emmanuel Billeaud, who taught me a great deal. I began creating by exploring various mediums at Centrale 7, guided in part by Christophe Forget.",
+        "digital-art": "I discovered digital art through numerous workshops organized by Stereolux and AADN, which allowed me to broaden my creative horizons",
+        "conclusion": "More recently, I have also become a web developer, enabling me to combine my artistic background with the digital world."
+    },
+    "categories": {
+        "painting": "Painting",
+        "graffiti": "Graffiti",
+        "photography": "Photography",
+        "digital-art": "Digital art"
+    },
+    "shop-categories": {
+        "print": "Prints",
+        "original": "Originals"
+    },
+    "not-found": {
+        "404": "404 - Page Not Found",
+        "redirection": "You will be redirected to the home page in {seconds} seconds !"
     }
 }

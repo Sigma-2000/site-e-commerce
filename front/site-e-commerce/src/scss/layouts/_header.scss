@@ -1,10 +1,8 @@
 .content-top-menu {
-    position: sticky;
-    top: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100vw;
+    width: 100%;
     padding: 10px 20px;
     background-color: var(--color-background);
 

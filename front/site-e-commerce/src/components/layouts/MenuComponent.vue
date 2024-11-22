@@ -1,17 +1,20 @@
 <template>
     <div v-if="isVisible" class="menu-popup">
-        <div class="menu-item">
+        <router-link to="/" class="menu-item">
             {{ $t('menu.home') }}
-        </div>
-        <div class="menu-item">
+        </router-link>
+
+        <router-link to="/gallery" class="menu-item">
             {{ $t('menu.gallery') }}
-        </div>
-        <div class="menu-item">
+        </router-link>
+
+        <router-link to="/shop" class="menu-item">
             {{ $t('menu.shop') }}
-        </div>
-        <div class="menu-item">
+        </router-link>
+
+        <router-link to="/about" class="menu-item">
             {{ $t('menu.about') }}
-        </div>
+        </router-link>
         <div class="menu-item">
             {{ isLoggedIn ? $t('menu.logout') : $t('menu.account') }}
         </div>
