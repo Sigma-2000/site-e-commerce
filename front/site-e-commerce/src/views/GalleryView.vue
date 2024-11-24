@@ -5,6 +5,7 @@
             <router-link to="/" class="pages-link">
                 <h2>{{ $t('menu.gallery') }}</h2>
             </router-link>
+            <!--TODO: need to delete the road on gallery, semantic incorrect, arrow go back or Home ?-->
             <div class="underline-long"></div>
             <div class="categories-items">
                 <div
