@@ -1,0 +1,42 @@
+.content-top-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: var(--color-background);
+
+    .content-top-menu-logo {
+        color: var(--color-text);
+        .menu-logo {
+            width: 60%;
+            @include respond-to('tablet') {
+                width: 30%;
+            }
+        }
+
+        .logo-underline {
+            @include underline(3%, 35%, null);
+            @include respond-to('tablet') {
+                @include underline(1%, 68%, null);
+            }
+        }
+    }
+    .content-top-menu-icon {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-direction: row;
+        @include respond-to('tablet') {
+            gap: 10px;
+        }
+        .menu-cart-icon {
+            cursor: pointer;
+            color: var(--color-text);
+        }
+        .menu-burger-icon {
+            cursor: pointer;
+            color: var(--color-text);
+        }
+    }
+}
