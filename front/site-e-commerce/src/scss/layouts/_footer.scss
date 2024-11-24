@@ -14,6 +14,7 @@
     }
     span {
         font-size: $font-size-medium;
+        color: var(--color-text);
         margin-right: 8px;
         cursor: pointer;
     }
@@ -26,6 +27,7 @@
 
         .content-footer-mode-icon {
             cursor: pointer;
+            color: var(--color-text);
         }
     }
 }

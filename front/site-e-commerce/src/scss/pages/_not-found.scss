@@ -6,6 +6,7 @@
     text-align: center;
     margin-top: 50%;
     padding: 10px;
+    color: var(--color-text);
     @include respond-to('tablet') {
         margin-top: 15%;
     }

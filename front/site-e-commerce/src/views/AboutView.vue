@@ -17,7 +17,7 @@
                 <Icon icon="skill-icons:instagram"
             /></a>
             <a href="amelieguyot7@gmail.com" aria-label="Email">
-                <Icon icon="iconamoon:email-light" style="color: black" />
+                <Icon icon="iconamoon:email-light" style="color: var(--color-text)" />
             </a>
             <a href="https://www.facebook.com/sigma.2000.art" target="_blank" aria-label="Facebook">
                 <Icon icon="devicon:facebook" />

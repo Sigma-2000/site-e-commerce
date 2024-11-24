@@ -2,7 +2,17 @@
     <div class="content-top-menu">
         <div class="content-top-menu-logo">
             <div class="logo-underline"></div>
-            - <img src="/images/sigma-logo.png" alt="Sigma.2000" class="menu-logo" /> -
+            -
+            <img
+                :src="
+                    darkModeStore.isDarkMode
+                        ? '/images/sigma-logo-white.png'
+                        : '/images/sigma-logo.png'
+                "
+                alt="Sigma.2000"
+                class="menu-logo"
+            />
+            -
             <div class="logo-underline"></div>
         </div>
         <div class="content-top-menu-icon">
@@ -23,6 +33,8 @@
 <script setup>
 import { Icon } from '@iconify/vue';
 import MenuComponent from './MenuComponent.vue';
+import { useDarkModeStore } from '@/stores/darkModeStore';
+
 defineProps({
     isVisible: {
         type: Boolean,
@@ -34,4 +46,5 @@ defineProps({
     },
 });
 const emit = defineEmits(['toggle-menu']);
+const darkModeStore = useDarkModeStore();
 </script>

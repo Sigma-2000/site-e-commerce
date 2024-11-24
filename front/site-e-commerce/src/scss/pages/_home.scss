@@ -32,7 +32,7 @@
         p {
             margin: 10px 0px;
             font-size: $font-size-medium;
-            line-height: 1.5;
+            color: var(--color-text);
         }
         .pages-link {
             text-decoration: none;
@@ -41,6 +41,7 @@
         }
         h2 {
             font-weight: $font-weight-medium;
+            color: var(--color-text);
         }
         .gallery-img,
         .shop-img,
@@ -74,7 +75,7 @@
                 height: 100px;
                 object-fit: cover;
                 border-radius: 5px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 4px 6px var(--shadow-color);
                 @include respond-to('tablet') {
                     height: 400px;
                 }

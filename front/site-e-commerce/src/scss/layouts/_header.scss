@@ -7,6 +7,7 @@
     background-color: var(--color-background);
 
     .content-top-menu-logo {
+        color: var(--color-text);
         .menu-logo {
             width: 60%;
             @include respond-to('tablet') {
@@ -31,9 +32,11 @@
         }
         .menu-cart-icon {
             cursor: pointer;
+            color: var(--color-text);
         }
         .menu-burger-icon {
             cursor: pointer;
+            color: var(--color-text);
         }
     }
 }
