@@ -23,13 +23,15 @@ $font-weight-bold: 700;
     --color-text: #1a1a1a;
     --color-primary: #d1d1d1;
     --color-border: #2a2a2a;
+    --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 //dark mode
-.dark-mode {
+[data-theme='dark'] {
     --color-background-body: #1a1a1a;
     --color-background: #1e1e1e;
     --color-text: #eaeaea;
     --color-primary: #707070;
     --color-border: #b0b0b0;
+    --shadow-color: rgba(255, 255, 255, 0.1);
 }

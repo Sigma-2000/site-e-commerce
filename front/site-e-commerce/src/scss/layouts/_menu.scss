@@ -24,8 +24,8 @@
     cursor: pointer;
     margin-bottom: 8px;
     font-size: $font-size-x-large;
+    color: var(--color-text);
     text-decoration: none;
-    color: inherit;
 
     @include underline(25%, 25%, var(--color-primary));
 

@@ -25,6 +25,7 @@
     h2,
     h3 {
         font-weight: $font-weight-medium;
+        color: var(--color-text);
     }
     .underline-extra-short {
         @include underline(0%, 40%, null);
@@ -41,7 +42,7 @@
                 object-fit: contain;
                 border-radius: 5px;
                 margin: 20px 0px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 4px 6px var(--shadow-color);
                 @include respond-to('tablet') {
                     width: 50%;
                     height: 500px;
