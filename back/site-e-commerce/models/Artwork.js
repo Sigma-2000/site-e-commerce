@@ -9,6 +9,7 @@ const ArtworkSchema = new Schema({
   type: {
     type: String,
     required: true,
+    enum: ["painting", "digital art", "photography", "graffiti"],
   },
   dimensions: {
     type: String,
