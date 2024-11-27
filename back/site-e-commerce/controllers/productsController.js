@@ -1,9 +1,10 @@
 const express = require("express");
 const Product = require("../models/Product");
+const Artwork = require("../models/Artwork");
 
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate("artwork_id");
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({
@@ -13,8 +14,9 @@ const getAllProducts = async (req, res) => {
 };
 const getProductById = async (req, res) => {
   const { id } = req.params;
+
   try {
-    const product = await Product.findById(id);
+    const product = await Product.findById(id).populate("artwork_id");
 
     if (!product) {
       return res.status(404).json({
@@ -24,16 +26,20 @@ const getProductById = async (req, res) => {
 
     res.status(200).json(product);
   } catch (error) {
+    console.error("Error in getProductById:", error);
     res.status(500).json({
       error: error.message || "Error occurred while retrieving the product.",
     });
   }
 };
+
 const deleteProductById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deletedProduct = await Product.findByIdAndDelete(id);
+    const deletedProduct = await Product.findByIdAndDelete(id).populate(
+      "artwork_id"
+    );
 
     if (!deletedProduct) {
       return res.status(404).json({
@@ -43,35 +49,45 @@ const deleteProductById = async (req, res) => {
 
     res.status(200).json({
       message: "Product successfully deleted.",
+      deletedProduct,
     });
   } catch (error) {
+    console.error("Error in deleteProductById:", error);
     res.status(500).json({
       error: error.message || "Error occurred while deleting the product.",
     });
   }
 };
 
-/* lessons example extract:
-const addArtworks = async (req, res) => {
-  try {
-    const ingredients = JSON.parse(req.body.ingredients);
+const addProduct = async (req, res) => {
+  const { artwork_id, price, stock, category } = req.body;
 
-    const category = await Category.findById(req.body.category);
-    if (!category) {
-      return res.status(400).json({ message: 'Catégorie invalide.' });
+  if (!["print", "original"].includes(category)) {
+    return res.status(400).json({ error: "Invalid category provided." });
+  }
+
+  try {
+    const artwork = await Artwork.findById(artwork_id);
+    if (!artwork) {
+      return res.status(400).json({ message: "Artwork not found." });
     }
 
-    const recipe = await Recipes.create({
-      ...req.body,
-      ingredients,
-      image: req.file.filename
+    const product = await Product.create({
+      artwork_id,
+      price,
+      stock,
+      category,
     });
-    res.status(201).json(recipe); //201 création réussie
+
+    res.status(201).json(product);
   } catch (error) {
-    res.status(500).json({ error: error.message || 'Erreur lors de la création de la recette.' });
+    res.status(500).json({
+      error: error.message || "Error occurred while creating the product.",
+    });
   }
 };
 
+/* lessons example extract:
 const updateById = async (req, res) => {
   const { id } = req.params;
   const ingredients = JSON.parse(req.body.ingredients);
@@ -83,7 +99,7 @@ const updateById = async (req, res) => {
     ingredients,
     category: req.body.category
   };
-
+//no need for image !products!
   // Si une nouvelle image est uploadée
   if (req.file) {
     updateData.image = req.file.filename;
@@ -104,4 +120,5 @@ module.exports = {
   getAllProducts,
   getProductById,
   deleteProductById,
+  addProduct,
 };

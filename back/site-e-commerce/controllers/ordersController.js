@@ -1,6 +1,6 @@
 const express = require("express");
 const Order = require("../models/Order");
-
+//link to adresses, user, products populate
 const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find();

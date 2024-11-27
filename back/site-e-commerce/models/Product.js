@@ -15,6 +15,11 @@ const ProductSchema = new Schema({
     type: Number,
     required: true,
   },
+  category: {
+    type: String,
+    required: true,
+    enum: ["print", "original"],
+  },
 });
 
 const Product = mongoose.model("Product", ProductSchema);
