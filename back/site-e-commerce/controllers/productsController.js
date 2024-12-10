@@ -86,7 +86,7 @@ const addProduct = async (req, res) => {
     });
   }
 };
-
+//maybe add some img supp ?
 /* lessons example extract:
 const updateById = async (req, res) => {
   const { id } = req.params;

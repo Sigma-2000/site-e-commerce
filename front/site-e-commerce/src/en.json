@@ -46,5 +46,24 @@
     "not-found": {
         "404": "404 - Page Not Found",
         "redirection": "You will be redirected to the home page in {seconds} seconds !"
+    },
+    "display": {
+        "details": "More details",
+        "original": "Original available",
+        "print": "Print available",
+        "results": "More results"
+    },
+    "errors": {
+        "display-list": "We are sorry, an error occurred while retrieving the items.",
+        "display-element": "We are sorry, an error occurred while displaying this item."
+    },
+    "button": {
+        "buy": "Add to cart"
+    },
+    "detail": {
+        "dimensions": "Dimensions",
+        "techniques": "Techniques",
+        "description": "Description",
+        "price": "Price"
     }
 }
