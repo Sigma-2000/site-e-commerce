@@ -5,7 +5,7 @@ const fs = require("fs");
 
 const getAllArtworks = async (req, res) => {
   try {
-    const artworks = await Artwork.find();
+    const artworks = await Artwork.find().populate("products");
     res.status(200).json(artworks);
   } catch (error) {
     res.status(500).json({
@@ -17,7 +17,7 @@ const getAllArtworks = async (req, res) => {
 const getArtworkById = async (req, res) => {
   const { id } = req.params;
   try {
-    const artwork = await Artwork.findById(id);
+    const artwork = await Artwork.findById(id).populate("products");
 
     if (!artwork) {
       return res.status(404).json({
@@ -87,7 +87,20 @@ const addArtworks = async (req, res) => {
       });
     }
     const artwork = await Artwork.create({
-      ...req.body,
+      title: {
+        en: req.body.title_en,
+        fr: req.body.title_fr,
+      },
+      type: req.body.type,
+      dimensions: req.body.dimensions,
+      techniques: {
+        en: req.body.techniques_en,
+        fr: req.body.techniques_fr,
+      },
+      description: {
+        en: req.body.description_en,
+        fr: req.body.description_fr,
+      },
       images,
       videos,
     });
