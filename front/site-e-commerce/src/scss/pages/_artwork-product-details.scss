@@ -95,6 +95,12 @@
             }
             .item-details-card-text-additional {
                 margin: 20px 0px;
+                .shop-available {
+                    margin-left: 10px;
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                }
             }
         }
     }

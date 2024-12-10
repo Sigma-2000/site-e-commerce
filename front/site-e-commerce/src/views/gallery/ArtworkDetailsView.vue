@@ -10,13 +10,13 @@
                 <h3>{{ t(`categories.${category}`) }}</h3>
             </router-link>
             <div class="underline-extra-short"></div>
-            <section class="item-details-card">
-                <h2>{{ artwork.title }}</h2>
+            <section v-if="artwork._id" class="item-details-card">
+                <h2>{{ artwork.title[locale] }}</h2>
                 <div class="detail-card-main-image">
                     <img
                         v-if="artwork.images && artwork.images.length"
                         :src="artwork.images[0]"
-                        :alt="artwork.title"
+                        :alt="artwork.title[locale]"
                     />
                 </div>
                 <div class="item-details-card-text">
@@ -25,11 +25,21 @@
                             <strong>{{ $t('detail.dimensions') }}: </strong>
                             {{ artwork.dimensions }}
                         </p>
-                        <!--<strong>{{ $t('detail.techniques') }}: </strong>techniques add back !-->
-                        <!--TODO available in original or print ? add back?-->
+                        <p>
+                            <strong>{{ $t('detail.techniques') }}: </strong>
+                            {{ artwork.techniques[locale] }}
+                        </p>
+                        <p
+                            v-if="artwork.products && artwork.products.length > 0"
+                            class="shop-available"
+                        >
+                            <Icon icon="fluent-emoji:framed-picture" />
+                            {{ $t('detail.available-shop') }}
+                        </p>
                     </div>
                     <p>
-                        <strong>{{ $t('detail.description') }}: </strong>{{ artwork.description }}
+                        <strong>{{ $t('detail.description') }}: </strong
+                        >{{ artwork.description[locale] }}
                     </p>
                 </div>
                 <div class="detail-card-images" v-if="artwork.images && artwork.images.length > 1">
@@ -53,8 +63,11 @@ import { useRoute } from 'vue-router';
 import { axiosCaller } from '@/services/axiosCaller';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import { useI18n } from 'vue-i18n';
+import { useLanguage } from '@/composables/useLanguage';
+import { Icon } from '@iconify/vue';
 
 const { t } = useI18n();
+const { locale } = useLanguage();
 const route = useRoute();
 const artwork = ref({});
 const error = ref(null);

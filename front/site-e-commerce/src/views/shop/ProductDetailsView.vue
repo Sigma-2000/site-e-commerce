@@ -11,12 +11,12 @@
             </router-link>
             <div class="underline-extra-short"></div>
             <section v-if="product.artwork_id" class="item-details-card">
-                <h2>{{ product.artwork_id.title }}</h2>
+                <h2>{{ product.artwork_id.title[locale] }}</h2>
                 <div class="detail-card-main-image">
                     <img
                         v-if="product.artwork_id.images && product.artwork_id.images.length"
                         :src="product.artwork_id.images[4]"
-                        :alt="product.artwork_id.title"
+                        :alt="product.artwork_id.title[locale]"
                     />
                 </div>
                 <div class="item-details-card-button">
@@ -33,7 +33,7 @@
                         </p>
                         <p>
                             <strong>{{ $t('detail.description') }}: </strong
-                            >{{ product.artwork_id.description }}
+                            >{{ product.artwork_id.description[locale] }}
                         </p>
                     </div>
                 </div>
@@ -64,8 +64,10 @@ import LoaderComponent from '@/components/ui/LoaderComponent.vue';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import { useI18n } from 'vue-i18n';
+import { useLanguage } from '@/composables/useLanguage';
 
 const { t } = useI18n();
+const { locale } = useLanguage();
 const route = useRoute();
 const product = ref({});
 const error = ref(null);

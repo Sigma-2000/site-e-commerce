@@ -15,12 +15,12 @@
                         :key="product._id"
                         class="category-items"
                     >
-                        <h2>{{ product.artwork_id.title }}</h2>
+                        <h2>{{ product.artwork_id.title[locale] }}</h2>
                         <div class="category-content-items">
                             <img
                                 v-if="product.artwork_id.images && product.artwork_id.images.length"
                                 :src="product.artwork_id.images[4]"
-                                :alt="product.artwork_id.title"
+                                :alt="product.artwork_id.title[locale]"
                             />
                             <div class="category-content-items-more-details">
                                 <p>
@@ -61,8 +61,10 @@ import { useI18n } from 'vue-i18n';
 import LoaderComponent from '@/components/ui/LoaderComponent.vue';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import ButtonComponent from '@/components/ui/ButtonComponent.vue';
+import { useLanguage } from '@/composables/useLanguage';
 
 const { t } = useI18n();
+const { locale } = useLanguage();
 const route = useRoute();
 const category = route.params.category;
 const products = ref([]);

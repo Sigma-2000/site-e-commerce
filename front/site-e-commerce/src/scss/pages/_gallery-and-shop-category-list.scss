@@ -45,7 +45,12 @@
             li {
                 list-style: none;
             }
-
+            .shop-available {
+                margin-left: 10px;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
             .category-content-items {
                 display: flex;
                 justify-content: center;
