@@ -1,6 +1,5 @@
-.categories-overview {
+.product-details {
     margin: 20px 40px;
-
     .underline-long {
         @include underline(0%, 0%, null);
         @include respond-to('tablet') {
@@ -27,36 +26,48 @@
         font-weight: $font-weight-medium;
         color: var(--color-text);
     }
+
     .underline-extra-short {
         @include underline(0%, 40%, null);
         @include respond-to('tablet') {
             @include underline(0%, 70%, null);
         }
     }
-    .categories-items {
-        margin: 20px 10px;
 
-        img {
+    .product-details-item {
+        margin: 20px 10px;
+        h3 {
+            font-weight: $font-weight-semibold;
+        }
+        .main-image {
             width: 100%;
             height: 200px;
             object-fit: contain;
             border-radius: 5px;
-            margin: 30px 10px;
+            margin: 20px 0px;
             box-shadow: 0 4px 6px var(--shadow-color);
             @include respond-to('tablet') {
-                height: 400px;
-                // not display at center, could be better ?
-                //width: 50%;
-                //height: 500px;
+                width: 70%;
+                height: 500px;
+                margin: 20px 50px;
             }
         }
-        .underline-ultra-long {
-            @include underline(0%, 0%, null);
-            @include respond-to('tablet') {
-                @include underline(0%, 20%, null);
-            }
-            @include respond-to('desktop') {
-                @include underline(0%, 30%, null);
+        .detail-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+
+            .detail-image {
+                width: calc(50% - 10px);
+                height: auto;
+                object-fit: cover;
+                border-radius: 5px;
+                box-shadow: 0 4px 6px var(--shadow-color);
+
+                @include respond-to('tablet') {
+                    width: calc(20% - 10px);
+                }
             }
         }
     }

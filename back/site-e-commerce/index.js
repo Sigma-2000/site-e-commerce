@@ -27,6 +27,7 @@ app.use("/api", artworksRoutes);
 app.use("/api", productsRoutes);
 app.use("/api", ordersRoutes);
 //app.use("/api", authRoutes);
+//add cookie parser
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

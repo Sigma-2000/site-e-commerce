@@ -11,6 +11,7 @@ const ArtworkSchema = new Schema({
     required: true,
     enum: ["painting", "digital art", "photography", "graffiti"],
   },
+  //TODO add technique like video, live painting, monotype, techniques mixtes
   dimensions: {
     type: String,
   },

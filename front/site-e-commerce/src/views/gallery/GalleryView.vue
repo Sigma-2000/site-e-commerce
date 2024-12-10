@@ -8,18 +8,21 @@
             <!--TODO: need to delete the road on gallery, semantic incorrect, arrow go back or Home ?-->
             <div class="underline-long"></div>
             <div class="categories-items">
-                <div
-                    v-for="category in galleryCategories"
-                    :key="category.name"
-                    class="category-item"
-                >
-                    <h3>{{ t(`categories.${category.name}`) }}</h3>
-                    <div class="underline-extra-short"></div>
+                <div v-for="category in galleryCategories" :key="category.name">
                     <router-link
                         :to="{ name: 'gallery-category', params: { category: category.name } }"
+                        class="pages-link"
                     >
-                        <img :src="category.galleryImage" :alt="category.label" />
+                        <h3>{{ t(`categories.${category.name}`) }}</h3>
                     </router-link>
+                    <div class="underline-extra-short"></div>
+                    <div class="category-image">
+                        <router-link
+                            :to="{ name: 'gallery-category', params: { category: category.name } }"
+                        >
+                            <img :src="category.galleryImage" :alt="category.label" />
+                        </router-link>
+                    </div>
                     <div class="underline-ultra-long"></div>
                 </div>
             </div>
