@@ -11,16 +11,22 @@
             <section class="category-content-list">
                 <ul v-if="filteredArtworks.length && !isLoading">
                     <li v-for="artwork in filteredArtworks" :key="artwork._id">
-                        <h2>{{ artwork.title }}</h2>
+                        <h2>{{ artwork.title[locale] }}</h2>
+                        <p
+                            v-if="artwork.products && artwork.products.length > 0"
+                            class="shop-available"
+                        >
+                            <Icon icon="fluent-emoji:framed-picture" />
+                            {{ $t('detail.available-shop') }}
+                        </p>
                         <div class="category-content-items">
                             <img
                                 v-if="artwork.images && artwork.images.length"
                                 :src="artwork.images[0]"
-                                :alt="artwork.title"
+                                :alt="artwork.title[locale]"
                             />
-                            <!--add artwork.technique when back-end send-->
                             <div class="category-content-items-more-details">
-                                <p>Technique test ui</p>
+                                <p>{{ artwork.techniques[locale] }}</p>
                                 <router-link
                                     :to="`/gallery/${category}/${artwork._id}`"
                                     class="details-link"
@@ -46,8 +52,11 @@ import { axiosCaller } from '@/services/axiosCaller';
 import LoaderComponent from '@/components/ui/LoaderComponent.vue';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import { useI18n } from 'vue-i18n';
+import { useLanguage } from '@/composables/useLanguage';
+import { Icon } from '@iconify/vue';
 
 const { t } = useI18n();
+const { locale } = useLanguage();
 const route = useRoute();
 const category = route.params.category;
 const artworks = ref([]);
@@ -58,6 +67,7 @@ const fetchArtworks = async () => {
     isLoading.value = true;
     try {
         const response = await axiosCaller.get('/artworks');
+        console.log(response.data);
         artworks.value = response.data;
     } catch (err) {
         error.value = 'errors.display-list';
@@ -66,7 +76,6 @@ const fetchArtworks = async () => {
         isLoading.value = false;
     }
 };
-/**TODO: Need to implement fr and en in backend, make the following ticket for update back*/
 /**TODO: Maybe implement a store for api call and data */
 const filteredArtworks = computed(() =>
     artworks.value.filter((artwork) => artwork.type === category)

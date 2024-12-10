@@ -64,6 +64,7 @@
         "dimensions": "Dimensions",
         "techniques": "Techniques",
         "description": "Description",
-        "price": "Price"
+        "price": "Price",
+        "available-shop": "Available in the shop"
     }
 }
