@@ -46,5 +46,24 @@
     "not-found": {
         "404": "404 - Page introuvable",
         "redirection": "Vous serez redirigé sur la page d'accueil dans {seconds} secondes !"
+    },
+    "display": {
+        "details": "+ de détails",
+        "original": "Original disponible",
+        "print": "Print disponible",
+        "results": "Plus de résultats"
+    },
+    "errors": {
+        "display-list": "Nous sommes désolées, une erreur s'est produite lors de la récupération des items ",
+        "display-element": "Nous sommes désolées, une erreur s'est produite pour l'affichage de cet item"
+    },
+    "button": {
+        "buy": "Ajouter au panier"
+    },
+    "detail": {
+        "dimensions": "Dimensions",
+        "techniques": "Techniques",
+        "description": "Description",
+        "price": "Prix"
     }
 }

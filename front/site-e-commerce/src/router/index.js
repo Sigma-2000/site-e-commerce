@@ -17,22 +17,32 @@ const router = createRouter({
         {
             path: '/gallery',
             name: 'gallery',
-            component: () => import('../views/GalleryView.vue'),
+            component: () => import('../views/gallery/GalleryView.vue'),
         },
         {
             path: '/gallery/:category',
             name: 'gallery-category',
-            component: () => import('../views/GalleryCategoryView.vue'),
+            component: () => import('../views/gallery/GalleryCategoryView.vue'),
+        },
+        {
+            path: '/gallery/:category/:id',
+            name: 'artwork-details',
+            component: () => import('../views/gallery/ArtworkDetailsView.vue'),
         },
         {
             path: '/shop',
             name: 'shop',
-            component: () => import('../views/ShopView.vue'),
+            component: () => import('../views/shop/ShopView.vue'),
         },
         {
             path: '/shop/:category',
             name: 'shop-category',
-            component: () => import('../views/ShopCategoryView.vue'),
+            component: () => import('../views/shop/ShopCategoryView.vue'),
+        },
+        {
+            path: '/shop/:category/:id',
+            name: 'product-details',
+            component: () => import('../views/shop/ProductDetailsView.vue'),
         },
         {
             path: '/:pathMatch(.*)*',
