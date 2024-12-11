@@ -58,12 +58,14 @@
         "display-element": "We are sorry, an error occurred while displaying this item."
     },
     "button": {
-        "buy": "Add to cart"
+        "buy": "Add to cart",
+        "more-results": "More results"
     },
     "detail": {
         "dimensions": "Dimensions",
         "techniques": "Techniques",
         "description": "Description",
-        "price": "Price"
+        "price": "Price",
+        "available-shop": "Available in the shop"
     }
 }
