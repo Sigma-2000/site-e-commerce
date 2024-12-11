@@ -45,7 +45,12 @@
             li {
                 list-style: none;
             }
-
+            .shop-available {
+                margin-left: 10px;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
             .category-content-items {
                 display: flex;
                 justify-content: center;
@@ -93,6 +98,11 @@
                 @include respond-to('tablet') {
                     @include underline(10%, 20%, null);
                 }
+            }
+            .category-content-items-more-results-button {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
             }
         }
     }
