@@ -29,9 +29,11 @@
                                     >
                                 </p>
                                 <div class="category-content-items-more-details-button">
-                                    <ButtonComponent class="custom-button">{{
-                                        $t('button.buy')
-                                    }}</ButtonComponent>
+                                    <ButtonComponent
+                                        class="custom-button"
+                                        :disabled="product.stock === 0"
+                                        >{{ $t('button.buy') }}</ButtonComponent
+                                    >
                                 </div>
                                 <p>
                                     {{ product.artwork_id.techniques[locale] }}
@@ -87,7 +89,7 @@ const hasMoreProductsResults = computed(() => {
 const loadMoreProductsResults = () => {
     productStore.loadMoreProducts(category.value);
 };
-
+//TODO: verification for stock reactivity, maybe in store ??
 onMounted(async () => {
     productStore.resetPagination();
 
