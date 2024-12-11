@@ -65,6 +65,9 @@
         .item-details-card-button {
             display: flex;
             justify-content: center;
+            .custom-button {
+                width: 30% !important;
+            }
         }
         .detail-card-images {
             display: flex;

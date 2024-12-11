@@ -99,6 +99,11 @@
                     @include underline(10%, 20%, null);
                 }
             }
+            .category-content-items-more-results-button {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+            }
         }
     }
 }

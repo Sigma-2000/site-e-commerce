@@ -9,8 +9,12 @@
             <h3>{{ t(`categories.${category}`) }}</h3>
             <div class="underline-extra-short"></div>
             <section class="category-content-list">
-                <ul v-if="filteredArtworks.length && !isLoading">
-                    <li v-for="artwork in filteredArtworks" :key="artwork._id">
+                <ul v-if="artworksPaginatedList.length && !isLoading">
+                    <li
+                        v-for="artwork in artworksPaginatedList"
+                        :key="artwork._id"
+                        class="category-items"
+                    >
                         <h2>{{ artwork.title[locale] }}</h2>
                         <p
                             v-if="artwork.products && artwork.products.length > 0"
@@ -38,6 +42,11 @@
                         <div class="underline-center"></div>
                     </li>
                 </ul>
+                <div class="category-content-items-more-results-button">
+                    <ButtonComponent v-if="hasMoreResults" @click="loadMoreResults">
+                        {{ $t('button.more-results') }}
+                    </ButtonComponent>
+                </div>
             </section>
         </div>
         <LoaderComponent v-if="isLoading" />
@@ -46,42 +55,37 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { axiosCaller } from '@/services/axiosCaller';
 import LoaderComponent from '@/components/ui/LoaderComponent.vue';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import { useI18n } from 'vue-i18n';
 import { useLanguage } from '@/composables/useLanguage';
 import { Icon } from '@iconify/vue';
+import { useArtworksStore } from '@/stores/artworksStore';
+import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 
 const { t } = useI18n();
 const { locale } = useLanguage();
 const route = useRoute();
-const category = route.params.category;
-const artworks = ref([]);
-const isLoading = ref(false);
-const error = ref(null);
+const artworkStore = useArtworksStore();
 
-const fetchArtworks = async () => {
-    isLoading.value = true;
-    try {
-        const response = await axiosCaller.get('/artworks');
-        console.log(response.data);
-        artworks.value = response.data;
-    } catch (err) {
-        error.value = 'errors.display-list';
-        console.error(err);
-    } finally {
-        isLoading.value = false;
-    }
+const category = computed(() => route.params.category);
+const artworksPaginatedList = computed(() => artworkStore.artworksPaginatedList);
+const isLoading = computed(() => artworkStore.isLoading);
+const error = computed(() => artworkStore.error);
+
+const hasMoreResults = computed(() => {
+    const totalFiltered = artworkStore.filteredArtworks(category.value).length;
+    return artworksPaginatedList.value.length < totalFiltered;
+});
+
+const loadMoreResults = () => {
+    artworkStore.loadMore(category.value);
 };
-/**TODO: Maybe implement a store for api call and data */
-const filteredArtworks = computed(() =>
-    artworks.value.filter((artwork) => artwork.type === category)
-);
 
-onMounted(() => {
-    fetchArtworks();
+onMounted(async () => {
+    artworkStore.resetPagination();
+    await artworkStore.fetchArtworks(category.value);
 });
 </script>

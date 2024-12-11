@@ -20,7 +20,7 @@
                     />
                 </div>
                 <div class="item-details-card-button">
-                    <ButtonComponent>{{ $t('button.buy') }}</ButtonComponent>
+                    <ButtonComponent class="custom-button">{{ $t('button.buy') }}</ButtonComponent>
                 </div>
                 <div class="item-details-card-text">
                     <p>
@@ -84,7 +84,8 @@ const fetchDetailsProduct = async () => {
         error.value = 'errors.display-element';
     }
 };
-
+// add watch for set button disabled if stock is empty
+//maybe implement a store for API call when the admin want to update
 onMounted(async () => {
     fetchDetailsProduct();
 });

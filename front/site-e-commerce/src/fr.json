@@ -58,7 +58,8 @@
         "display-element": "Nous sommes désolées, une erreur s'est produite pour l'affichage de cet item"
     },
     "button": {
-        "buy": "Ajouter au panier"
+        "buy": "Ajouter au panier",
+        "more-results": "Plus de résultats"
     },
     "detail": {
         "dimensions": "Dimensions",
