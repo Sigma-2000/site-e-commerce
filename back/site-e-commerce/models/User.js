@@ -31,6 +31,6 @@ const UserSchema = new Schema({
     ref: "Address",
   },
 });
-
+//TODO maybe implement like in Artworks models (for products), orders link to the user
 const User = mongoose.model("User", UserSchema);
 module.exports = User;

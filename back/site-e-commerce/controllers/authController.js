@@ -60,7 +60,15 @@ const login = async (req, res) => {
       .cookie("token", token, {
         httpOnly: true,
       })
-      .json(user);
+      .json({
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role,
+        address_id: user.address_id, //maybe not usefull because we can call getOneUser for recovery address..
+      });
+    //.json(user); not good because hashpasword is sending..
   } catch (error) {
     res.status(500).json({ error: error.message || "Authentification failed" });
   }
@@ -68,7 +76,7 @@ const login = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find().populate("address_id");
     res.json(users);
   } catch (error) {
     res.status(500).json({
@@ -77,7 +85,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-/*maybe for recovery adress of user when He want to pay*/
+/*maybe for recovery adress of user when He want to pay or for admin for the send the order with right adress*/
 const getOneUser = async (req, res) => {
   const { id } = req.params;
   try {
