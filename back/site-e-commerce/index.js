@@ -3,6 +3,8 @@ require("dotenv").config();
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+
 const port = process.env.PORT;
 const mongoUri = process.env.MONGO_URI;
 
@@ -13,7 +15,7 @@ mongoose.connect(mongoUri).then(() => {
 const artworksRoutes = require("./routes/artworks");
 const ordersRoutes = require("./routes/orders");
 const productsRoutes = require("./routes/products");
-//const authRoutes = require("./routes/auth");
+const authRoutes = require("./routes/auth");
 
 app.use(
   cors({
@@ -23,11 +25,13 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieParser());
+
 app.use("/api", artworksRoutes);
 app.use("/api", productsRoutes);
 app.use("/api", ordersRoutes);
-//app.use("/api", authRoutes);
-//add cookie parser
+app.use("/api", authRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
