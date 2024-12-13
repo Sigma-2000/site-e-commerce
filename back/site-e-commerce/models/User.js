@@ -31,6 +31,12 @@ const UserSchema = new Schema({
     ref: "Address",
   },
 });
-//TODO maybe implement like in Artworks models (for products), orders link to the user
+UserSchema.virtual("orders", {
+  ref: "Order",
+  localField: "_id",
+  foreignField: "user_id",
+});
+
+UserSchema.set("toJSON", { virtuals: true });
 const User = mongoose.model("User", UserSchema);
 module.exports = User;

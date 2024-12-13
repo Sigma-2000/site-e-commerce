@@ -36,7 +36,9 @@ const registerUser = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email })
+      .select("+password")
+      .populate("address_id");
 
     if (!user) {
       return res.status(401).json({ error: "Authentification failed" });
@@ -66,9 +68,9 @@ const login = async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         role: user.role,
-        address_id: user.address_id, //maybe not usefull because we can call getOneUser for recovery address..
+        address_id: user.address_id,
+        //no password but it can change with the possibility to change password future feat?
       });
-    //.json(user); not good because hashpasword is sending..
   } catch (error) {
     res.status(500).json({ error: error.message || "Authentification failed" });
   }
@@ -85,20 +87,47 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-/*maybe for recovery adress of user when He want to pay or for admin for the send the order with right adress*/
+/*recovery adress of the user it's for admin to be able to send the order with the right adress,*/
 const getOneUser = async (req, res) => {
   const { id } = req.params;
   try {
-    const userWithAddress = await User.findById(id).populate("address_id");
+    const user = await User.findById(id)
+      .populate("address_id")
+      .populate("orders");
 
-    if (!userWithAddress) {
+    if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.json(userWithAddress);
+    res.json(user);
   } catch (error) {
     res.status(500).json({
       error: error.message || "Error in recovery of the user",
+    });
+  }
+};
+
+const updateUserAddress = async (req, res) => {
+  const { street, city, postal_code, country, phone } = req.body;
+  try {
+    const user = await User.findById(req.user.id).populate("address_id");
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    if (!user.address_id) {
+      return res.status(404).json({ error: "Address not found for this user" });
+    }
+
+    const updatedAddress = await Address.findByIdAndUpdate(
+      user.address_id._id,
+      { street, city, postal_code, country, phone },
+      { new: true }
+    );
+
+    res.json(updatedAddress);
+  } catch (error) {
+    res.status(500).json({
+      error: error.message || "Error updating address",
     });
   }
 };
@@ -108,4 +137,5 @@ module.exports = {
   login,
   getAllUsers,
   getOneUser,
+  updateUserAddress,
 };
