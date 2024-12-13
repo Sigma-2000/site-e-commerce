@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const upload = require("../middlewares/multer");
+const { verifyToken, isAdmin } = require("../middlewares/authMiddleware");
 
 const {
   getAllArtworks,
@@ -11,8 +12,14 @@ const {
 
 router.get("/artworks", getAllArtworks);
 router.get("/artworks/:id", getArtworkById);
-router.delete("/artworks/:id", deleteArtworkById);
-router.post("/artworks", upload.array("files", 6), addArtworks); //TODO: add authMiddlemare for protecting route
+router.delete("/artworks/:id", verifyToken, isAdmin, deleteArtworkById);
+router.post(
+  "/artworks",
+  verifyToken,
+  isAdmin,
+  upload.array("files", 6),
+  addArtworks
+);
 
 //TODO: Put example router.put("/artworks/:id", updateById); //[authMiddleware, upload.single('image')]
 

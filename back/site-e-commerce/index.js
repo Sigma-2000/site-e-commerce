@@ -4,12 +4,14 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+//const initializeAdmin = require("./utils/initializeAdmin");
 
 const port = process.env.PORT;
 const mongoUri = process.env.MONGO_URI;
 
 mongoose.connect(mongoUri).then(() => {
   console.log("Base de donnée connectée");
+  //initializeAdmin(); TODO Delete that before launch in prod
 });
 
 const artworksRoutes = require("./routes/artworks");
