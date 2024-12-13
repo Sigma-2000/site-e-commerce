@@ -5,16 +5,19 @@ const {
   login,
   getAllUsers,
   getOneUser,
+  updateUserAddress,
 } = require("../controllers/authController");
 const {
   verifyToken,
   validateRegister,
   validateLogin,
+  isAdmin,
 } = require("../middlewares/authMiddleware");
 
 router.post("/sign-up", validateRegister, registerUser);
 router.post("/login", validateLogin, login);
-router.get("/users", verifyToken, getAllUsers); //prof example but usefull in app ? maybe panel admin add middleware admin?
-router.get("/user/:id", verifyToken, getOneUser);
+router.get("/users", verifyToken, isAdmin, getAllUsers);
+router.get("/user/:id", verifyToken, isAdmin, getOneUser);
+router.put("/user/address", verifyToken, updateUserAddress);
 
 module.exports = router;

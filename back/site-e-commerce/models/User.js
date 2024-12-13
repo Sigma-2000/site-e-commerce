@@ -31,6 +31,12 @@ const UserSchema = new Schema({
     ref: "Address",
   },
 });
+UserSchema.virtual("orders", {
+  ref: "Order",
+  localField: "_id",
+  foreignField: "user_id",
+});
 
+UserSchema.set("toJSON", { virtuals: true });
 const User = mongoose.model("User", UserSchema);
 module.exports = User;

@@ -112,7 +112,7 @@ const addArtworks = async (req, res) => {
   }
 };
 
-/*lessons example extract:
+/*lessons example extract: not in priority products update more important
 const updateById = async (req, res) => {
   const { id } = req.params;
   

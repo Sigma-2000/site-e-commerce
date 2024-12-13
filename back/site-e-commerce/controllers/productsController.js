@@ -86,39 +86,34 @@ const addProduct = async (req, res) => {
     });
   }
 };
-//maybe add some img supp ?
-/* lessons example extract:
-const updateById = async (req, res) => {
+
+const updateProductById = async (req, res) => {
   const { id } = req.params;
-  const ingredients = JSON.parse(req.body.ingredients);
-  
-  const updateData = {
-    title: req.body.title,
-    description: req.body.description,
-    instructions: req.body.instructions,
-    ingredients,
-    category: req.body.category
-  };
-//no need for image !products!
-  // Si une nouvelle image est uploadée
-  if (req.file) {
-    updateData.image = req.file.filename;
-  } else if (req.body.existingImage) {
-    // Garder l'image actuelle si pas de changement
-    updateData.image = req.body.existingImage;
-  }
+  const { price, stock, category } = req.body;
 
   try {
-    const recipe = await Recipes.findByIdAndUpdate(id, updateData, { new: true }).populate('category');;
-    res.json(recipe);
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      { price, stock, category },
+      { new: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ error: "Product not found." });
+    }
+
+    res.json({ message: "Product updated successfully.", updatedProduct });
   } catch (error) {
-    res.status(500).json({ message: 'Erreur lors de la mise à jour de la recette.' });
+    res.status(500).json({
+      error: error.message || "Error occurred while updating the product.",
+    });
   }
-};*/
+};
 
 module.exports = {
   getAllProducts,
   getProductById,
   deleteProductById,
   addProduct,
+  updateProductById,
 };
