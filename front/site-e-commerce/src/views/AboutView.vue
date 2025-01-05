@@ -47,5 +47,6 @@
 
 <script setup>
 import { Icon } from '@iconify/vue';
+console.log('coucou je suis avec mon popo');
 </script>
 <style></style>

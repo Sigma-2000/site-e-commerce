@@ -3,6 +3,7 @@
 @import 'components/button';
 @import 'components/loader';
 @import 'components/error';
+@import 'components/login-form';
 @import 'utils/mixins';
 @import 'layouts/footer';
 @import 'layouts/header';
@@ -13,5 +14,8 @@
 @import 'pages/not-found';
 @import 'pages/gallery-and-shop-category-list';
 @import 'pages/artwork-product-details';
+@import 'pages/auth/sign-in';
+@import 'pages/auth/sign-up';
+@import 'pages/auth/thank-you';
 
 //in Sass 3.0.0 (in 2 years) @import will be delete for @use/@forward.
