@@ -55,7 +55,12 @@
     },
     "errors": {
         "display-list": "We are sorry, an error occurred while retrieving the items.",
-        "display-element": "We are sorry, an error occurred while displaying this item."
+        "display-element": "We are sorry, an error occurred while displaying this item.",
+        "auth": "Authentication error, please retry or create your account.",
+        "subscribe": "We are sorry, an error occured while the process, please retry.",
+        "invalid-email": "Your email is not valid.",
+        "password": "Your password must contain at least 8 characters.",
+        "invalid-phone": "Your phone number must contain 10 numbers"
     },
     "button": {
         "buy": "Add to cart",
@@ -67,5 +72,24 @@
         "description": "Description",
         "price": "Price",
         "available-shop": "Available in the shop"
+    },
+    "auth": {
+        "sign-in": "Sign in",
+        "no-account": "Don't have an acount ?",
+        "sign-up": "Creation of your account",
+        "already-account": "Already have an account ?",
+        "login": "Sign me in",
+        "create-account": "Create my account",
+        "first-name": "First Name",
+        "last-name": "Last Name",
+        "email": "Email",
+        "password": "Password",
+        "street": "Street",
+        "city": "City",
+        "postal-code": "Postal Code",
+        "country": "Country",
+        "phone": "Phone",
+        "user-data-consent": "I agree that my personal data will be processed in accordance with the Privacy Policy in order to manage my user account and my orders.",
+        "thanks": "Thanks for your subscription"
     }
 }

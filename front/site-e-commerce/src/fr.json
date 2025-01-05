@@ -54,8 +54,13 @@
         "results": "Plus de résultats"
     },
     "errors": {
-        "display-list": "Nous sommes désolées, une erreur s'est produite lors de la récupération des items ",
-        "display-element": "Nous sommes désolées, une erreur s'est produite pour l'affichage de cet item"
+        "display-list": "Nous sommes désolées, une erreur s'est produite lors de la récupération des items.",
+        "display-element": "Nous sommes désolées, une erreur s'est produite pour l'affichage de cet item.",
+        "auth": "Erreur d'authentification, veuillez réessayer ou inscrivez vous.",
+        "subscribe": "Nous sommes désolées, une erreur s'est produite lors du processus, veuillez retenter.",
+        "invalid-email": "Votre email n'est pas valide.",
+        "password": "Votre mot de passe doit contenir au moins 8 caractères.",
+        "invalid-phone": "Votre numéro de téléphone doit contenir 10 chiffres"
     },
     "button": {
         "buy": "Ajouter au panier",
@@ -67,5 +72,24 @@
         "description": "Description",
         "price": "Prix",
         "available-shop": "Disponible en boutique"
+    },
+    "auth": {
+        "sign-in": "Connectez-vous",
+        "no-account": "Pas encore inscrit ?",
+        "sign-up": "Création de votre compte",
+        "already-account": "Vous avez déjà un compte ?",
+        "login": "Me connecter",
+        "create-account": "Créer un compte",
+        "first-name": "Prénom",
+        "last-name": "Nom",
+        "email": "Email",
+        "password": "Mot de passe",
+        "street": "Rue",
+        "city": "Ville",
+        "postal-code": "Code postal",
+        "country": "Pays",
+        "phone": "Téléphone",
+        "user-data-consent": "J'accepte que mes données personnelles soient traitées conformément à la Politique de confidentialité afin de gérer mon compte utilisateur et mes commandes.",
+        "thanks": "Merci pour votre inscription"
     }
 }

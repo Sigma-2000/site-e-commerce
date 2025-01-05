@@ -11,10 +11,10 @@ const {
 } = require("../controllers/artworksController");
 
 router.get("/artworks", getAllArtworks);
-router.get("/artworks/:id", getArtworkById);
-router.delete("/artworks/:id", verifyToken, isAdmin, deleteArtworkById);
+router.get("/artwork/:id", getArtworkById);
+router.delete("/artwork/:id", verifyToken, isAdmin, deleteArtworkById);
 router.post(
-  "/artworks",
+  "/artwork",
   verifyToken,
   isAdmin,
   upload.array("files", 6),

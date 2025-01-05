@@ -15,9 +15,9 @@
         <router-link to="/about" class="menu-item">
             {{ $t('menu.about') }}
         </router-link>
-        <div class="menu-item">
+        <router-link to="/sign-in" class="menu-item">
             {{ isLoggedIn ? $t('menu.logout') : $t('menu.account') }}
-        </div>
+        </router-link>
     </div>
 </template>
 
