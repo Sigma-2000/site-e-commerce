@@ -8,7 +8,7 @@ const getAllProducts = async (req, res) => {
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({
-      error: error.message || "Error occurred while retrieving products.",
+      error: "Error occurred while retrieving products.",
     });
   }
 };
@@ -28,7 +28,7 @@ const getProductById = async (req, res) => {
   } catch (error) {
     console.error("Error in getProductById:", error);
     res.status(500).json({
-      error: error.message || "Error occurred while retrieving the product.",
+      error: "Error occurred while retrieving the product.",
     });
   }
 };
@@ -54,7 +54,7 @@ const deleteProductById = async (req, res) => {
   } catch (error) {
     console.error("Error in deleteProductById:", error);
     res.status(500).json({
-      error: error.message || "Error occurred while deleting the product.",
+      error: "Error occurred while deleting the product.",
     });
   }
 };
@@ -82,7 +82,7 @@ const addProduct = async (req, res) => {
     res.status(201).json(product);
   } catch (error) {
     res.status(500).json({
-      error: error.message || "Error occurred while creating the product.",
+      error: "Error occurred while creating the product.",
     });
   }
 };
@@ -105,7 +105,7 @@ const updateProductById = async (req, res) => {
     res.json({ message: "Product updated successfully.", updatedProduct });
   } catch (error) {
     res.status(500).json({
-      error: error.message || "Error occurred while updating the product.",
+      error: "Error occurred while updating the product.",
     });
   }
 };
