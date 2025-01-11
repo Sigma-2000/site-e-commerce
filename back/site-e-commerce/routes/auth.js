@@ -8,6 +8,7 @@ const {
   updateUserAddress,
   deleteUserById,
   logout,
+  refreshToken,
 } = require("../controllers/authController");
 const {
   verifyToken,
@@ -23,5 +24,6 @@ router.get("/user/:id", verifyToken, getOneUser);
 router.delete("/user/:id", verifyToken, deleteUserById);
 router.put("/user/address", verifyToken, updateUserAddress);
 router.post("/logout", logout);
+router.post("/refresh-token", refreshToken);
 
 module.exports = router;

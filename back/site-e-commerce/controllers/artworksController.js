@@ -9,7 +9,7 @@ const getAllArtworks = async (req, res) => {
     res.status(200).json(artworks);
   } catch (error) {
     res.status(500).json({
-      error: error.message || "Error occurred while retrieving artworks.",
+      error: "Error occurred while retrieving artworks.",
     });
   }
 };
@@ -28,7 +28,7 @@ const getArtworkById = async (req, res) => {
     res.status(200).json(artwork);
   } catch (error) {
     res.status(500).json({
-      error: error.message || "Error occurred while retrieving the artwork.",
+      error: "Error occurred while retrieving the artwork.",
     });
   }
 };
@@ -50,7 +50,7 @@ const deleteArtworkById = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      error: error.message || "Error occurred while deleting the artwork.",
+      error: "Error occurred while deleting the artwork.",
     });
   }
 };
@@ -79,11 +79,7 @@ const addArtworks = async (req, res) => {
         videos.push(result.secure_url);
       }
       fs.unlink(file.path, (err) => {
-        if (err)
-          console.error(
-            `Erreur lors de la suppression du fichier ${file.path} :`,
-            err
-          );
+        if (err) console.error(err);
       });
     }
     const artwork = await Artwork.create({
@@ -112,34 +108,6 @@ const addArtworks = async (req, res) => {
   }
 };
 
-/*lessons example extract: not in priority products update more important
-const updateById = async (req, res) => {
-  const { id } = req.params;
-  
-  const updateData = {
-    title: req.body.title,
-    description: req.body.description,
-    instructions: req.body.instructions,
-    ingredients,
-    category: req.body.category
-  };
-
-  // Si une nouvelle image est uploadée
-  if (req.file) {
-    updateData.image = req.file.filename;
-  } else if (req.body.existingImage) {
-    // Garder l'image actuelle si pas de changement
-    updateData.image = req.body.existingImage;
-  }
-
-  try {
-    const recipe = await Recipes.findByIdAndUpdate(id, updateData, { new: true }).populate('category');;
-    res.json(recipe);
-  } catch (error) {
-    res.status(500).json({ message: 'Erreur lors de la mise à jour de la recette.' });
-  }
-};
-*/
 module.exports = {
   getAllArtworks,
   getArtworkById,
