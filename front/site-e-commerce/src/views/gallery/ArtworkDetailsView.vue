@@ -77,7 +77,6 @@ const fetchDetailsArtwork = async () => {
     const id = route.params.id;
     try {
         const response = await axiosCaller.get(`/artwork/${id}`);
-        console.log(response.data);
         artwork.value = response.data;
     } catch (err) {
         console.error(err);

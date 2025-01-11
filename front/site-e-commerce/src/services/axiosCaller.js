@@ -1,10 +1,9 @@
 import axios from 'axios';
 
 const axiosCaller = axios.create({
-    baseURL: 'http://localhost:3000/api', //need .env for front
+    baseURL: import.meta.env.VITE_BACK_API_BASE_URL,
     headers: {
         Accept: 'application/json',
-        //'Content-Type': 'application/json', Set up an interceptors..
     },
     withCredentials: true,
 });
