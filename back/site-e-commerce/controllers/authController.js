@@ -28,7 +28,7 @@ const registerUser = async (req, res) => {
     res.status(201).json(user);
   } catch (error) {
     {
-      res.status(500).json({ error: error.message || "User creation failed" });
+      res.status(500).json({ error: "User creation failed" });
     }
   }
 };
@@ -56,14 +56,21 @@ const login = async (req, res) => {
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1h",
+        expiresIn: "15m",
       }
+    );
+
+    const refreshToken = jwt.sign(
+      { id: user._id },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: "7d" }
     );
 
     res
       .cookie("token", token, {
         httpOnly: true,
       })
+      .cookie("refreshToken", refreshToken, { httpOnly: true })
       .json({
         id: user._id,
         firstName: user.firstName,
@@ -74,22 +81,20 @@ const login = async (req, res) => {
         //no password but it can change with the possibility to change password future feat?
       });
   } catch (error) {
-    res.status(500).json({ error: error.message || "Authentification failed" });
+    res.status(500).json({ error: "Authentification failed" });
   }
 };
-//TODO implement refresh token for more security with 15 min exp
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().populate("address_id");
     res.json(users);
   } catch (error) {
     res.status(500).json({
-      error: error.message || "Error in recovery of users.",
+      error: "Error in recovery of users.",
     });
   }
 };
 
-/*recovery adress of the user it's for admin to be able to send the order with the right address,*/
 const getOneUser = async (req, res) => {
   const { id } = req.params;
   try {
@@ -104,7 +109,7 @@ const getOneUser = async (req, res) => {
     res.json(user);
   } catch (error) {
     res.status(500).json({
-      error: error.message || "Error in recovery of the user",
+      error: "Error in recovery of the user",
     });
   }
 };
@@ -129,15 +134,95 @@ const updateUserAddress = async (req, res) => {
     res.json(updatedAddress);
   } catch (error) {
     res.status(500).json({
-      error: error.message || "Error updating address",
+      error: "Error updating address",
     });
   }
 };
-//TODO add delete user !!
+
+const deleteUserById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id).populate("address_id");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+    if (user.address_id) {
+      await Address.findByIdAndDelete(user.address_id._id);
+    }
+    await User.findByIdAndDelete(id);
+
+    res.status(200).json({
+      message: "User successfully deleted.",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Error occurred while deleting the user.",
+    });
+  }
+};
+
+const logout = (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+    });
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+    });
+    res.status(200).json({
+      message: "User successfully logged out.",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message || "Error occurred while logging out.",
+    });
+  }
+};
+
+const refreshToken = async (req, res) => {
+  const { refreshToken } = req.cookies;
+
+  if (!refreshToken) {
+    return res.status(401).json({
+      message: "Operation failed.",
+    });
+  }
+
+  try {
+    const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+
+    const user = await User.findById(payload.id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const newAccessToken = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "15m" }
+    );
+
+    res.cookie("accessToken", newAccessToken, {
+      httpOnly: true,
+    });
+
+    res.status(200).json({ message: "Operation succeed" });
+  } catch (error) {
+    res.status(401).json({ error: "Operation failed" });
+  }
+};
+
 module.exports = {
   registerUser,
   login,
   getAllUsers,
   getOneUser,
   updateUserAddress,
+  deleteUserById,
+  logout,
+  refreshToken,
 };
