@@ -9,6 +9,8 @@ const cookieParser = require("cookie-parser");
 const port = process.env.PORT;
 const mongoUri = process.env.MONGO_URI;
 
+mongoose.set("sanitizeFilter", true);
+
 mongoose.connect(mongoUri).then(() => {
   console.log("Base de donnée connectée");
   //initializeAdmin(); TODO Delete that before launch in prod
