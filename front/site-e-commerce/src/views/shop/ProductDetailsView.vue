@@ -78,8 +78,7 @@ const category = route.params.category;
 const fetchDetailsProduct = async () => {
     const id = route.params.id;
     try {
-        const response = await axiosCaller.get(`/products/${id}`);
-        console.log(response.data);
+        const response = await axiosCaller.get(`/product/${id}`);
         product.value = response.data;
     } catch (err) {
         console.error(err);

@@ -19,12 +19,26 @@
     },
     "exhibitions-sales": "Expositions et ventes",
     "exhibitions": {
-        "vacarmes": "<strong>Exposition collective</strong> <em>'Vacarmes'</em> au <strong> Rita Plage </strong> à Villeurbanne du 13 novembre 2023 au 14 janvier 2024.",
-        "auction-sale": "<strong>Vente aux enchères</strong> organisé par <strong> Graffart et Drouot</strong> suite à l'exposition <em>'7éme continent'</em>.",
-        "7th-continent": "<strong>Exposition collective</strong> <em>'le 7éme continent'</em> organisé par <strong> Graffart à la galerie Amarrage</strong> à Saint Ouen, 7 juin au 21 septembre 2021.",
-        "bloc-13": "<strong>Vente</strong> de monotypes et de photographies au <strong> marché estival de Bloc 13</strong> à Nantes.",
-        "green-tide": "<strong>Exposition solo</strong> <em>'Marée Vertes'</em> organisé par <strong>IGEM </strong> (compétition internationale de biologie de synthèse) à la <strong>Bibliothèque Universitaire de Sciences</strong> de Nantes, octobre 2021.",
-        "igem": "<strong>Exposition collective</strong> avec <strong>IGEM à la maison des Hommes et techniques</strong> de Nantes, septembre et octobre 2020."
+        "group-vacarmes": "{group} {vacarmes} au {rita} à Villeurbanne du 13 novembre 2023 au 14 janvier 2024.",
+        "group": "Exposition collective",
+        "vacarmes": "'Vacarmes'",
+        "rita": "Rita Plage",
+        "auction-sale": "{auction} organisé par {graffart} suite à l'exposition {continent}.",
+        "auction": "Vente aux enchères",
+        "graffart": "Graffart et Drouot",
+        "continent": "'7éme continent'",
+        "group-7th-continent": "{group} {continent} organisé par {gallery} à Saint Ouen, 7 juin au 21 septembre 2021.",
+        "gallery": "Graffart à la Galerie Amarrage",
+        "sale-bloc-13": "{sale} de monotypes et de photographies au {market} à Nantes.",
+        "sale": "Vente",
+        "market": "marché estival de Bloc 13",
+        "solo-green-tide": "{solo} {tides}  organisé par {igem} (compétition internationale de biologie de synthèse) à la {university} de Nantes, octobre 2021.",
+        "solo": "Exposition solo",
+        "tides": "'Marée Vertes'",
+        "igem": "IGEM",
+        "university": "Bibliothèque Universitaire de Sciences",
+        "group-igem": "{group} avec {igem} à la {maison} de Nantes, septembre et octobre 2020.",
+        "maison": "Maison des Hommes et Techniques"
     },
     "career": {
         "presentation": "Formation",
@@ -54,12 +68,23 @@
         "results": "Plus de résultats"
     },
     "errors": {
-        "display-list": "Nous sommes désolées, une erreur s'est produite lors de la récupération des items ",
-        "display-element": "Nous sommes désolées, une erreur s'est produite pour l'affichage de cet item"
+        "display-list": "Nous sommes désolées, une erreur s'est produite lors de la récupération des items.",
+        "display-element": "Nous sommes désolées, une erreur s'est produite pour l'affichage de cet item.",
+        "auth": "Erreur d'authentification, veuillez réessayer ou inscrivez vous.",
+        "subscribe": "Nous sommes désolées, une erreur s'est produite lors du processus, veuillez recommencer.",
+        "invalid-email": "Votre email n'est pas valide.",
+        "password": "Votre mot de passe doit contenir au moins 8 caractères.",
+        "invalid-phone": "Votre numéro de téléphone doit contenir 10 chiffres",
+        "update-address": "Une erreur s'est produite lors de la mise à jour de votre adresse, veuillez recommencer"
+    },
+    "success": {
+        "update-address": "Votre adresse a été mise à jour avec succès"
     },
     "button": {
         "buy": "Ajouter au panier",
-        "more-results": "Plus de résultats"
+        "more-results": "Plus de résultats",
+        "update": "Mettre à jour",
+        "validate": "Valider"
     },
     "detail": {
         "dimensions": "Dimensions",
@@ -67,5 +92,32 @@
         "description": "Description",
         "price": "Prix",
         "available-shop": "Disponible en boutique"
+    },
+    "auth": {
+        "sign-in": "Connectez-vous",
+        "no-account": "Pas encore inscrit ?",
+        "sign-up": "Création de votre compte",
+        "already-account": "Vous avez déjà un compte ?",
+        "login": "Me connecter",
+        "create-account": "Créer un compte",
+        "first-name": "Prénom",
+        "last-name": "Nom",
+        "email": "Email",
+        "password": "Mot de passe",
+        "street": "Rue",
+        "city": "Ville",
+        "postal-code": "Code postal",
+        "country": "Pays",
+        "phone": "Téléphone",
+        "user-data-consent": "J'accepte que mes données personnelles soient traitées conformément à la Politique de confidentialité afin de gérer mon compte utilisateur et mes commandes.",
+        "thanks": "Merci pour votre inscription"
+    },
+    "account": {
+        "welcome": "Bienvenue",
+        "welcome-admin": "Bienvenue Admin",
+        "number-orders": "Vous avez {count} commande(s) en cours.",
+        "address": "Votre adresse",
+        "delete-account": "Supprimer mon compte",
+        "rgpd": "Vos données personnelles sont collectées et traitées pour gérer votre compte et vos commandes. Vous disposez d’un droit d’accès, de rectification et de suppression de vos données conformément au RGPD. Pour plus d'informations, consultez notre Politique de confidentialité."
     }
 }

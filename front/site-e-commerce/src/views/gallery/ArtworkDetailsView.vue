@@ -76,8 +76,7 @@ const category = route.params.category;
 const fetchDetailsArtwork = async () => {
     const id = route.params.id;
     try {
-        const response = await axiosCaller.get(`/artworks/${id}`);
-        console.log(response.data);
+        const response = await axiosCaller.get(`/artwork/${id}`);
         artwork.value = response.data;
     } catch (err) {
         console.error(err);

@@ -19,12 +19,26 @@
     },
     "exhibitions-sales": "Exhibitions and sales",
     "exhibitions": {
-        "vacarmes": "<strong> Group exhibition </strong> <em>'Vacarmes'</em> at <strong>Rita Plage</strong> in Villeurbanne from November 13, 2023, to January 14, 2024.",
-        "auction-sale": "<strong>Auction</strong> organized by <strong>Graffart and Drouot</strong> following the exhibition <em>'7th Continent'</em>.",
-        "7th-continent": "<strong>Group exhibition</strong> <em>'The 7th Continent'</em> organized by <strong>Graffart at Galerie Amarrage</strong> in Saint Ouen, from June 7 to September 21, 2021.",
-        "bloc-13": "<strong>Sale</strong> of monotypes and photographs at the <strong>summer market of Bloc 13</strong> in Nantes.",
-        "green-tide": "<strong>Solo</strong> exhibition <em>'Green Tides'</em> organized by <strong>IGEM</strong> (International Genetically Engineered Machine competition) at the <strong>University Science Library</strong> in Nantes, October 2021.",
-        "igem": "<strong>Group exhibition</strong> with <strong>IGEM at the Maison des Hommes et Techniques</strong> in Nantes, September and October 2020."
+        "group-vacarmes": "{group} {vacarmes} at {rita} in Villeurbanne from November 13, 2023, to January 14, 2024.",
+        "group": "Group exhibition",
+        "vacarmes": "'Vacarmes'",
+        "rita": "Rita Plage",
+        "auction-sale": "{auction} organized by {graffart} following the exhibition {continent}.",
+        "auction": "Auction",
+        "graffart": "Graffart and Drouot",
+        "continent": "'The 7th Continent'",
+        "group-7th-continent": "{group} {continent} organized by {gallery} in Saint Ouen, from June 7 to September 21, 2021.",
+        "gallery": "Graffart at Galerie Amarrage",
+        "sale-bloc-13": "{sale} of monotypes and photographs at the {market} in Nantes.",
+        "sale": "Sale",
+        "market": "summer market of Bloc 13",
+        "solo-green-tide": "{solo} {tides} organized by {igem} (International Genetically Engineered Machine competition) at the {university} in Nantes, October 2021.",
+        "solo": "Solo exhibition",
+        "tides": "'Green Tides'",
+        "igem": "IGEM",
+        "university": "University Science Library",
+        "group-igem": "{group} with {igem} at the {maison} in Nantes, September and October 2020.",
+        "maison": " Maison des Hommes et Techniques"
     },
     "career": {
         "presentation": "Formation",
@@ -55,11 +69,22 @@
     },
     "errors": {
         "display-list": "We are sorry, an error occurred while retrieving the items.",
-        "display-element": "We are sorry, an error occurred while displaying this item."
+        "display-element": "We are sorry, an error occurred while displaying this item.",
+        "auth": "Authentication error, please retry or create your account.",
+        "subscribe": "We are sorry, an error occured while the process, please retry.",
+        "invalid-email": "Your email is not valid.",
+        "password": "Your password must contain at least 8 characters.",
+        "invalid-phone": "Your phone number must contain 10 numbers",
+        "update-address": "An error occured while the update of your address, please retry"
+    },
+    "success": {
+        "update-address": "Your adress was updating successfully"
     },
     "button": {
         "buy": "Add to cart",
-        "more-results": "More results"
+        "more-results": "More results",
+        "update": "Update",
+        "validate": "Validate"
     },
     "detail": {
         "dimensions": "Dimensions",
@@ -67,5 +92,32 @@
         "description": "Description",
         "price": "Price",
         "available-shop": "Available in the shop"
+    },
+    "auth": {
+        "sign-in": "Sign in",
+        "no-account": "Don't have an acount ?",
+        "sign-up": "Creation of your account",
+        "already-account": "Already have an account ?",
+        "login": "Sign me in",
+        "create-account": "Create my account",
+        "first-name": "First Name",
+        "last-name": "Last Name",
+        "email": "Email",
+        "password": "Password",
+        "street": "Street",
+        "city": "City",
+        "postal-code": "Postal Code",
+        "country": "Country",
+        "phone": "Phone",
+        "user-data-consent": "I agree that my personal data will be processed in accordance with the Privacy Policy in order to manage my user account and my orders.",
+        "thanks": "Thanks for your subscription"
+    },
+    "account": {
+        "welcome": "Welcome",
+        "welcome-admin": "Welcome Admin",
+        "number-orders": "You have {count} order(s) in progress.",
+        "address": "Your address",
+        "delete-account": "Delete my account",
+        "rgpd": "Your personal data is collected and processed to manage your account and orders. You have the right to access, rectify, and delete your data in accordance with the GDPR. For more information, please refer to our Privacy Policy."
     }
 }
