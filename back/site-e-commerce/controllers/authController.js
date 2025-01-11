@@ -63,8 +63,6 @@ const login = async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
-        //add  secure: true, link to https
-        //add same site against crsf
       })
       .json({
         id: user._id,
