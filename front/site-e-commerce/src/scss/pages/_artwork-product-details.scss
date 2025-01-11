@@ -57,16 +57,17 @@
             margin: 20px 0px;
             box-shadow: -3px 5px 11px 6px var(--shadow-color);
             @include respond-to('tablet') {
-                width: 90%;
                 height: 500px;
-                margin: 20px 50px;
             }
         }
         .item-details-card-button {
             display: flex;
             justify-content: center;
             .custom-button {
-                width: 30% !important;
+                width: 40% !important;
+                @include respond-to('tablet') {
+                    width: 20% !important;
+                }
             }
         }
         .detail-card-images {

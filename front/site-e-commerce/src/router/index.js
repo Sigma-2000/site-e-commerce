@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+import { useUsersStore } from '@/stores/usersStore.js';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,10 +50,61 @@ const router = createRouter({
             name: 'not-found',
             component: () => import('../views/NotFoundView.vue'),
         },
+        {
+            path: '/sign-in',
+            name: 'sign-in',
+            component: () => import('../views/auth/SignInView.vue'),
+        },
+        {
+            path: '/sign-up',
+            name: 'sign-up',
+            component: () => import('../views/auth/SignUpView.vue'),
+        },
+        {
+            path: '/thank-you',
+            name: 'thank-you',
+            component: () => import('../views/auth/ThankYouView.vue'),
+        },
+        {
+            path: '/account',
+            name: 'account',
+            component: () => import('../views/AccountView.vue'),
+        },
+        {
+            path: '/panel-admin',
+            name: 'panel-admin',
+            component: () => import('../views/PanelAdminView.vue'),
+        },
+        {
+            path: '/cart',
+            name: 'cart',
+            component: () => import('../views/order/CartView.vue'),
+        },
     ],
+
     scrollBehavior(to, from, savedPosition) {
         return { top: 0 };
     },
+});
+
+router.beforeEach(async (to, from, next) => {
+    const usersStore = useUsersStore();
+    try {
+        await usersStore.fetchUser();
+    } catch (error) {
+        console.error(error);
+        return next('/sign-in');
+    }
+    if (to.name === 'account' || to.name === 'panel-admin') {
+        if (!usersStore.userInformation) {
+            return next('/sign-in');
+        }
+        if (to.name === 'panel-admin' && usersStore.userInformation.role !== 'admin') {
+            return next('/account');
+        }
+    }
+
+    next();
 });
 
 export default router;

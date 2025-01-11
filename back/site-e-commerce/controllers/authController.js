@@ -35,6 +35,8 @@ const registerUser = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
+  console.log("Requête reçue pour login :", { email });
+
   try {
     const user = await User.findOne({ email })
       .select("+password")
@@ -75,7 +77,7 @@ const login = async (req, res) => {
     res.status(500).json({ error: error.message || "Authentification failed" });
   }
 };
-
+//TODO implement refresh token for more security with 15 min exp
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().populate("address_id");
@@ -87,7 +89,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-/*recovery adress of the user it's for admin to be able to send the order with the right adress,*/
+/*recovery adress of the user it's for admin to be able to send the order with the right address,*/
 const getOneUser = async (req, res) => {
   const { id } = req.params;
   try {
@@ -131,7 +133,7 @@ const updateUserAddress = async (req, res) => {
     });
   }
 };
-
+//TODO add delete user !!
 module.exports = {
   registerUser,
   login,

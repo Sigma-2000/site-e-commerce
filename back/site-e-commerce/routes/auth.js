@@ -17,7 +17,7 @@ const {
 router.post("/sign-up", validateRegister, registerUser);
 router.post("/login", validateLogin, login);
 router.get("/users", verifyToken, isAdmin, getAllUsers);
-router.get("/user/:id", verifyToken, isAdmin, getOneUser);
+router.get("/user/:id", verifyToken, getOneUser); //delete is admin and use it for verify user connection ?
 router.put("/user/address", verifyToken, updateUserAddress);
 
 module.exports = router;
