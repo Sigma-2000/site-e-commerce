@@ -15,15 +15,25 @@
         <router-link to="/about" class="menu-item">
             {{ $t('menu.about') }}
         </router-link>
-        <router-link to="/sign-in" class="menu-item">
-            {{ isLoggedIn ? $t('menu.logout') : $t('menu.account') }}
+        <template v-if="isLoggedIn">
+            <router-link :to="redirectLink" class="menu-item">
+                {{ $t('menu.account') }}
+            </router-link>
+            <router-link to="/sign-in" class="menu-item">
+                <button @click="logout">
+                    {{ $t('menu.logout') }}
+                </button>
+            </router-link>
+        </template>
+        <router-link v-else to="/sign-in" class="menu-item">
+            {{ $t('menu.account') }}
         </router-link>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-//import { useRouter } from 'vue-router';
+import { computed } from 'vue';
+import { useUsersStore } from '@/stores/usersStore.js';
 
 defineProps({
     isVisible: {
@@ -32,8 +42,20 @@ defineProps({
     },
 });
 
-const isLoggedIn = ref(false);
+const usersStore = useUsersStore();
+const isLoggedIn = computed(() => !!usersStore.userInformation);
+
+const redirectLink = computed(() => {
+    if (usersStore.userInformation?.role === 'admin') {
+        return '/panel-admin';
+    }
+    return '/account';
+});
 /*
-make a connect function/disconnect router link
-const router = useRouter(); */
+make a disconnect function in back-end
+*/
+const logout = () => {
+    console.log('disconnect');
+};
 </script>
+<style></style>

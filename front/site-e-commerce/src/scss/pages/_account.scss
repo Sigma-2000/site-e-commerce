@@ -1,0 +1,52 @@
+.customer-account-view {
+    margin: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    h2,
+    h3 {
+        font-weight: $font-weight-medium;
+        color: var(--color-text);
+    }
+    h3 {
+        margin: 10px;
+    }
+    .underline-long {
+        @include underline(0%, 0%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 20%, null);
+        }
+        @include respond-to('desktop') {
+            @include underline(0%, 30%, null);
+        }
+    }
+
+    .underline-short {
+        @include underline(0%, 40%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 60%, null);
+        }
+    }
+    .customer-img-account {
+        width: 90%;
+        display: block;
+        align-self: center;
+        @include respond-to('tablet') {
+            width: 35%;
+            margin-left: 20px;
+        }
+        @include respond-to('desktop') {
+            width: 25%;
+            margin-left: 25px;
+        }
+    }
+    .account-underline-center {
+        margin: 20px 0px;
+        @include underline(20%, 20%, null);
+        @include respond-to('tablet') {
+            @include underline(40%, 40%, null);
+        }
+    }
+    .order-number {
+        align-self: center;
+    }
+}

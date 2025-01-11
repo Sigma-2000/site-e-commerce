@@ -86,14 +86,19 @@ const router = createRouter({
         return { top: 0 };
     },
 });
-router.beforeEach((to, from, next) => {
-    const usersStore = useUsersStore();
 
+router.beforeEach(async (to, from, next) => {
+    const usersStore = useUsersStore();
+    try {
+        await usersStore.fetchUser();
+    } catch (error) {
+        console.error(error);
+        return next('/sign-in');
+    }
     if (to.name === 'account' || to.name === 'panel-admin') {
         if (!usersStore.userInformation) {
             return next('/sign-in');
         }
-
         if (to.name === 'panel-admin' && usersStore.userInformation.role !== 'admin') {
             return next('/account');
         }

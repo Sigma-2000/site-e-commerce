@@ -6,6 +6,7 @@ const axiosCaller = axios.create({
         Accept: 'application/json',
         //'Content-Type': 'application/json', Set up an interceptors..
     },
+    withCredentials: true,
 });
 axiosCaller.interceptors.request.use((config) => {
     if (config.data instanceof FormData) {
