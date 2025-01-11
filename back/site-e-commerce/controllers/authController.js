@@ -89,7 +89,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-/*recovery adress of the user it's for admin to be able to send the order with the right address,*/
 const getOneUser = async (req, res) => {
   const { id } = req.params;
   try {
@@ -133,11 +132,53 @@ const updateUserAddress = async (req, res) => {
     });
   }
 };
-//TODO add delete user !!
+
+const deleteUserById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id).populate("address_id");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+    if (user.address_id) {
+      await Address.findByIdAndDelete(user.address_id._id);
+    }
+    await User.findByIdAndDelete(id);
+
+    res.status(200).json({
+      message: "User successfully deleted.",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message || "Error occurred while deleting the user.",
+    });
+  }
+};
+const logout = (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+    });
+    res.status(200).json({
+      message: "User successfully logged out.",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message || "Error occurred while logging out.",
+    });
+  }
+};
+
 module.exports = {
   registerUser,
   login,
   getAllUsers,
   getOneUser,
   updateUserAddress,
+  deleteUserById,
+  logout,
 };
