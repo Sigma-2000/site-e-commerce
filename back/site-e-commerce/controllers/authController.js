@@ -195,8 +195,13 @@ const refreshToken = async (req, res) => {
   try {
     const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
 
+    const user = await User.findById(payload.id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
     const newAccessToken = jwt.sign(
-      { id: payload.id, role: payload.role },
+      { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "15m" }
     );
