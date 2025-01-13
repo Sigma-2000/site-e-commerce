@@ -33,6 +33,7 @@ const validateRegister = async (req, res, next) => {
     return res
       .status(400)
       .json({ error: "Password must contain 8 characters" });
+    //TODO: must to adopt password policy more strict
   }
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {

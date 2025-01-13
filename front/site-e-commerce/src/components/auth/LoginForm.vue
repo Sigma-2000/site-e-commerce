@@ -53,7 +53,7 @@ const isEmailUsed = ref(false);
 const isPasswordUsed = ref(false);
 
 const resetGlobalError = () => {
-    usersStore.resetError();
+    usersStore.resetErrorSuccess();
 };
 
 watch(

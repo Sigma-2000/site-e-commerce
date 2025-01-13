@@ -75,16 +75,20 @@
         "invalid-email": "Your email is not valid.",
         "password": "Your password must contain at least 8 characters.",
         "invalid-phone": "Your phone number must contain 10 numbers",
-        "update-address": "An error occured while the update of your address, please retry"
+        "update-address": "An error occured while the update of your address, please retry",
+        "delete-account": "An error occured while the delete of your account, please retry",
+        "add-artwork": "An error occured while the add of your artwork, please retry"
     },
     "success": {
-        "update-address": "Your adress was updating successfully"
+        "update-address": "Your adress was updating successfully",
+        "add-artwork": "Your artwork was adding successfully"
     },
     "button": {
         "buy": "Add to cart",
         "more-results": "More results",
         "update": "Update",
-        "validate": "Validate"
+        "validate": "Validate",
+        "add-artworks": "Add an artwork"
     },
     "detail": {
         "dimensions": "Dimensions",
@@ -119,5 +123,32 @@
         "address": "Your address",
         "delete-account": "Delete my account",
         "rgpd": "Your personal data is collected and processed to manage your account and orders. You have the right to access, rectify, and delete your data in accordance with the GDPR. For more information, please refer to our Privacy Policy."
+    },
+    "panel-admin": {
+        "want-to-do": "What do you want to do?",
+        "consult": "Consulter",
+        "consult-order": "{consult} orders",
+        "consult-inprogress": "{consult} orders in progress",
+        "consult-client": "{consult} the list of clients",
+        "modificate": "Modify",
+        "modificate-order": "{modificate} the status of orders",
+        "add": "Add",
+        "add-artwork": "{add} an artwork",
+        "add-product": "{add} a product associate to an artwork",
+        "modificate-artwork": "{modificate} an artwork",
+        "modificate-product": "{modificate} a product (stock, price...)",
+        "delete": "Delete",
+        "delete-artwork": "{delete} an artwork",
+        "delete-product": "{delete} a product"
+    },
+    "form-artworks": {
+        "title-en": "Title in English",
+        "title-fr": "Title in French",
+        "techniques-en": "Techniques in English",
+        "techniques-fr": "Techniques in French",
+        "type": "Type",
+        "dimensions": "Dimensions",
+        "description-en": "Description in English",
+        "description-fr": "Description in French"
     }
 }
