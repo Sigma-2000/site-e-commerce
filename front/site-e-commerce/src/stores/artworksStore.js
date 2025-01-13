@@ -8,6 +8,7 @@ export const useArtworksStore = defineStore('artworks', {
         numberOfArtworkByPage: 5,
         isLoading: false,
         error: null,
+        sucess: null,
     }),
 
     getters: {
@@ -41,6 +42,38 @@ export const useArtworksStore = defineStore('artworks', {
         },
         resetPagination() {
             this.artworksPaginatedList = [];
+        },
+        async addArtwork(form) {
+            this.error = null;
+            this.success = null;
+
+            try {
+                const formData = new FormData();
+                formData.append('title_fr', form.title_fr);
+                formData.append('title_en', form.title_en);
+                formData.append('type', form.type);
+                formData.append('techniques_fr', form.techniques_fr);
+                formData.append('techniques_en', form.techniques_en);
+                formData.append('dimensions', form.dimensions);
+                formData.append('description_fr', form.description_fr);
+                formData.append('description_en', form.description_en);
+
+                form.files.forEach((file) => {
+                    formData.append('files', file);
+                });
+
+                const response = await axiosCaller.post('/artwork', formData);
+
+                this.artworks.push(response.data);
+                this.success = 'success.add-artwork';
+            } catch (err) {
+                this.error = 'errors.add-artwork';
+                console.error(err);
+            }
+        },
+        resetErrorSuccess() {
+            this.error = null;
+            this.success = null;
         },
     },
 });

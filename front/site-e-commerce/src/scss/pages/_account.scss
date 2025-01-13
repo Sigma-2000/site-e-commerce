@@ -1,4 +1,4 @@
-.customer-account-view {
+.account-view {
     margin: 20px 40px;
     display: flex;
     flex-direction: column;
@@ -26,7 +26,7 @@
             @include underline(0%, 60%, null);
         }
     }
-    .customer-img-account {
+    .img-account {
         width: 90%;
         display: block;
         align-self: center;

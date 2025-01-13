@@ -1,14 +1,10 @@
 <template>
-    <div class="customer-account-view">
+    <div class="account-view">
         <div class="underline-short"></div>
         <h2>{{ $t('menu.account') }}</h2>
         <div class="underline-long"></div>
         <h3>{{ $t('account.welcome') }} {{ firstName }}</h3>
-        <img
-            src="/images/souffre-d-ete.jpg"
-            alt="souffre d'été painting"
-            class="customer-img-account"
-        />
+        <img src="/images/souffre-d-ete.jpg" alt="souffre d'été painting" class="img-account" />
         <div class="account-underline-center"></div>
         <i18n-t keypath="account.number-orders" tag="span" class="order-number">
             <template #count
@@ -29,7 +25,7 @@ import { onMounted } from 'vue';
 
 const usersStore = useUsersStore();
 const resetGlobalError = () => {
-    usersStore.resetError();
+    usersStore.resetErrorSuccess();
 };
 const firstName = usersStore.userInformation.firstName;
 
