@@ -13,7 +13,7 @@ const {
 router.get("/products", getAllProducts);
 router.get("/product/:id", getProductById);
 router.delete("/product/:id", verifyToken, isAdmin, deleteProductById);
-router.post("/product", verifyToken, isAdmin, addProduct);
+router.post("/product/:artwork_id", verifyToken, isAdmin, addProduct);
 router.put("/product/:id", verifyToken, isAdmin, updateProductById);
 
 module.exports = router;

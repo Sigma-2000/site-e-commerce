@@ -29,7 +29,10 @@
         .modificate-action {
             text-align: start;
             color: var(--color-text);
-            cursor: pointer;
+            .modificate-action-click {
+                cursor: pointer;
+                text-decoration: none;
+            }
         }
         .add,
         .modificate,

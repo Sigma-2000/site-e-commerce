@@ -11,20 +11,16 @@
         </h3>
         <div v-if="!isAddingArtwork" class="cart-modificate">
             <div class="add">
-                <i18n-t
-                    keypath="panel-admin.add-artwork"
-                    tag="div"
-                    @click="toggleAddArtwork"
-                    class="modificate-action"
+                <i18n-t keypath="panel-admin.add-artwork" tag="div" class="modificate-action"
                     ><template #add>
-                        <span>
+                        <span @click="toggleAddArtwork" class="modificate-action-click">
                             <strong>{{ $t('panel-admin.add') }}</strong></span
                         >
                     </template>
                 </i18n-t>
                 <i18n-t keypath="panel-admin.add-product" tag="div" class="modificate-action"
                     ><template #add>
-                        <span>
+                        <span @click="navigateToGallery" class="modificate-action-click">
                             <strong>{{ $t('panel-admin.add') }}</strong></span
                         >
                     </template>
@@ -33,30 +29,34 @@
             <div class="modificate">
                 <i18n-t keypath="panel-admin.modificate-artwork" tag="div" class="modificate-action"
                     ><template #modificate>
-                        <span>
+                        <span @click="navigateToGallery" class="modificate-action-click">
                             <strong>{{ $t('panel-admin.modificate') }}</strong></span
                         >
                     </template>
                 </i18n-t>
-                <i18n-t keypath="panel-admin.modificate-product" tag="div" class="modificate-action"
-                    ><template #modificate>
-                        <span>
+                <i18n-t
+                    keypath="panel-admin.modificate-product"
+                    tag="div"
+                    class="modificate-action"
+                >
+                    <template #modificate>
+                        <span @click="navigateToShop" class="modificate-action-click">
                             <strong>{{ $t('panel-admin.modificate') }}</strong></span
                         >
                     </template>
                 </i18n-t>
             </div>
             <div class="delete">
-                <i18n-t keypath="panel-admin.delete-artwork" tag="div" class="modificate-action"
-                    ><template #delete>
-                        <span>
+                <i18n-t keypath="panel-admin.delete-artwork" tag="div" class="modificate-action">
+                    <template #delete>
+                        <span @click="navigateToGallery" class="modificate-action-click">
                             <strong>{{ $t('panel-admin.delete') }}</strong></span
                         >
                     </template>
                 </i18n-t>
                 <i18n-t keypath="panel-admin.delete-product" tag="div" class="modificate-action"
                     ><template #delete>
-                        <span>
+                        <span @click="navigateToShop" class="modificate-action-click">
                             <strong>{{ $t('panel-admin.delete') }}</strong></span
                         >
                     </template>
@@ -133,8 +133,10 @@ import ButtonComponent from './ui/ButtonComponent.vue';
 import { Icon } from '@iconify/vue';
 import { useArtworksStore } from '@/stores/artworksStore';
 import { ref, reactive, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 const artworksStore = useArtworksStore();
+const router = useRouter();
 
 const isAddingArtwork = ref(false);
 const success = computed(() => artworksStore.success);
@@ -170,7 +172,12 @@ const handleFileUpload = (event) => {
     const newFiles = Array.from(event.target.files);
     form.files = [...form.files, ...newFiles];
 };
-
+const navigateToGallery = () => {
+    router.push('/gallery');
+};
+const navigateToShop = () => {
+    router.push('/shop');
+};
 onMounted(() => {
     artworksStore.resetErrorSuccess();
 });

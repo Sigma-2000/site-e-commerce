@@ -77,25 +77,37 @@
         "invalid-phone": "Your phone number must contain 10 numbers",
         "update-address": "An error occured while the update of your address, please retry",
         "delete-account": "An error occured while the delete of your account, please retry",
-        "add-artwork": "An error occured while the add of your artwork, please retry"
+        "add-artwork": "An error occured while the add of your artwork, please retry",
+        "add-product": "An error occured while the add of your product, please retry",
+        "delete-artwork": "An error occured while the delete of this artwork",
+        "delete-product": "An error occured while the delete of this product",
+        "update-product": "An error occured while the update of your product, please retry",
+        "update-artwork": "An error occured while the update of your artwork, please retry"
     },
     "success": {
         "update-address": "Your adress was updating successfully",
-        "add-artwork": "Your artwork was adding successfully"
+        "add-artwork": "Your artwork was adding successfully",
+        "add-product": "Your product was adding successfully",
+        "delete-artwork": "Your artwork was deleting successfully",
+        "delete-product": "Your product was deleting successfully",
+        "update-product": "Your product was updating successfully",
+        "update-artwork": "Your artwork was updating successfully"
     },
     "button": {
         "buy": "Add to cart",
         "more-results": "More results",
         "update": "Update",
         "validate": "Validate",
-        "add-artworks": "Add an artwork"
+        "add-artworks": "Add an artwork",
+        "add-product": "Add a product"
     },
     "detail": {
         "dimensions": "Dimensions",
         "techniques": "Techniques",
         "description": "Description",
         "price": "Price",
-        "available-shop": "Available in the shop"
+        "available-shop": "Available in the shop",
+        "stock": "Stock"
     },
     "auth": {
         "sign-in": "Sign in",
@@ -139,9 +151,12 @@
         "modificate-product": "{modificate} a product (stock, price...)",
         "delete": "Delete",
         "delete-artwork": "{delete} an artwork",
-        "delete-product": "{delete} a product"
+        "delete-product": "{delete} a product",
+        "choice-categories": "Which categories would you like to modify?",
+        "adding-product": "Adding a product associate to this artwork :"
     },
     "form-artworks": {
+        "update": "Update of your artwork",
         "title-en": "Title in English",
         "title-fr": "Title in French",
         "techniques-en": "Techniques in English",
@@ -150,5 +165,13 @@
         "dimensions": "Dimensions",
         "description-en": "Description in English",
         "description-fr": "Description in French"
+    },
+    "form-product": {
+        "update": "Update of your product",
+        "actual-price": "Actual price ",
+        "actual-stock": "Actual stock",
+        "stock": "Stock ",
+        "price": "Price",
+        "category": "Category"
     }
 }
