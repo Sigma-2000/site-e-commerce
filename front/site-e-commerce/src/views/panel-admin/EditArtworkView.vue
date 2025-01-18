@@ -98,7 +98,7 @@ const formArtwork = reactive({
     dimensions: '',
     description_fr: '',
     description_en: '',
-    //files: [],
+    //files: [], TODO later
     artwork_id: '',
     price: null,
     stock: null,
