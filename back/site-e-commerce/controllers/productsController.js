@@ -60,8 +60,9 @@ const deleteProductById = async (req, res) => {
 };
 
 const addProduct = async (req, res) => {
-  const { artwork_id, price, stock, category } = req.body;
-
+  const { artwork_id } = req.params;
+  const { price, stock, category } = req.body;
+  console.log(artwork_id);
   if (!["print", "original"].includes(category)) {
     return res.status(400).json({ error: "Invalid category provided." });
   }
@@ -69,6 +70,7 @@ const addProduct = async (req, res) => {
   try {
     const artwork = await Artwork.findById(artwork_id);
     if (!artwork) {
+      console.log("erreur id");
       return res.status(400).json({ message: "Artwork not found." });
     }
 

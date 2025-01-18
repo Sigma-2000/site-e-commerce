@@ -7,6 +7,10 @@
             </router-link>
             <!--TODO: need to delete the road on gallery, semantic incorrect, arrow go back or Home ?-->
             <div class="underline-long"></div>
+            <div v-if="isAdmin" class="admin-category-choice">
+                <h3>{{ $t('account.welcome-admin') }}</h3>
+                <p>{{ $t('panel-admin.choice-categories') }}</p>
+            </div>
             <div class="categories-items">
                 <div v-for="category in shopCategories" :key="category.name">
                     <router-link
@@ -33,6 +37,10 @@
 <script setup>
 import { useI18n } from 'vue-i18n';
 import { shopCategories } from '@/utils/shopCategories';
+import { computed } from 'vue';
+import { useUsersStore } from '@/stores/usersStore';
 
+const userStore = useUsersStore();
+const isAdmin = computed(() => userStore.userInformation?.role === 'admin');
 const { t } = useI18n();
 </script>

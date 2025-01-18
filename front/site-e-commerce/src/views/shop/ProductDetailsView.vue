@@ -59,34 +59,28 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { axiosCaller } from '@/services/axiosCaller';
 import LoaderComponent from '@/components/ui/LoaderComponent.vue';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import { useI18n } from 'vue-i18n';
 import { useLanguage } from '@/composables/useLanguage';
+import { useProductsStore } from '@/stores/productsStore';
 
+const productStore = useProductsStore();
 const { t } = useI18n();
 const { locale } = useLanguage();
 const route = useRoute();
-const product = ref({});
-const error = ref(null);
-const category = route.params.category;
 
-const fetchDetailsProduct = async () => {
-    const id = route.params.id;
-    try {
-        const response = await axiosCaller.get(`/product/${id}`);
-        product.value = response.data;
-    } catch (err) {
-        console.error(err);
-        error.value = 'errors.display-element';
-    }
-};
-//maybe implement a store for API call when the admin want to update
+const category = route.params.category;
+const productId = route.params.id;
+
+const product = computed(() => productStore.selectedProduct);
+const error = computed(() => productStore.error);
+
 onMounted(async () => {
-    fetchDetailsProduct();
+    productStore.resetErrorSuccess();
+    await productStore.fetchProductById(productId);
 });
 </script>

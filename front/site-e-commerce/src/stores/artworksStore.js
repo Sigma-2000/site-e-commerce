@@ -3,12 +3,13 @@ import { axiosCaller } from '@/services/axiosCaller';
 
 export const useArtworksStore = defineStore('artworks', {
     state: () => ({
-        artworks: [], //main state, need to re use this state for admin panel
+        artworks: [], //main state
         artworksPaginatedList: [], //this state is specific for display artworks in gallery
+        selectedArtwork: {},
         numberOfArtworkByPage: 5,
         isLoading: false,
         error: null,
-        sucess: null,
+        success: null,
     }),
 
     getters: {
@@ -34,14 +35,19 @@ export const useArtworksStore = defineStore('artworks', {
                 this.isLoading = false;
             }
         },
-        loadMore(category) {
-            const filtered = this.filteredArtworks(category);
-            const startIndex = this.artworksPaginatedList.length;
-            const newArtworks = filtered.slice(startIndex, startIndex + this.numberOfArtworkByPage);
-            this.artworksPaginatedList = [...this.artworksPaginatedList, ...newArtworks];
-        },
-        resetPagination() {
-            this.artworksPaginatedList = [];
+        async fetchArtworkById(id) {
+            this.isLoading = true;
+            this.error = null;
+            try {
+                const response = await axiosCaller.get(`/artwork/${id}`);
+                this.selectedArtwork = response.data;
+                console.log(response.data);
+            } catch (err) {
+                this.error = 'errors.display-element';
+                console.error(err);
+            } finally {
+                this.isLoading = false;
+            }
         },
         async addArtwork(form) {
             this.error = null;
@@ -70,6 +76,38 @@ export const useArtworksStore = defineStore('artworks', {
                 this.error = 'errors.add-artwork';
                 console.error(err);
             }
+        },
+        async updateArtwork(id, updatedArtwork) {
+            this.error = null;
+            this.success = null;
+
+            try {
+                await axiosCaller.put(`/artwork/${id}`, updatedArtwork);
+                this.success = 'success.update-artwork';
+            } catch (err) {
+                this.error = 'errors.update-artwork';
+                console.error(err);
+            }
+        },
+        async deleteArtwork(id) {
+            this.error = null;
+            this.success = null;
+            try {
+                await axiosCaller.delete(`/artwork/${id}`);
+                this.success = 'success.delete-artwork';
+            } catch (err) {
+                this.error = 'errors.delete-artwork';
+                console.error(err);
+            }
+        },
+        loadMore(category) {
+            const filtered = this.filteredArtworks(category);
+            const startIndex = this.artworksPaginatedList.length;
+            const newArtworks = filtered.slice(startIndex, startIndex + this.numberOfArtworkByPage);
+            this.artworksPaginatedList = [...this.artworksPaginatedList, ...newArtworks];
+        },
+        resetPagination() {
+            this.artworksPaginatedList = [];
         },
         resetErrorSuccess() {
             this.error = null;

@@ -38,6 +38,9 @@ footer {
     width: 100%;
     max-width: 100%;
 }
+main {
+    flex: 1;
+}
 .content-header {
     position: sticky;
     top: 0;

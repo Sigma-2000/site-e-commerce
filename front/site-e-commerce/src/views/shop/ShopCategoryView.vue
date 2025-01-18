@@ -9,7 +9,7 @@
             <h3>{{ t(`shop-categories.${category}`) }}</h3>
             <div class="underline-extra-short"></div>
             <section class="category-content-list">
-                <ul v-if="productsPaginatedList.length && !isLoading">
+                <ul v-if="productsPaginatedList.length && !isLoadingFromAPi">
                     <li
                         v-for="product in productsPaginatedList"
                         :key="product._id"
@@ -28,13 +28,21 @@
                                         {{ $t('detail.price') }}: {{ product.price }} €</strong
                                     >
                                 </p>
-                                <div class="category-content-items-more-details-button">
+                                <div
+                                    v-if="!isAdmin"
+                                    class="category-content-items-more-details-button"
+                                >
                                     <ButtonComponent
                                         class="custom-button"
                                         :disabled="product.stock === 0"
                                         >{{ $t('button.buy') }}</ButtonComponent
                                     >
                                 </div>
+                                <p v-if="isAdmin">
+                                    <strong>
+                                        {{ $t('form-product.stock') }}: {{ product.stock }}
+                                    </strong>
+                                </p>
                                 <p>
                                     {{ product.artwork_id.techniques[locale] }}
                                 </p>
@@ -43,6 +51,25 @@
                                     class="details-link"
                                 >
                                     {{ $t('display.details') }}
+                                </router-link>
+                            </div>
+                            <div v-if="isAdmin" class="admin-actions">
+                                <button @click="removeProduct(product._id)">
+                                    <Icon
+                                        icon="material-symbols-light:close"
+                                        width="36"
+                                        height="36"
+                                    />
+                                </button>
+                                <router-link
+                                    :to="`/shop/${category}/edit/${product._id}`"
+                                    class="edit-link"
+                                >
+                                    <Icon
+                                        icon="fluent-mdl2:field-not-changed"
+                                        width="26"
+                                        height="26"
+                                    />
                                 </router-link>
                             </div>
                         </div>
@@ -55,8 +82,9 @@
                     </ButtonComponent>
                 </div>
             </section>
-            <LoaderComponent v-if="isLoading" />
+            <LoaderComponent v-if="isLoadingFromAPi" />
             <ErrorComponent v-if="error" :error="error" />
+            <SuccessComponent v-if="success" :success="success" />
         </div>
     </div>
 </template>
@@ -66,20 +94,27 @@ import { onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useProductsStore } from '@/stores/productsStore';
 import { useI18n } from 'vue-i18n';
+import { Icon } from '@iconify/vue';
 import LoaderComponent from '@/components/ui/LoaderComponent.vue';
+import SuccessComponent from '@/components/ui/SuccessComponent.vue';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import { useLanguage } from '@/composables/useLanguage';
+import { useUsersStore } from '@/stores/usersStore';
 
 const { t } = useI18n();
 const { locale } = useLanguage();
 const route = useRoute();
 const productStore = useProductsStore();
 
+const userStore = useUsersStore();
+
+const isAdmin = computed(() => userStore.userInformation?.role === 'admin');
 const category = computed(() => route.params.category);
 const productsPaginatedList = computed(() => productStore.productsPaginatedList);
-const isLoading = computed(() => productStore.isLoading);
+const isLoadingFromAPi = computed(() => productStore.isLoading);
 const error = computed(() => productStore.error);
+const success = computed(() => productStore.success);
 
 const hasMoreProductsResults = computed(() => {
     const totalFiltered = productStore.filteredProducts(category.value).length;
@@ -89,10 +124,14 @@ const hasMoreProductsResults = computed(() => {
 const loadMoreProductsResults = () => {
     productStore.loadMoreProducts(category.value);
 };
-//TODO: verification for stock reactivity, maybe in store ??
-onMounted(async () => {
-    productStore.resetPagination();
 
+const removeProduct = async (id) => {
+    await productStore.deleteProduct(id);
+    await productStore.fetchProducts(category.value);
+};
+onMounted(async () => {
+    productStore.resetPagination(); //maybe no need because it's fetching the data at mounting and the store display pagination
+    productStore.resetErrorSuccess();
     await productStore.fetchProducts(category.value);
 });
 </script>

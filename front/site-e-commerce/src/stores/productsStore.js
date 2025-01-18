@@ -3,24 +3,24 @@ import { axiosCaller } from '@/services/axiosCaller';
 
 export const useProductsStore = defineStore('products', {
     state: () => ({
-        products: [], //main state, need to re use this state for admin panel
-        productsPaginatedList: [], //this state is specific for display products in shop
+        products: [], //main state, database state
+        productsPaginatedList: [], //this state is specific for display products in shop, front-end state
+        selectedProduct: {},
         numberOfProductByPage: 5,
         isLoading: false,
         error: null,
+        success: null,
     }),
 
     getters: {
-        filteredProducts: (state) => (category) => {
-            return state.products.filter((product) => product.category === category);
+        filteredProducts: (state) => {
+            return (category) => state.products.filter((product) => product.category === category);
         },
-    }, //getter because it's calculated from products for display by category
-
+    },
     actions: {
         async fetchProducts(category) {
             this.isLoading = true;
             this.error = null;
-
             try {
                 const response = await axiosCaller.get('/products');
                 console.log(response.data);
@@ -34,6 +34,62 @@ export const useProductsStore = defineStore('products', {
                 this.isLoading = false;
             }
         },
+        async fetchProductById(id) {
+            this.isLoading = true;
+            this.error = null;
+
+            try {
+                const response = await axiosCaller.get(`/product/${id}`);
+                this.selectedProduct = response.data;
+                console.log(response.data);
+            } catch (err) {
+                this.error = 'errors.display-element';
+                console.error(err);
+            } finally {
+                this.isLoading = false;
+            }
+        },
+        async deleteProduct(id) {
+            this.error = null;
+            this.success = null;
+            try {
+                await axiosCaller.delete(`/product/${id}`);
+                this.success = 'success.delete-product';
+            } catch (err) {
+                this.error = 'errors.delete-product';
+                console.error(err);
+            }
+        },
+        async updateProduct(id, updatedProduct) {
+            this.error = null;
+            this.success = null;
+
+            try {
+                await axiosCaller.put(`/product/${id}`, updatedProduct);
+                /*
+                const index = this.products.findIndex((product) => product._id === id);
+                if (index !== -1) {
+                    this.products[index] = response.data.updatedProduct;
+                }*/
+                this.success = 'success.update-product';
+            } catch (err) {
+                this.error = 'errors.update-product';
+                console.error(err);
+            }
+        },
+        async addProducts(artworkId, form) {
+            this.error = null;
+            this.success = null;
+
+            try {
+                await axiosCaller.post(`/product/${artworkId}`, form);
+                this.success = 'success.add-product';
+            } catch (err) {
+                this.error = 'errors.add-product';
+                console.error(err);
+            }
+        },
+
         loadMoreProducts(category) {
             const filtered = this.filteredProducts(category);
             const startIndex = this.productsPaginatedList.length;
@@ -43,7 +99,10 @@ export const useProductsStore = defineStore('products', {
         resetPagination() {
             this.productsPaginatedList = [];
         },
+
+        resetErrorSuccess() {
+            this.error = null;
+            this.success = null;
+        },
     },
 });
-/**TODO: maybe add fetchProduct for one product, it might be good when we create update an item with panel admin
- */
