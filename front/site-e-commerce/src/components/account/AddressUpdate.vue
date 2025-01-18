@@ -37,9 +37,9 @@
     </div>
 </template>
 <script setup>
-import ErrorComponent from './ui/ErrorComponent.vue';
-import SuccessComponent from './ui/SuccessComponent.vue';
-import ButtonComponent from './ui/ButtonComponent.vue';
+import ErrorComponent from '@/components/ui/ErrorComponent.vue';
+import SuccessComponent from '@/components/ui/SuccessComponent.vue';
+import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import { validatePhone } from '@/utils/validators';
 import { Icon } from '@iconify/vue';
 import { useUsersStore } from '@/stores/usersStore';

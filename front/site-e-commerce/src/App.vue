@@ -16,8 +16,8 @@
 
 <script setup>
 import { RouterView } from 'vue-router';
-import FooterComponent from '@/components/layouts/FooterComponent.vue';
-import HeaderComponent from '@/components/layouts/HeaderComponent.vue';
+import FooterComponent from '@/layouts/FooterComponent.vue';
+import HeaderComponent from '@/layouts/HeaderComponent.vue';
 import { ref } from 'vue';
 
 const isMenuDisplayed = ref(false);

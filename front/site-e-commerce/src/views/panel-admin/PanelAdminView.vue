@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import ModificateArtworksProducts from '@/components/ModificateArtworksProducts.vue';
+import ModificateArtworksProducts from '@/components/panel-admin/ModificateArtworksProducts.vue';
 const orderCountAdmin = 5; //TODO need to modifiy this static variable when back is set up
 //TODO store for order ?
 </script>

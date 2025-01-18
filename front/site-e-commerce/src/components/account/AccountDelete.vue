@@ -12,7 +12,7 @@
 <script setup>
 import { useUsersStore } from '@/stores/usersStore.js';
 import { useRouter } from 'vue-router';
-import ErrorComponent from './ui/ErrorComponent.vue';
+import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import { computed } from 'vue';
 
 const usersStore = useUsersStore();
@@ -28,5 +28,4 @@ const deleteAccount = async () => {
     }
 };
 //TODO: set up an pop up for user to be sure to delete ?
-//add error component
 </script>

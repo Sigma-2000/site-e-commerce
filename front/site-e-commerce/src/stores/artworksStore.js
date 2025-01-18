@@ -3,8 +3,8 @@ import { axiosCaller } from '@/services/axiosCaller';
 
 export const useArtworksStore = defineStore('artworks', {
     state: () => ({
-        artworks: [], //main state
-        artworksPaginatedList: [], //this state is specific for display artworks in gallery
+        artworks: [], //main state, database state
+        artworksPaginatedList: [], //this state is specific for display artworks in gallery, front-end state
         selectedArtwork: {},
         numberOfArtworkByPage: 5,
         isLoading: false,
@@ -41,7 +41,6 @@ export const useArtworksStore = defineStore('artworks', {
             try {
                 const response = await axiosCaller.get(`/artwork/${id}`);
                 this.selectedArtwork = response.data;
-                console.log(response.data);
             } catch (err) {
                 this.error = 'errors.display-element';
                 console.error(err);
@@ -115,5 +114,3 @@ export const useArtworksStore = defineStore('artworks', {
         },
     },
 });
-/**TODO: maybe add fetchArtwork for one artwork, it might be good when we create update an item with panel admin
- */
