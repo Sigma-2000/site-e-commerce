@@ -8,6 +8,7 @@ const {
   getArtworkById,
   deleteArtworkById,
   addArtworks,
+  updateArtworkById,
 } = require("../controllers/artworksController");
 
 router.get("/artworks", getAllArtworks);
@@ -20,7 +21,8 @@ router.post(
   upload.array("files", 6),
   addArtworks
 );
+router.put("/artwork/:id", verifyToken, isAdmin, updateArtworkById);
 
-//TODO: Put example router.put("/artworks/:id", updateById); //[authMiddleware, upload.single('image')]
+//TODO: file updaate with upload.array ?
 
 module.exports = router;
