@@ -67,7 +67,6 @@
                     }
                 }
             }
-
             .category-content-items-more-details {
                 display: flex;
                 flex-direction: column;
@@ -97,6 +96,21 @@
                 @include underline(-10%, -15%, null);
                 @include respond-to('tablet') {
                     @include underline(10%, 20%, null);
+                }
+            }
+            .admin-actions {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                .edit-link {
+                    all: unset;
+                    cursor: pointer;
+                    color: var(--color-text);
+                }
+                button {
+                    all: unset;
+                    cursor: pointer;
+                    color: var(--alert-color);
                 }
             }
             .category-content-items-more-results-button {

@@ -19,11 +19,11 @@
             <router-link :to="redirectLink" class="menu-item">
                 {{ $t('menu.account') }}
             </router-link>
-            <router-link to="/sign-in" class="menu-item">
+            <div class="menu-item">
                 <button @click="logout">
                     {{ $t('menu.logout') }}
                 </button>
-            </router-link>
+            </div>
         </template>
         <router-link v-else to="/sign-in" class="menu-item">
             {{ $t('menu.account') }}
@@ -34,6 +34,9 @@
 <script setup>
 import { computed } from 'vue';
 import { useUsersStore } from '@/stores/usersStore.js';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 defineProps({
     isVisible: {
@@ -51,11 +54,13 @@ const redirectLink = computed(() => {
     }
     return '/account';
 });
-/*
-make a disconnect function in back-end
-*/
-const logout = () => {
-    console.log('disconnect');
+
+const logout = async () => {
+    try {
+        await usersStore.logout();
+        router.push('/sign-in');
+    } catch (err) {
+        console.error(err);
+    }
 };
 </script>
-<style></style>

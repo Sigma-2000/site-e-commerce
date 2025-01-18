@@ -60,8 +60,8 @@ const deleteProductById = async (req, res) => {
 };
 
 const addProduct = async (req, res) => {
-  const { artwork_id, price, stock, category } = req.body;
-
+  const { artwork_id } = req.params;
+  const { price, stock, category } = req.body;
   if (!["print", "original"].includes(category)) {
     return res.status(400).json({ error: "Invalid category provided." });
   }

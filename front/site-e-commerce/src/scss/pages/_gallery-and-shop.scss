@@ -27,11 +27,17 @@
         font-weight: $font-weight-medium;
         color: var(--color-text);
     }
+    p {
+        color: var(--color-text);
+    }
     .underline-extra-short {
         @include underline(0%, 40%, null);
         @include respond-to('tablet') {
             @include underline(0%, 70%, null);
         }
+    }
+    .admin-category-choice {
+        margin: 20px 10px;
     }
     .categories-items {
         margin: 20px 10px;
