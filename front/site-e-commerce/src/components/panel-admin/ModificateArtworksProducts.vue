@@ -159,7 +159,6 @@ const form = reactive({
     artwork_id: '',
     price: null,
     stock: null,
-    category: '',
 });
 
 const handleSubmit = async () => {

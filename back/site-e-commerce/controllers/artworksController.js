@@ -108,9 +108,59 @@ const addArtworks = async (req, res) => {
   }
 };
 
+const updateArtworkById = async (req, res) => {
+  const { id } = req.params;
+  const {
+    title_en,
+    title_fr,
+    type,
+    dimensions,
+    techniques_en,
+    techniques_fr,
+    description_en,
+    description_fr,
+  } = req.body;
+
+  try {
+    if (
+      type &&
+      !["painting", "digital art", "photography", "graffiti"].includes(type)
+    ) {
+      return res.status(400).json({ error: "Invalid type provided." });
+    }
+
+    const updatedArtwork = await Artwork.findByIdAndUpdate(
+      id,
+      {
+        "title.en": title_en,
+        "title.fr": title_fr,
+        type,
+        dimensions,
+        "techniques.en": techniques_en,
+        "techniques.fr": techniques_fr,
+        "description.en": description_en,
+        "description.fr": description_fr,
+      },
+      { new: true }
+    );
+
+    if (!updatedArtwork) {
+      return res.status(404).json({ error: "Artwork not found." });
+    }
+
+    res.json({ message: "Artwork updated successfully.", updatedArtwork });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Error occurred while updating the artwork.",
+    });
+  }
+};
+
 module.exports = {
   getAllArtworks,
   getArtworkById,
   deleteArtworkById,
   addArtworks,
+  updateArtworkById,
 };
