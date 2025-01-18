@@ -93,7 +93,6 @@ const { locale } = useLanguage();
 const formArtwork = reactive({
     title_fr: '',
     title_en: '',
-    type: '',
     techniques_fr: '',
     techniques_en: '',
     dimensions: '',
@@ -103,7 +102,6 @@ const formArtwork = reactive({
     artwork_id: '',
     price: null,
     stock: null,
-    //category: '',
 });
 const error = computed(() => artworkStore.error);
 const artwork = computed(() => artworkStore.selectedArtwork);
@@ -114,7 +112,7 @@ const category = route.params.category;
 const submitForm = async () => {
     console.log(artworkId);
     console.log(category);
-    const payload = { ...formArtwork, category };
+    const payload = { ...formArtwork, type: category };
     console.log(payload);
     await artworkStore.updateArtwork(artworkId, payload);
     if (!artworkStore.error) {
@@ -125,5 +123,14 @@ const submitForm = async () => {
 onMounted(async () => {
     artworkStore.resetErrorSuccess();
     await artworkStore.fetchArtworkById(artworkId);
+    if (artwork.value) {
+        formArtwork.title_fr = artwork.value.title.fr;
+        formArtwork.title_en = artwork.value.title.en;
+        formArtwork.techniques_fr = artwork.value.techniques.fr;
+        formArtwork.techniques_en = artwork.value.techniques.en;
+        formArtwork.dimensions = artwork.value.dimensions;
+        formArtwork.description_fr = artwork.value.description.fr;
+        formArtwork.description_en = artwork.value.description.en;
+    }
 });
 </script>
