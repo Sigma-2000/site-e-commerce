@@ -90,7 +90,7 @@ const isPasswordUsed = ref(false);
 const isPhoneUsed = ref(false);
 
 const resetGlobalError = () => {
-    usersStore.resetError();
+    usersStore.resetErrorSuccess();
 };
 
 watch(

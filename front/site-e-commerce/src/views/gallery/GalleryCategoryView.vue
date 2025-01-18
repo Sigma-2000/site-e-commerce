@@ -38,6 +38,30 @@
                                     {{ $t('display.details') }}
                                 </router-link>
                             </div>
+                            <div v-if="isAdmin" class="admin-actions">
+                                <button @click="removeArtwork(artwork._id)">
+                                    <Icon
+                                        icon="material-symbols-light:close"
+                                        width="36"
+                                        height="36"
+                                    />
+                                </button>
+                                <router-link
+                                    :to="`/gallery/${category}/edit/${artwork._id}`"
+                                    class="edit-link"
+                                >
+                                    <Icon
+                                        icon="fluent-mdl2:field-not-changed"
+                                        width="26"
+                                        height="26"
+                                    />
+                                </router-link>
+                                <router-link
+                                    :to="`/gallery/${category}/add-product/${artwork.id}`"
+                                    class="edit-link"
+                                    ><Icon icon="fluent:add-20-regular" width="32" height="32"
+                                /></router-link>
+                            </div>
                         </div>
                         <div class="underline-center"></div>
                     </li>
@@ -51,6 +75,7 @@
         </div>
         <LoaderComponent v-if="isLoading" />
         <ErrorComponent v-if="error" :error="error" />
+        <SuccessComponent v-if="success" :success="success" />
     </div>
 </template>
 
@@ -59,21 +84,31 @@ import { onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import LoaderComponent from '@/components/ui/LoaderComponent.vue';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
+import SuccessComponent from '@/components/ui/SuccessComponent.vue';
 import { useI18n } from 'vue-i18n';
 import { useLanguage } from '@/composables/useLanguage';
 import { Icon } from '@iconify/vue';
 import { useArtworksStore } from '@/stores/artworksStore';
 import ButtonComponent from '@/components/ui/ButtonComponent.vue';
+import { useUsersStore } from '@/stores/usersStore';
 
 const { t } = useI18n();
 const { locale } = useLanguage();
 const route = useRoute();
 const artworkStore = useArtworksStore();
+const userStore = useUsersStore();
 
 const category = computed(() => route.params.category);
 const artworksPaginatedList = computed(() => artworkStore.artworksPaginatedList);
 const isLoading = computed(() => artworkStore.isLoading);
 const error = computed(() => artworkStore.error);
+const success = computed(() => artworkStore.success);
+const isAdmin = computed(() => userStore.userInformation?.role === 'admin');
+
+const removeArtwork = async (id) => {
+    await artworkStore.deleteArtwork(id);
+    await artworkStore.fetchArtworks(category.value);
+};
 
 const hasMoreResults = computed(() => {
     const totalFiltered = artworkStore.filteredArtworks(category.value).length;
@@ -87,5 +122,6 @@ const loadMoreResults = () => {
 onMounted(async () => {
     artworkStore.resetPagination();
     await artworkStore.fetchArtworks(category.value);
+    artworkStore.resetErrorSuccess();
 });
 </script>

@@ -63,7 +63,7 @@ const login = async (req, res) => {
     const refreshToken = jwt.sign(
       { id: user._id },
       process.env.JWT_REFRESH_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "1d" }
     );
 
     res
@@ -206,7 +206,7 @@ const refreshToken = async (req, res) => {
       { expiresIn: "15m" }
     );
 
-    res.cookie("accessToken", newAccessToken, {
+    res.cookie("token", newAccessToken, {
       httpOnly: true,
     });
 

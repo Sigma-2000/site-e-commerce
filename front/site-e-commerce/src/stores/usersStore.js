@@ -39,7 +39,7 @@ export const useUsersStore = defineStore('users', {
                 console.error(error);
             }
         },
-        resetError() {
+        resetErrorSuccess() {
             this.error = null;
             this.success = null;
         },
@@ -56,6 +56,39 @@ export const useUsersStore = defineStore('users', {
                 console.error(err);
             }
         },
-        //TODO implement a back end road for disconnect/logout !!
+        async logout() {
+            try {
+                await axiosCaller.post('/logout');
+                this.userInformation = null;
+            } catch (err) {
+                console.error(err);
+            }
+        },
+        async deleteAccount() {
+            this.error = null;
+            if (!this.userInformation?.id) {
+                this.userInformation = null;
+                return;
+            }
+            try {
+                await axiosCaller.delete(`/user/${this.userInformation.id}`);
+                this.userInformation = null;
+            } catch (err) {
+                this.error = 'errors.delete-account';
+                console.error(err);
+            }
+        },
+        async refreshAccessToken() {
+            try {
+                if (!this.userInformation) {
+                    return;
+                }
+                const response = await axiosCaller.post('/refresh-token');
+
+                return response.data.token;
+            } catch (err) {
+                console.error(err);
+            }
+        },
     },
 });

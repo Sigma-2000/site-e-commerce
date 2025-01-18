@@ -58,33 +58,26 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { axiosCaller } from '@/services/axiosCaller';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import { useI18n } from 'vue-i18n';
 import { useLanguage } from '@/composables/useLanguage';
 import { Icon } from '@iconify/vue';
+import { useArtworksStore } from '@/stores/artworksStore';
 
 const { t } = useI18n();
 const { locale } = useLanguage();
 const route = useRoute();
-const artwork = ref({});
-const error = ref(null);
+const artworkStore = useArtworksStore();
+
+const artworkId = route.params.id;
 const category = route.params.category;
 
-const fetchDetailsArtwork = async () => {
-    const id = route.params.id;
-    try {
-        const response = await axiosCaller.get(`/artwork/${id}`);
-        artwork.value = response.data;
-    } catch (err) {
-        console.error(err);
-        error.value = 'errors.display-element';
-    }
-};
+const artwork = computed(() => artworkStore.selectedArtwork);
+const error = computed(() => artworkStore.error);
 
 onMounted(async () => {
-    fetchDetailsArtwork();
+    artworkStore.fetchArtworkById(artworkId);
 });
 </script>

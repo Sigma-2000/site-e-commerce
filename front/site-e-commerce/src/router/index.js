@@ -73,12 +73,27 @@ const router = createRouter({
         {
             path: '/panel-admin',
             name: 'panel-admin',
-            component: () => import('../views/PanelAdminView.vue'),
+            component: () => import('../views/panel-admin/PanelAdminView.vue'),
         },
         {
             path: '/cart',
             name: 'cart',
             component: () => import('../views/order/CartView.vue'),
+        },
+        {
+            path: '/shop/:category/edit/:id',
+            name: 'edit-product',
+            component: () => import('../views/panel-admin/EditProductView.vue'),
+        },
+        {
+            path: '/gallery/:category/edit/:id',
+            name: 'edit-artwork',
+            component: () => import('../views/panel-admin/EditArtworkView.vue'),
+        },
+        {
+            path: '/gallery/:category/add-product/:id',
+            name: 'add-product',
+            component: () => import('../views/panel-admin/AddProductView.vue'),
         },
     ],
 

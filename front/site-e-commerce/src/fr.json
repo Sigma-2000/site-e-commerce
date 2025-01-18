@@ -75,23 +75,39 @@
         "invalid-email": "Votre email n'est pas valide.",
         "password": "Votre mot de passe doit contenir au moins 8 caractères.",
         "invalid-phone": "Votre numéro de téléphone doit contenir 10 chiffres",
-        "update-address": "Une erreur s'est produite lors de la mise à jour de votre adresse, veuillez recommencer"
+        "update-address": "Une erreur s'est produite lors de la mise à jour de votre adresse, veuillez recommencer",
+        "delete-account": "Une erreur s'est produite lors de la supression de votre compte, veuillez recommencer",
+        "add-artwork": "Une erreur s'est produite lors de l'ajout de cette oeuvre, veuillez recommencer",
+        "add-product": "Une erreur s'est produite lors de l'ajout de ce produit, veuillez recommencer",
+        "delete-artwork": "Une erreur s'est produite lors de la suppression de cette oeuvre",
+        "delete-product": "Une erreur s'est produite lors de la suppression de ce produit",
+        "update-product": "Une erreur s'est produite lors de la mise à jour de votre produit, veuillez recommencer",
+        "update-artwork": "Une erreur s'est produite lors de la mise à jour de votre oeuvre, veuillez recommencer"
     },
     "success": {
-        "update-address": "Votre adresse a été mise à jour avec succès"
+        "update-address": "Votre adresse a été mise à jour avec succès",
+        "add-artwork": "Votre oeuvre a été rajouté avec succès",
+        "add-product": "Votre produit a été rajouté avec succès",
+        "delete-artwork": "Votre oeuvre a été supprimé avec succès",
+        "delete-product": "Votre produit a été supprimé avec succès",
+        "update-product": "Votre produit a été mis à jour avec succès",
+        "update-artwork": "Votre oeuvre a été mis à jour avec succès"
     },
     "button": {
         "buy": "Ajouter au panier",
         "more-results": "Plus de résultats",
         "update": "Mettre à jour",
-        "validate": "Valider"
+        "validate": "Valider",
+        "add-artworks": "Ajouter une oeuvre",
+        "add-product": "Ajouter un produit"
     },
     "detail": {
         "dimensions": "Dimensions",
         "techniques": "Techniques",
         "description": "Description",
         "price": "Prix",
-        "available-shop": "Disponible en boutique"
+        "available-shop": "Disponible en boutique",
+        "stock": "Stock"
     },
     "auth": {
         "sign-in": "Connectez-vous",
@@ -119,5 +135,43 @@
         "address": "Votre adresse",
         "delete-account": "Supprimer mon compte",
         "rgpd": "Vos données personnelles sont collectées et traitées pour gérer votre compte et vos commandes. Vous disposez d’un droit d’accès, de rectification et de suppression de vos données conformément au RGPD. Pour plus d'informations, consultez notre Politique de confidentialité."
+    },
+    "panel-admin": {
+        "want-to-do": "Que voulez vous faire ?",
+        "consult": "Consulter",
+        "consult-order": "{consult} les commandes",
+        "consult-inprogress": "{consult}les commandes en cours",
+        "consult-client": "{consult} la liste des clients",
+        "modificate": "Modification",
+        "modificate-order": "{modificate} du statut des commandes",
+        "add": "Ajouter",
+        "add-artwork": "{add} une oeuvre d'art",
+        "add-product": "{add} un produit associé à une oeuvre d'art",
+        "modificate-artwork": "{modificate} une oeuvre d'art",
+        "modificate-product": "{modificate} un produit (stock, prix...)",
+        "delete": "Supprimer",
+        "delete-artwork": "{delete} une oeuvre d'art",
+        "delete-product": "{delete} un produit",
+        "choice-categories": "Quel catégories voulez-vous modifier ?",
+        "adding-product": "Ajouter un produit associé à cet oeuvre :"
+    },
+    "form-artworks": {
+        "update": "Mise à jour de votre oeuvre",
+        "title-en": "Titre en anglais",
+        "title-fr": "Titre en français",
+        "type": "Type",
+        "techniques-en": "Techniques en anglais",
+        "techniques-fr": "Techniques en français",
+        "dimensions": "Dimensions",
+        "description-en": "Description en anglais",
+        "description-fr": "Description en français"
+    },
+    "form-product": {
+        "update": "Mise à jour de votre produit",
+        "actual-price": "Prix actuel ",
+        "actual-stock": "Stock actuel ",
+        "stock": "Stock ",
+        "price": "Prix",
+        "category": "Catégorie"
     }
 }
