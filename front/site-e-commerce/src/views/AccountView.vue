@@ -18,8 +18,8 @@
 </template>
 
 <script setup>
-import AccountDelete from '@/components/AccountDelete.vue';
-import AdressUpdate from '@/components/AddressUpdate.vue';
+import AccountDelete from '@/components/account/AccountDelete.vue';
+import AdressUpdate from '@/components/account/AddressUpdate.vue';
 import { useUsersStore } from '@/stores/usersStore';
 import { onMounted } from 'vue';
 

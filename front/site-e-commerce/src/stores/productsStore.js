@@ -23,7 +23,6 @@ export const useProductsStore = defineStore('products', {
             this.error = null;
             try {
                 const response = await axiosCaller.get('/products');
-                console.log(response.data);
                 this.products = response.data;
                 const filtered = this.filteredProducts(category);
                 this.productsPaginatedList = filtered.slice(0, this.numberOfProductByPage);
@@ -66,11 +65,6 @@ export const useProductsStore = defineStore('products', {
 
             try {
                 await axiosCaller.put(`/product/${id}`, updatedProduct);
-                /*
-                const index = this.products.findIndex((product) => product._id === id);
-                if (index !== -1) {
-                    this.products[index] = response.data.updatedProduct;
-                }*/
                 this.success = 'success.update-product';
             } catch (err) {
                 this.error = 'errors.update-product';

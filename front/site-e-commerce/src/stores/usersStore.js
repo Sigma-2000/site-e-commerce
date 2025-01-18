@@ -42,7 +42,7 @@ export const useUsersStore = defineStore('users', {
         resetErrorSuccess() {
             this.error = null;
             this.success = null;
-        }, //TODO: change name
+        },
         async fetchUser() {
             if (!this.userInformation?.id) {
                 this.userInformation = null;

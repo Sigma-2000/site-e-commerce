@@ -127,9 +127,9 @@
     </div>
 </template>
 <script setup>
-import ErrorComponent from './ui/ErrorComponent.vue';
-import SuccessComponent from './ui/SuccessComponent.vue';
-import ButtonComponent from './ui/ButtonComponent.vue';
+import ErrorComponent from '@/components/ui/ErrorComponent.vue';
+import SuccessComponent from '@/components/ui/SuccessComponent.vue';
+import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import { Icon } from '@iconify/vue';
 import { useArtworksStore } from '@/stores/artworksStore';
 import { ref, reactive, computed, onMounted } from 'vue';
