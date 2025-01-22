@@ -28,7 +28,15 @@ const getAllOrders = async (req, res) => {
     const orders = await Order.find()
       .populate("user_id")
       .populate("address_id")
-      .populate("products.id");
+      //.populate("products.id");
+      .populate({
+        path: "products.id",
+        populate: {
+          path: "artwork_id",
+          select: "images",
+        },
+      });
+
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({

@@ -13,6 +13,7 @@ export const useUsersStore = defineStore('users', {
             try {
                 const response = await axiosCaller.post('/login', credentials);
                 this.userInformation = response.data;
+                console.log(response.data);
             } catch (err) {
                 this.error = 'errors.auth';
                 console.error(err);
@@ -51,6 +52,7 @@ export const useUsersStore = defineStore('users', {
             try {
                 const response = await axiosCaller.get(`/user/${this.userInformation.id}`);
                 this.userInformation = response.data;
+                console.log(response.data);
             } catch (err) {
                 this.userInformation = null;
                 console.error(err);

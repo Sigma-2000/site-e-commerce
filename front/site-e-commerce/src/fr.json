@@ -132,6 +132,9 @@
         "welcome": "Bienvenue",
         "welcome-admin": "Bienvenue Admin",
         "number-orders": "Vous avez {count} commande(s) en cours.",
+        "no-order": "Vous n'avez pas encore de commande.",
+        "status-order": "Statut de la commande :",
+        "cancelled-orders": "Vous avez annulé { cancelledCount } commande(s).",
         "address": "Votre adresse",
         "delete-account": "Supprimer mon compte",
         "rgpd": "Vos données personnelles sont collectées et traitées pour gérer votre compte et vos commandes. Vous disposez d’un droit d’accès, de rectification et de suppression de vos données conformément au RGPD. Pour plus d'informations, consultez notre Politique de confidentialité."
@@ -153,7 +156,10 @@
         "delete-artwork": "{delete} une oeuvre d'art",
         "delete-product": "{delete} un produit",
         "choice-categories": "Quel catégories voulez-vous modifier ?",
-        "adding-product": "Ajouter un produit associé à cet oeuvre :"
+        "adding-product": "Ajouter un produit associé à cet oeuvre :",
+        "consult-orders": "{consult} les commandes",
+        "consult-orders-in-progress": "{consult} les commandes en cours",
+        "modificate-status-order": "{modificate} du status des commandes en cours "
     },
     "form-artworks": {
         "update": "Mise à jour de votre oeuvre",
@@ -173,5 +179,19 @@
         "stock": "Stock ",
         "price": "Prix",
         "category": "Catégorie"
+    },
+    "order-status": {
+        "pending": "En attente",
+        "shipped": "Expédiée",
+        "delivered": "Livrée",
+        "cancelled": "Annulée"
+    },
+    "order": {
+        "amount": "Le montant s'éléve à",
+        "date": "Commande réalisé le",
+        "quantity": "Quantité :",
+        "ordered": "La commande a été passé par",
+        "delivery": "La commande doit étre livré au",
+        "contact": "Son email de contact est "
     }
 }

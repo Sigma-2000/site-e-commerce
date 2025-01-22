@@ -1,0 +1,116 @@
+.management-order-view {
+    margin: 20px 40px;
+
+    .underline-long {
+        @include underline(0%, 0%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 20%, null);
+        }
+        @include respond-to('desktop') {
+            @include underline(0%, 30%, null);
+        }
+    }
+
+    .underline-short {
+        @include underline(0%, 40%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 60%, null);
+        }
+    }
+
+    .pages-link {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+    }
+
+    h2,
+    h3 {
+        font-weight: $font-weight-medium;
+        color: var(--color-text);
+    }
+    h3 {
+        margin: 10px;
+    }
+
+    p {
+        color: var(--color-text);
+    }
+
+    .admin-painting {
+        display: flex;
+        justify-content: center;
+        img {
+            width: 90%;
+            @include respond-to('tablet') {
+                width: 35%;
+                margin-left: 20px;
+            }
+
+            @include respond-to('desktop') {
+                width: 25%;
+                margin-left: 25px;
+            }
+        }
+    }
+
+    .underline-center {
+        margin: 20px 0px;
+        @include underline(20%, 20%, null);
+
+        @include respond-to('tablet') {
+            @include underline(40%, 40%, null);
+        }
+    }
+
+    .order-content {
+        display: flex;
+        flex-direction: column;
+        margin: 20px 0px;
+        @include respond-to('tablet') {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .order-details-user {
+            display: flex;
+            flex-direction: column;
+            margin: 10px 0px;
+            .order-details-general {
+                margin-bottom: 10px;
+                input,
+                select,
+                textarea {
+                    width: 50%;
+                    height: 10%;
+                    border: 1px solid var(--color-border);
+                    border-radius: 4px;
+                    padding: 12px 20px;
+                    @include respond-to('tablet') {
+                        width: 30%;
+                    }
+                }
+                .modify-icon {
+                    cursor: pointer;
+                    margin-left: 10px;
+                }
+            }
+        }
+        .order-details-products {
+            display: flex;
+            flex-direction: column;
+            margin: 10px 0px;
+            @include respond-to('tablet') {
+                flex-direction: row;
+                margin: 0px;
+            }
+            img {
+                width: 40%;
+
+                @include respond-to('tablet') {
+                    width: 30%;
+                }
+            }
+        }
+    }
+}
