@@ -95,6 +95,11 @@ const router = createRouter({
             name: 'add-product',
             component: () => import('../views/panel-admin/AddProductView.vue'),
         },
+        {
+            path: '/panel-admin/orders',
+            name: 'orders',
+            component: () => import('../views/panel-admin/OrderManagementView.vue'),
+        },
     ],
 
     scrollBehavior(to, from, savedPosition) {

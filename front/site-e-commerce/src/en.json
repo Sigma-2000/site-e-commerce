@@ -132,6 +132,9 @@
         "welcome": "Welcome",
         "welcome-admin": "Welcome Admin",
         "number-orders": "You have {count} order(s) in progress.",
+        "no-order": "You doesn't have a order.",
+        "status-order": "Status of the order :",
+        "cancelled-orders": "You have cancelled { cancelledCount } order(s).",
         "address": "Your address",
         "delete-account": "Delete my account",
         "rgpd": "Your personal data is collected and processed to manage your account and orders. You have the right to access, rectify, and delete your data in accordance with the GDPR. For more information, please refer to our Privacy Policy."
@@ -153,7 +156,10 @@
         "delete-artwork": "{delete} an artwork",
         "delete-product": "{delete} a product",
         "choice-categories": "Which categories would you like to modify?",
-        "adding-product": "Adding a product associate to this artwork :"
+        "adding-product": "Adding a product associate to this artwork :",
+        "consult-orders": "{consult} orders ",
+        "consult-orders-in-progress": "{consult} orders in progress",
+        "modificate-status-order": "{modificate} orders's status which in progress"
     },
     "form-artworks": {
         "update": "Update of your artwork",
@@ -173,5 +179,19 @@
         "stock": "Stock ",
         "price": "Price",
         "category": "Category"
+    },
+    "order-status": {
+        "pending": "Pending",
+        "shipped": "Shipped",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled"
+    },
+    "order": {
+        "amount": "The amount is",
+        "date": "Order fulfilled on",
+        "quantity": "Quantity :",
+        "ordered": "The order was placed by",
+        "delivery": "The order is to be delivered to",
+        "contact": "The contact email is"
     }
 }
