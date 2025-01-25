@@ -82,7 +82,9 @@
         "delete-artwork": "An error occured while the delete of this artwork",
         "delete-product": "An error occured while the delete of this product",
         "update-product": "An error occured while the update of your product, please retry",
-        "update-artwork": "An error occured while the update of your artwork, please retry"
+        "update-artwork": "An error occured while the update of your artwork, please retry",
+        "invalid-status": "Invalid status.",
+        "update-status": "An error occured while the update of the order's status, please retry"
     },
     "success": {
         "update-address": "Your adress was updating successfully",
@@ -91,7 +93,9 @@
         "delete-artwork": "Your artwork was deleting successfully",
         "delete-product": "Your product was deleting successfully",
         "update-product": "Your product was updating successfully",
-        "update-artwork": "Your artwork was updating successfully"
+        "update-artwork": "Your artwork was updating successfully",
+        "update-status": "Status of order Updated successfully",
+        "add-product-cart": "Your article was adding successfully in your cart"
     },
     "button": {
         "buy": "Add to cart",
@@ -99,7 +103,8 @@
         "update": "Update",
         "validate": "Validate",
         "add-artworks": "Add an artwork",
-        "add-product": "Add a product"
+        "add-product": "Add a product",
+        "out-of-stock": "out of stock"
     },
     "detail": {
         "dimensions": "Dimensions",

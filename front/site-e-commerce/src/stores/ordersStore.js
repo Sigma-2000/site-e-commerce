@@ -17,7 +17,7 @@ export const useOrdersStore = defineStore('orders', {
                 this.orders = response.data;
                 console.log(response.data);
             } catch (err) {
-                this.error = 'Erreur lors de la récupération des commandes.';
+                this.error = 'errors.display-list';
                 console.error(err);
             }
         },
@@ -27,22 +27,22 @@ export const useOrdersStore = defineStore('orders', {
             try {
                 const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
                 if (!validStatuses.includes(status)) {
-                    this.error = 'Statut invalide.';
+                    this.error = 'errors.invalid-status';
                     return;
                 }
-                const response = await axiosCaller.put(`/order/${orderId}`, {
+                await axiosCaller.put(`/order/${orderId}`, {
                     status_order: status,
                 });
-                this.success = 'Statut de la commande mis à jour.';
-                console.log('Order updated:', response.data);
+                this.success = 'success.update-status';
+
                 // Mettre à jour la commande dans le tableau local
                 //fetch de nouveau ??
-                const index = this.orders.findIndex((order) => order._id === orderId);
+                /*const index = this.orders.findIndex((order) => order._id === orderId);
                 if (index !== -1) {
                     this.orders[index] = response.data.order;
-                }
+                }*/
             } catch (err) {
-                this.error = `Erreur lors de la mise à jour du statut de la commande ${orderId}.`;
+                this.error = 'errors.update-status';
                 console.error(err);
             }
         },

@@ -19,10 +19,19 @@
                         :alt="product.artwork_id.title[locale]"
                     />
                 </div>
+                <SuccessComponent v-if="successAddedCart" :success="successAddedCart" />
+                <!-- TODO: bug with success it appears for all products, and maybe set Interval for clear the message
+                 during shopping process of the user -->
                 <div class="item-details-card-button">
-                    <ButtonComponent class="custom-button" :disabled="product.stock === 0">{{
-                        $t('button.buy')
-                    }}</ButtonComponent>
+                    <ButtonComponent
+                        :disabled="product.stock === 0"
+                        @click="addProductToCart(product)"
+                        class="custom-button"
+                    >
+                        {{
+                            product.stock === 0 ? $t('button.out-of-stock') : $t('button.buy')
+                        }}</ButtonComponent
+                    >
                 </div>
                 <div class="item-details-card-text">
                     <p>
@@ -67,20 +76,50 @@ import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import { useI18n } from 'vue-i18n';
 import { useLanguage } from '@/composables/useLanguage';
 import { useProductsStore } from '@/stores/productsStore';
+import { useCartStore } from '@/stores/cartStore';
+import SuccessComponent from '@/components/ui/SuccessComponent.vue';
 
 const productStore = useProductsStore();
+
 const { t } = useI18n();
 const { locale } = useLanguage();
 const route = useRoute();
+const cartStore = useCartStore();
 
 const category = route.params.category;
 const productId = route.params.id;
 
 const product = computed(() => productStore.selectedProduct);
 const error = computed(() => productStore.error);
+const successAddedCart = computed(() => cartStore.success);
+
+//TODO animation du logo panier ?? mettre en rupture si stock = 0 ??
+// créer une variable pour prevenir que ce produit est en front indispo et le passer par un store
+//pour qu'il y a une cohérence pour le user
+const addProductToCart = (product) => {
+    if (product && product.stock > 0) {
+        product.stock -= 1;
+        if (product.stock === 0) {
+            productStore.setProductUnavailable(product._id);
+        }
+
+        const productAddedToCart = {
+            id: product._id,
+            title: product.artwork_id.title, // inside we have en and fr
+            price: product.price,
+            image: product.artwork_id.images?.[4],
+            stock: product.stock,
+            type: category,
+        };
+        console.log(productAddedToCart);
+        cartStore.addToCart(productAddedToCart);
+    }
+};
 
 onMounted(async () => {
     productStore.resetErrorSuccess();
     await productStore.fetchProductById(productId);
+    productStore.initializeUnavailableProducts();
+    productStore.loadLocalStock();
 });
 </script>

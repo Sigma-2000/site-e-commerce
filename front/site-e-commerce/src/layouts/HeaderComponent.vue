@@ -16,7 +16,9 @@
             <div class="logo-underline"></div>
         </div>
         <div class="content-top-menu-icon">
-            <Icon icon="ph:shopping-cart-thin" width="24" class="menu-cart-icon" />
+            <RouterLink to="/cart">
+                <Icon icon="ph:shopping-cart-thin" width="24" class="menu-cart-icon" />
+            </RouterLink>
             <Icon
                 :icon="
                     isVisible ? 'fluent:dismiss-24-regular' : 'fluent:line-horizontal-3-20-regular'

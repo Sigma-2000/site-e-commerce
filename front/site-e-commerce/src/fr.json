@@ -82,7 +82,9 @@
         "delete-artwork": "Une erreur s'est produite lors de la suppression de cette oeuvre",
         "delete-product": "Une erreur s'est produite lors de la suppression de ce produit",
         "update-product": "Une erreur s'est produite lors de la mise à jour de votre produit, veuillez recommencer",
-        "update-artwork": "Une erreur s'est produite lors de la mise à jour de votre oeuvre, veuillez recommencer"
+        "update-artwork": "Une erreur s'est produite lors de la mise à jour de votre oeuvre, veuillez recommencer",
+        "invalid-status": "Statut invalide.",
+        "update-status": "Une erreur s'est produite lors de la mise à jour du statut de la commande, veuillez recommencer"
     },
     "success": {
         "update-address": "Votre adresse a été mise à jour avec succès",
@@ -91,7 +93,9 @@
         "delete-artwork": "Votre oeuvre a été supprimé avec succès",
         "delete-product": "Votre produit a été supprimé avec succès",
         "update-product": "Votre produit a été mis à jour avec succès",
-        "update-artwork": "Votre oeuvre a été mis à jour avec succès"
+        "update-artwork": "Votre oeuvre a été mis à jour avec succès",
+        "update-status": "Statut de la commande mis à jour.",
+        "add-product-cart": "Votre article a été ajouté avec succes à votre panier"
     },
     "button": {
         "buy": "Ajouter au panier",
@@ -99,7 +103,8 @@
         "update": "Mettre à jour",
         "validate": "Valider",
         "add-artworks": "Ajouter une oeuvre",
-        "add-product": "Ajouter un produit"
+        "add-product": "Ajouter un produit",
+        "out-of-stock": "rupture de stock"
     },
     "detail": {
         "dimensions": "Dimensions",
