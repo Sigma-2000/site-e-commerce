@@ -1,6 +1,7 @@
 import { useI18n } from 'vue-i18n';
 
 export function useLanguage() {
+    //locale in vue i18n is a ref
     const { locale } = useI18n();
 
     const changeLanguage = (lang) => {

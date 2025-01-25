@@ -15,6 +15,7 @@
                         :key="product._id"
                         class="category-items"
                     >
+                        <SuccessComponent v-if="successAddedCart" :success="successAddedCart" />
                         <h2>{{ product.artwork_id.title[locale] }}</h2>
                         <div class="category-content-items">
                             <img
@@ -33,9 +34,15 @@
                                     class="category-content-items-more-details-button"
                                 >
                                     <ButtonComponent
-                                        class="custom-button"
+                                        @click="addProductToCart(product)"
                                         :disabled="product.stock === 0"
-                                        >{{ $t('button.buy') }}</ButtonComponent
+                                        class="custom-button"
+                                    >
+                                        {{
+                                            product.stock === 0
+                                                ? $t('button.out-of-stock')
+                                                : $t('button.buy')
+                                        }}</ButtonComponent
                                     >
                                 </div>
                                 <p v-if="isAdmin">
@@ -90,7 +97,7 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useProductsStore } from '@/stores/productsStore';
 import { useI18n } from 'vue-i18n';
@@ -115,6 +122,7 @@ const productsPaginatedList = computed(() => productStore.productsPaginatedList)
 const isLoadingFromAPi = computed(() => productStore.isLoading);
 const error = computed(() => productStore.error);
 const success = computed(() => productStore.success);
+const successAddedCart = computed(() => cartStore.success);
 
 const hasMoreProductsResults = computed(() => {
     const totalFiltered = productStore.filteredProducts(category.value).length;
@@ -129,9 +137,34 @@ const removeProduct = async (id) => {
     await productStore.deleteProduct(id);
     await productStore.fetchProducts(category.value);
 };
+import { useCartStore } from '@/stores/cartStore';
+
+const cartStore = useCartStore();
+
+const addProductToCart = (product) => {
+    if (product && product.stock > 0) {
+        product.stock -= 1;
+        console.log(product._id);
+        if (product.stock === 0) {
+            productStore.setProductUnavailable(product._id);
+        }
+        const productAddedToCart = {
+            id: product._id,
+            title: product.artwork_id.title,
+            price: product.price,
+            image: product.artwork_id.images?.[4],
+            stock: product.stock,
+            type: category,
+        };
+        console.log(productAddedToCart);
+        cartStore.addToCart(productAddedToCart);
+    }
+};
+
 onMounted(async () => {
     productStore.resetPagination(); //maybe no need because it's fetching the data at mounting and the store display pagination
     productStore.resetErrorSuccess();
     await productStore.fetchProducts(category.value);
+    productStore.initializeUnavailableProducts();
 });
 </script>

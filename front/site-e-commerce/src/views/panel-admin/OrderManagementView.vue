@@ -11,6 +11,8 @@
             <img src="/images/autoportrait.jpg" alt="autoportrait painting" />
         </div>
         <div class="underline-center"></div>
+        <ErrorComponent v-if="error" :error="error" />
+        <SuccessComponent v-if="success" :success="success" />
         <div v-if="ordersWithUserAndAddress.length > 0">
             <div v-for="order in ordersWithUserAndAddress" :key="order.id">
                 <div class="order-content">
@@ -92,10 +94,15 @@ import { useOrdersStore } from '@/stores/ordersStore';
 import { onMounted, computed, ref } from 'vue';
 import { formatDate } from '@/utils/helpers.js';
 import { Icon } from '@iconify/vue';
+import ErrorComponent from '@/components/ui/ErrorComponent.vue';
+import SuccessComponent from '@/components/ui/SuccessComponent.vue';
 
 const ordersStore = useOrdersStore();
 
 const orders = computed(() => ordersStore.orders);
+const error = computed(() => ordersStore.error);
+const success = computed(() => ordersStore.success);
+
 const currentOrders = computed(() => {
     if (ordersStore.filterType === 'in-progress') {
         return orders.value.filter(
@@ -152,5 +159,6 @@ const updateStatus = async (orderId) => {
 
 onMounted(() => {
     ordersStore.fetchAllOrders();
+    ordersStore.resetErrorSuccess();
 });
 </script>
