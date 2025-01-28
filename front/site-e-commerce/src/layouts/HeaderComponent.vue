@@ -18,6 +18,8 @@
         <div class="content-top-menu-icon">
             <RouterLink to="/cart">
                 <Icon icon="ph:shopping-cart-thin" width="24" class="menu-cart-icon" />
+                <!--TODO: if there is a cart in local storage 
+                might be interresting to have a coloured round for attract the user at his cart-->
             </RouterLink>
             <Icon
                 :icon="

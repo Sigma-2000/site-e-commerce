@@ -143,7 +143,7 @@ const cartStore = useCartStore();
 
 const addProductToCart = (product) => {
     if (product && product.stock > 0) {
-        product.stock -= 1;
+        product.stock -= 1; //TODO need to adapt with back !
         console.log(product._id);
         if (product.stock === 0) {
             productStore.setProductUnavailable(product._id);

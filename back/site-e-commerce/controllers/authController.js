@@ -38,10 +38,7 @@ const login = async (req, res) => {
   console.log("Requête reçue pour login :", { email });
 
   try {
-    const user = await User.findOne({ email })
-      .select("+password")
-      .populate("address_id") //delete it's just login function
-      .populate("orders"); //delete it's just login function
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
       return res.status(401).json({ error: "Authentification failed" });
@@ -78,8 +75,6 @@ const login = async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         role: user.role,
-        //address_id: user.address_id,
-        //orders: user.orders, //delete that it's too loud ??
         //no password but it can change with the possibility to change password future feat?
       });
   } catch (error) {
@@ -102,7 +97,6 @@ const getOneUser = async (req, res) => {
   try {
     const user = await User.findById(id)
       .populate("address_id")
-      //.populate("orders");
       .populate({
         path: "orders",
         populate: {

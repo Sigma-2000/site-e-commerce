@@ -45,10 +45,12 @@ const removeFromCart = (id) => {
 };
 
 onMounted(() => {
-    cartStore.loadCart(); //maybe in app ??
+    cartStore.loadCart();
 });
 
-//une fois loguer on l'envoie pas sur son compte (ou alors autre fenetre ??) et on va passer au paiement
-//ou mettre en place un truc en mode ok il a un panier du coup lien pour finaliser le paiement ??
-//il se passe quoi si le gars s'inscrit pareil mettre en place un userHasCart dans store ?
+//when user is logged we can display adress component and welcome phrase
+//TODO: need to modify the login component for not sending in account page
+//when the is register logic different account and message for end up the cart ?
+//always call validate cart in back end here for ensure local stoage is align !
+//delete getter in store for display price waiting the validate order and totalPrice send by back !!
 </script>

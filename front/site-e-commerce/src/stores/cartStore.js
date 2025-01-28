@@ -9,7 +9,7 @@ export const useCartStore = defineStore('cart', {
         cartItemCount: (state) => state.cart.length,
         cartTotalPrice: (state) =>
             state.cart.reduce((total, item) => total + item.price * item.quantity, 0),
-    },
+    }, //be careful because this calculculation might be send by backend..
     actions: {
         addToCart(product) {
             this.success = null;
@@ -51,5 +51,6 @@ export const useCartStore = defineStore('cart', {
             this.error = null;
             this.success = null; ??
         }, */
+        //TODO: need to verify if the cart is available or adjust
     },
 });
