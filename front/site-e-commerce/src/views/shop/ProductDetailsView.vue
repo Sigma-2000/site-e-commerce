@@ -93,9 +93,8 @@ const product = computed(() => productStore.selectedProduct);
 const error = computed(() => productStore.error);
 const successAddedCart = computed(() => cartStore.success);
 
-//TODO animation du logo panier ?? mettre en rupture si stock = 0 ??
-// créer une variable pour prevenir que ce produit est en front indispo et le passer par un store
-//pour qu'il y a une cohérence pour le user
+//TODO animation du logo panier ?? mettre en rupture si stock = 0
+
 const addProductToCart = (product) => {
     if (product && product.stock > 0) {
         product.stock -= 1;

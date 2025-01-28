@@ -32,19 +32,12 @@ export const useProductsStore = defineStore('products', {
             try {
                 const response = await axiosCaller.get('/products');
                 //this.products = response.data;
-
                 this.products = response.data.map((product) => {
-                    const localStock = this.localStock[product._id];
-                    if (localStock !== undefined) {
-                        product.stock = localStock;
-                    }
                     if (this.unavailableProducts.has(product._id)) {
                         product.stock = 0;
                     }
                     return product;
                 });
-
-                this.products = response.data.map((product) => this.mergeLocalState(product));
 
                 const filtered = this.filteredProducts(category);
                 this.productsPaginatedList = filtered.slice(0, this.numberOfProductByPage);
