@@ -84,7 +84,10 @@
         "update-product": "Une erreur s'est produite lors de la mise à jour de votre produit, veuillez recommencer",
         "update-artwork": "Une erreur s'est produite lors de la mise à jour de votre oeuvre, veuillez recommencer",
         "invalid-status": "Statut invalide.",
-        "update-status": "Une erreur s'est produite lors de la mise à jour du statut de la commande, veuillez recommencer"
+        "add-product-cart": "Nous sommes désolées une erreur s'est produite, veuillez recommencer l'ajout de ce produit à votre panier",
+        "update-status": "Une erreur s'est produite lors de la mise à jour du statut de la commande, veuillez recommencer",
+        "cart-product-removed": "Nous sommes désolées, nous avons du retirer un ou plusieurs articles de votre panier, nos stocks sont limités",
+        "cart-validation": "Une erreur s'est produite lors de la validation de votre panier, veuillez recharger la page"
     },
     "success": {
         "update-address": "Votre adresse a été mise à jour avec succès",
@@ -95,7 +98,8 @@
         "update-product": "Votre produit a été mis à jour avec succès",
         "update-artwork": "Votre oeuvre a été mis à jour avec succès",
         "update-status": "Statut de la commande mis à jour.",
-        "add-product-cart": "Votre article a été ajouté avec succes à votre panier"
+        "add-product-cart": "Votre article a été ajouté avec succes à votre panier",
+        "cart-updated": "Votre panier a été mis à jour selon en fonction des stocks réservés disponible"
     },
     "button": {
         "buy": "Ajouter au panier",
@@ -198,5 +202,11 @@
         "ordered": "La commande a été passé par",
         "delivery": "La commande doit étre livré au",
         "contact": "Son email de contact est "
+    },
+    "cart": {
+        "title": "Votre panier",
+        "login": "Veuillez vous connectez pour finaliser votre commande",
+        "empty": "Votre panier est vide",
+        "amount": "Le montant total de votre commande s'éléve à"
     }
 }

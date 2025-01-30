@@ -20,6 +20,8 @@
                 <Icon icon="ph:shopping-cart-thin" width="24" class="menu-cart-icon" />
                 <!--TODO: if there is a cart in local storage 
                 might be interresting to have a coloured round for attract the user at his cart-->
+                <!--TODO: Potential problem when the user is on cart and he click on cart for reload the component 
+                and it does'nt change (not mounted) because the url does'nt change -->
             </RouterLink>
             <Icon
                 :icon="

@@ -6,14 +6,6 @@ export const useProductsStore = defineStore('products', {
         products: [], //main state, database state (only source of truth)
         productsPaginatedList: [], //this state is specific for display products in shop, front-end state
         selectedProduct: {},
-        /*this state is related to local storage and is the only exception where back is
-        not the source of truth.*/
-        unavailableProducts: new Set(),
-        /*this state is blocking a product with stock 0 in front despite back fetch,
-        Set guaranteed unique key and no duplication*/
-        /*TODO: the better way is to use the back as only source of truth, especially if the app become more bigger
-        we should implement a new field in database for reserved an product stock for an hour for example */
-        //big problem when the user go an other page and add a new item and the stock is not empty, the stock is like back-end and not front..
         numberOfProductByPage: 5,
         isLoading: false,
         error: null,
@@ -31,14 +23,7 @@ export const useProductsStore = defineStore('products', {
             this.error = null;
             try {
                 const response = await axiosCaller.get('/products');
-                //this.products = response.data;
-                this.products = response.data.map((product) => {
-                    if (this.unavailableProducts.has(product._id)) {
-                        product.stock = 0;
-                    }
-                    return product;
-                });
-
+                this.products = response.data;
                 const filtered = this.filteredProducts(category);
                 this.productsPaginatedList = filtered.slice(0, this.numberOfProductByPage);
             } catch (err) {
@@ -55,9 +40,6 @@ export const useProductsStore = defineStore('products', {
             try {
                 const response = await axiosCaller.get(`/product/${id}`);
                 const product = response.data;
-                if (this.unavailableProducts.has(product.id)) {
-                    product.stock = 0;
-                }
                 this.selectedProduct = product;
             } catch (err) {
                 this.error = 'errors.display-element';
@@ -112,27 +94,6 @@ export const useProductsStore = defineStore('products', {
         },
         resetPagination() {
             this.productsPaginatedList = [];
-        },
-
-        initializeUnavailableProducts() {
-            const storedProducts = JSON.parse(localStorage.getItem('productsUnavailable')) || [];
-            this.unavailableProducts = new Set(storedProducts);
-        },
-
-        setProductUnavailable(productId) {
-            this.unavailableProducts.add(productId);
-            this.updateLocalStorage();
-        },
-
-        removeProductFromUnavailable(productId) {
-            this.unavailableProducts.delete(productId);
-            this.updateLocalStorage();
-        },
-        updateLocalStorage() {
-            localStorage.setItem(
-                'productsUnavailable',
-                JSON.stringify([...this.unavailableProducts])
-            ); //transform Set in string for record it in local storage
         },
         resetErrorSuccess() {
             this.error = null;

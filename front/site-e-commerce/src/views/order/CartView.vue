@@ -1,56 +1,64 @@
 <template>
     <div class="cart-view">
-        <h1>Cart</h1>
-
+        <h2>{{ $t('cart.title') }}</h2>
+        <!--TODO: + and - for user could adjust quantity-->
+        <SuccessComponent v-if="successCart" :success="successCart" />
+        <ErrorComponent v-if="errorCart" :error="errorCart" />
         <div v-if="cartItems.length">
             <ul>
                 <li v-for="item in cartItems" :key="item.id">
                     <img :src="item.image" :alt="item.title" />
                     <h3>{{ item.title[locale] }}</h3>
                     <p>{{ item.price }} €</p>
-                    <p>{{ $t('quantity') }}: {{ item.quantity }}</p>
+                    <p>{{ $t('order.quantity') }} {{ item.quantity }}</p>
 
-                    <button @click="removeFromCart(item.id)">Remove</button>
-                    <!--rajouter remove quantité héhé-->
+                    <button @click="removeFromCart(item.id)">
+                        <Icon icon="material-symbols-light:close" width="36" height="36" />
+                    </button>
                 </li>
             </ul>
+        </div>
+        <div v-if="cartItems.length">
             <p>
-                <strong>Total: {{ cartTotalPrice }} €</strong>
+                <strong>{{ $t('cart.amount') }} {{ cartTotalPrice }} €</strong>
             </p>
         </div>
-
-        <p v-else>Votre panier est vide.</p>
+        <p v-else>{{ $t('cart.empty') }}</p>
     </div>
+    <h3>{{ $t('cart.login') }}</h3>
     <LoginForm />
 </template>
 <script setup>
 import { onMounted, computed } from 'vue';
 import LoginForm from '@/components/auth/LoginForm.vue';
 import { useCartStore } from '@/stores/cartStore.js';
-import { useProductsStore } from '@/stores/productsStore';
+import { Icon } from '@iconify/vue';
+
+//import { useProductsStore } from '@/stores/productsStore';
 import { useI18n } from 'vue-i18n';
+import ErrorComponent from '@/components/ui/ErrorComponent.vue';
+import SuccessComponent from '@/components/ui/SuccessComponent.vue';
 
 const { locale } = useI18n();
 //recovery userconnection for display login or not
 const cartStore = useCartStore();
-const productStore = useProductsStore();
-const cart = computed(() => cartStore.cart);
-const cartItems = computed(() => cartStore.cart);
-const cartTotalPrice = computed(() => cartStore.cartTotalPrice);
 
-console.log(cart.value);
-const removeFromCart = (id) => {
+const cartItems = computed(() => cartStore.cart);
+const cartTotalPrice = computed(() => cartStore.totalPrice);
+const successCart = computed(() => cartStore.success);
+const errorCart = computed(() => cartStore.error);
+
+const removeFromCart = async (id) => {
     cartStore.removeFromCart(id);
-    productStore.removeProductFromUnavailable(id);
+    console.log(cartStore.totalPrice);
 };
 
 onMounted(() => {
+    cartStore.resetErrorSuccess();
     cartStore.loadCart();
 });
 
 //when user is logged we can display adress component and welcome phrase
 //TODO: need to modify the login component for not sending in account page
 //when the is register logic different account and message for end up the cart ?
-//always call validate cart in back end here for ensure local stoage is align !
-//delete getter in store for display price waiting the validate order and totalPrice send by back !!
 </script>
