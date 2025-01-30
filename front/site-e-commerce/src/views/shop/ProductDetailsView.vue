@@ -20,6 +20,7 @@
                     />
                 </div>
                 <SuccessComponent v-if="successAddedCart" :success="successAddedCart" />
+                <ErrorComponent v-if="error" :error="error" />
                 <!-- TODO: bug with success it appears for all products, and maybe set Interval for clear the message
                  during shopping process of the user -->
                 <div class="item-details-card-button">
@@ -62,13 +63,12 @@
                 </div>
             </section>
             <LoaderComponent v-else />
-            <ErrorComponent v-if="error" :error="error" />
         </div>
     </div>
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import LoaderComponent from '@/components/ui/LoaderComponent.vue';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
@@ -93,15 +93,13 @@ const product = computed(() => productStore.selectedProduct);
 const error = computed(() => productStore.error);
 const successAddedCart = computed(() => cartStore.success);
 
-//TODO animation du logo panier ?? mettre en rupture si stock = 0
+//TODO animation du logo panier ??
+//TODO: when user click on img, it growth
+//TODO: need to add video for digital art
 
 const addProductToCart = (product) => {
     if (product && product.stock > 0) {
         product.stock -= 1;
-        if (product.stock === 0) {
-            productStore.setProductUnavailable(product._id);
-        }
-
         const productAddedToCart = {
             id: product._id,
             title: product.artwork_id.title, // inside we have en and fr
@@ -115,10 +113,20 @@ const addProductToCart = (product) => {
     }
 };
 
+watch(
+    () => cartStore.success,
+    (newValue) => {
+        if (newValue) {
+            setTimeout(() => {
+                cartStore.resetErrorSuccess();
+            }, 3000);
+        }
+    }
+);
+
 onMounted(async () => {
     productStore.resetErrorSuccess();
+    cartStore.resetErrorSuccess();
     await productStore.fetchProductById(productId);
-    productStore.initializeUnavailableProducts();
-    productStore.loadLocalStock();
 });
 </script>

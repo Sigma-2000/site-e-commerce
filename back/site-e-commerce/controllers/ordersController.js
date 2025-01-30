@@ -140,12 +140,11 @@ const updateStatusOrderById = async (req, res) => {
     res.status(500).json({ error: "Error updating order status" });
   }
 };
-
 const validateCart = async (req, res) => {
   const { cart } = req.body;
 
   try {
-    const updatedCart = [];
+    let updatedCart = [];
 
     for (const item of cart) {
       const product = await Product.findById(item.id);
@@ -163,20 +162,48 @@ const validateCart = async (req, res) => {
         0
       );
 
+      if (reservedQuantity === 0) {
+        updatedCart.push({
+          id: item.id,
+          image: item.image,
+          title: item.title,
+          message:
+            "The requested quantity is not available anymore, we removed it from your cart.",
+        });
+        continue;
+      }
+
       if (item.quantity > reservedQuantity) {
         updatedCart.push({
           id: item.id,
-          message: "The requested quantity is not available anymore.",
+          image: item.image,
+          title: item.title,
+          type: item.type,
+          quantity: reservedQuantity,
+          price: item.price,
+          totalPrice: reservedQuantity * item.price,
+          message: "Insufficient stock, adjusted to valid your cart.",
         });
         continue;
       }
 
       updatedCart.push({
         id: item.id,
+        image: item.image,
+        price: item.price,
+        quantity: item.quantity,
+        totalPrice: item.quantity * item.price,
+        stock: product.stock,
+        title: item.title,
+        type: item.type,
         message: "Product quantity is valid.",
       });
     }
-    const total_price = await calculateTotalPrice(cart);
+
+    const total_price = updatedCart.reduce(
+      (sum, item) => sum + (item.totalPrice || 0),
+      0
+    );
 
     res.status(200).json({ updatedCart, total_price });
   } catch (error) {

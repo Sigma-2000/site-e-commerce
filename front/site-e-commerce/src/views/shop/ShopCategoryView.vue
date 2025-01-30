@@ -15,7 +15,10 @@
                         :key="product._id"
                         class="category-items"
                     >
-                        <SuccessComponent v-if="successAddedCart" :success="successAddedCart" />
+                        <SuccessComponent
+                            v-if="successAddedCart && lastAddedProductId === product._id"
+                            :success="successAddedCart"
+                        />
                         <h2>{{ product.artwork_id.title[locale] }}</h2>
                         <div class="category-content-items">
                             <img
@@ -97,7 +100,7 @@
 </template>
 
 <script setup>
-import { onMounted, computed, watch } from 'vue';
+import { onMounted, computed, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useProductsStore } from '@/stores/productsStore';
 import { useI18n } from 'vue-i18n';
@@ -108,17 +111,21 @@ import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import { useLanguage } from '@/composables/useLanguage';
 import { useUsersStore } from '@/stores/usersStore';
+import { useCartStore } from '@/stores/cartStore';
 
+const cartStore = useCartStore();
 const { t } = useI18n();
 const { locale } = useLanguage();
 const route = useRoute();
 const productStore = useProductsStore();
-
 const userStore = useUsersStore();
+
+const lastAddedProductId = ref(null);
 
 const isAdmin = computed(() => userStore.userInformation?.role === 'admin');
 const category = computed(() => route.params.category);
 const productsPaginatedList = computed(() => productStore.productsPaginatedList);
+
 const isLoadingFromAPi = computed(() => productStore.isLoading);
 const error = computed(() => productStore.error);
 const success = computed(() => productStore.success);
@@ -137,17 +144,12 @@ const removeProduct = async (id) => {
     await productStore.deleteProduct(id);
     await productStore.fetchProducts(category.value);
 };
-import { useCartStore } from '@/stores/cartStore';
-
-const cartStore = useCartStore();
 
 const addProductToCart = (product) => {
     if (product && product.stock > 0) {
-        product.stock -= 1; //TODO need to adapt with back !
+        product.stock -= 1;
         console.log(product._id);
-        if (product.stock === 0) {
-            productStore.setProductUnavailable(product._id);
-        }
+
         const productAddedToCart = {
             id: product._id,
             title: product.artwork_id.title,
@@ -158,13 +160,25 @@ const addProductToCart = (product) => {
         };
         console.log(productAddedToCart);
         cartStore.addToCart(productAddedToCart);
+        lastAddedProductId.value = product._id;
     }
 };
+watch(
+    () => cartStore.success,
+    (newValue) => {
+        if (newValue) {
+            setTimeout(() => {
+                cartStore.resetErrorSuccess();
+                lastAddedProductId.value = null;
+            }, 3000);
+        }
+    }
+);
 
 onMounted(async () => {
     productStore.resetPagination(); //maybe no need because it's fetching the data at mounting and the store display pagination
     productStore.resetErrorSuccess();
+    cartStore.resetErrorSuccess();
     await productStore.fetchProducts(category.value);
-    productStore.initializeUnavailableProducts();
 });
 </script>
