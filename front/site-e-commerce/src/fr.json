@@ -87,7 +87,10 @@
         "add-product-cart": "Nous sommes désolées une erreur s'est produite, veuillez recommencer l'ajout de ce produit à votre panier",
         "update-status": "Une erreur s'est produite lors de la mise à jour du statut de la commande, veuillez recommencer",
         "cart-product-removed": "Nous sommes désolées, nous avons du retirer un ou plusieurs articles de votre panier, nos stocks sont limités",
-        "cart-validation": "Une erreur s'est produite lors de la validation de votre panier, veuillez recharger la page"
+        "cart-validation": "Une erreur s'est produite lors de la validation de votre panier, veuillez recharger la page",
+        "order-creation": "Nous sommes désolée une erreur s'est produite lors de la création de votre commande, veuillez recommencer",
+        "no-products": "Vous ne pouvez pas passer commande sans selectionnez de produit.",
+        "no-address": "Il semble que vous n'avez pas renseigné d'adresse, veuillez renseignez votre adresse de livraison"
     },
     "success": {
         "update-address": "Votre adresse a été mise à jour avec succès",
@@ -108,7 +111,9 @@
         "validate": "Valider",
         "add-artworks": "Ajouter une oeuvre",
         "add-product": "Ajouter un produit",
-        "out-of-stock": "rupture de stock"
+        "out-of-stock": "rupture de stock",
+        "validate-cart": "Valider mon panier",
+        "validate-order": "Passer commande"
     },
     "detail": {
         "dimensions": "Dimensions",
@@ -201,12 +206,20 @@
         "quantity": "Quantité :",
         "ordered": "La commande a été passé par",
         "delivery": "La commande doit étre livré au",
-        "contact": "Son email de contact est "
+        "contact": "Son email de contact est ",
+        "thanks": "Merci pour votre commande !",
+        "thanks-info": "Vous pouvez retrouver tout les détails concernant celle-ci sur votre compte."
     },
     "cart": {
         "title": "Votre panier",
         "login": "Veuillez vous connectez pour finaliser votre commande",
         "empty": "Votre panier est vide",
-        "amount": "Le montant total de votre commande s'éléve à"
+        "amount": "Le montant total de votre commande s'éléve à",
+        "delete": "Supprimer",
+        "price": "Prix à l'unité: ",
+        "order-address": "Souhaitez-vous faire livrer à l'adresse renseignée ici ? ",
+        "connect-purchase": "Me connecter et poursuivre ma commande",
+        "purchase": "Vous avez un panier en cours",
+        "go-to-cart": "Poursuivre mes achats"
     }
 }

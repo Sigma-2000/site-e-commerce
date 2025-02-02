@@ -6,6 +6,7 @@ export const useUsersStore = defineStore('users', {
         userInformation: null,
         error: null,
         success: null,
+        loginOrigin: null,
     }),
     actions: {
         async login(credentials) {
@@ -18,6 +19,12 @@ export const useUsersStore = defineStore('users', {
                 this.error = 'errors.auth';
                 console.error(err);
             }
+        },
+        setLoginOrigin(origin) {
+            this.loginOrigin = origin;
+        },
+        resetLoginOrigin() {
+            this.loginOrigin = null;
         },
         async signUp(data) {
             this.error = null;
