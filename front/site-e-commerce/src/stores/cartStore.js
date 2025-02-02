@@ -22,6 +22,7 @@ export const useCartStore = defineStore('cart', {
                     quantity: 1,
                 });
                 this.success = 'success.add-product-cart';
+                //await this.validateCart();
                 this.persistCart();
             } catch (err) {
                 this.error = 'error.add-product-cart';
@@ -95,6 +96,14 @@ export const useCartStore = defineStore('cart', {
             } else {
                 localStorage.removeItem('cart');
             }
+        },
+        resetCart() {
+            this.cart = [];
+            this.totalPrice = 0;
+            localStorage.removeItem('cart');
+        },
+        setError(errorMessage) {
+            this.error = errorMessage;
         },
         resetErrorSuccess() {
             this.error = null;

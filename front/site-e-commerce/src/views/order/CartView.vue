@@ -1,64 +1,124 @@
 <template>
     <div class="cart-view">
-        <h2>{{ $t('cart.title') }}</h2>
-        <!--TODO: + and - for user could adjust quantity-->
+        <div class="underline-short"></div>
+        <router-link to="/shop" class="pages-link">
+            <h2>{{ $t('menu.shop') }}</h2>
+        </router-link>
+        <div class="underline-long"></div>
+        <h3>{{ $t('cart.title') }}</h3>
         <SuccessComponent v-if="successCart" :success="successCart" />
         <ErrorComponent v-if="errorCart" :error="errorCart" />
-        <div v-if="cartItems.length">
-            <ul>
-                <li v-for="item in cartItems" :key="item.id">
+        <div v-if="isLoggedIn">
+            <h3>{{ $t('account.welcome') }} {{ userName }}</h3>
+        </div>
+        <div v-if="cartItems.length" class="cart-list">
+            <p class="cart-amount">
+                {{ $t('cart.amount') }} <strong>{{ cartTotalPrice }} €</strong>
+            </p>
+            <div class="account-underline-center"></div>
+            <ul class="cart-product-list">
+                <li v-for="item in cartItems" :key="item.id" class="cart-product-details">
                     <img :src="item.image" :alt="item.title" />
-                    <h3>{{ item.title[locale] }}</h3>
-                    <p>{{ item.price }} €</p>
-                    <p>{{ $t('order.quantity') }} {{ item.quantity }}</p>
-
-                    <button @click="removeFromCart(item.id)">
-                        <Icon icon="material-symbols-light:close" width="36" height="36" />
-                    </button>
+                    <div class="cart-text">
+                        <h4>{{ item.title[locale] }}</h4>
+                        <p>
+                            {{ $t('cart.price') }} <strong>{{ item.price }} € </strong>
+                        </p>
+                        <p>
+                            {{ $t('order.quantity') }} <strong>{{ item.quantity }} </strong>
+                        </p>
+                        <!--TODO: + and - for user could adjust quantity-->
+                        <p>{{ item.type }}</p>
+                        <ButtonComponent @click="removeFromCart(item.id)">
+                            {{ $t('cart.delete') }}
+                        </ButtonComponent>
+                    </div>
                 </li>
             </ul>
         </div>
-        <div v-if="cartItems.length">
-            <p>
-                <strong>{{ $t('cart.amount') }} {{ cartTotalPrice }} €</strong>
-            </p>
+        <p v-else class="no-cart">{{ $t('cart.empty') }}</p>
+        <div class="account-underline-center"></div>
+        <div v-if="!isLoggedIn">
+            <h3 class="title-login-cart">{{ $t('cart.login') }}</h3>
+            <LoginForm />
         </div>
-        <p v-else>{{ $t('cart.empty') }}</p>
+        <div v-else>
+            <h3 class="title-login-cart">{{ $t('cart.order-address') }}</h3>
+            <AddressUpdate />
+            <div class="button-purchase">
+                <ButtonComponent class="validate-order-button" @click="createOrder">
+                    {{ $t('button.validate-order') }}
+                </ButtonComponent>
+                <!--:disabled="!cartItems.value.length"-->
+            </div>
+        </div>
     </div>
-    <h3>{{ $t('cart.login') }}</h3>
-    <LoginForm />
 </template>
 <script setup>
-import { onMounted, computed } from 'vue';
 import LoginForm from '@/components/auth/LoginForm.vue';
-import { useCartStore } from '@/stores/cartStore.js';
-import { Icon } from '@iconify/vue';
-
-//import { useProductsStore } from '@/stores/productsStore';
-import { useI18n } from 'vue-i18n';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import SuccessComponent from '@/components/ui/SuccessComponent.vue';
+import ButtonComponent from '@/components/ui/ButtonComponent.vue';
+import AddressUpdate from '@/components/account/AddressUpdate.vue';
+
+import { onMounted, computed } from 'vue';
+
+import { useCartStore } from '@/stores/cartStore.js';
+import { useUsersStore } from '@/stores/usersStore';
+import { useOrdersStore } from '@/stores/ordersStore';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 const { locale } = useI18n();
-//recovery userconnection for display login or not
 const cartStore = useCartStore();
+const usersStore = useUsersStore();
+const orderStore = useOrdersStore();
+const router = useRouter();
 
 const cartItems = computed(() => cartStore.cart);
 const cartTotalPrice = computed(() => cartStore.totalPrice);
 const successCart = computed(() => cartStore.success);
 const errorCart = computed(() => cartStore.error);
+const isLoggedIn = computed(() => !!usersStore.userInformation);
+const userName = computed(() => usersStore.userInformation?.firstName);
+const userAddress = computed(() => usersStore.userInformation?.address_id);
 
 const removeFromCart = async (id) => {
     cartStore.removeFromCart(id);
     console.log(cartStore.totalPrice);
 };
 
+const createOrder = async () => {
+    if (!userAddress.value) {
+        cartStore.setError('errors.no-address');
+        return;
+    }
+    if (!cartItems.value.length) {
+        cartStore.setError('errors.no-products');
+        return;
+    }
+    try {
+        const orderData = {
+            user_id: usersStore.userInformation.id,
+            address_id: userAddress.value,
+            products: cartItems.value.map((item) => ({
+                id: item.id,
+                quantity: item.quantity,
+            })),
+        };
+
+        await orderStore.createOrder(orderData);
+        cartStore.resetCart();
+        orderStore.setOrderOrigin('order');
+        router.push('/thank-you');
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 onMounted(() => {
     cartStore.resetErrorSuccess();
     cartStore.loadCart();
+    usersStore.setLoginOrigin('cart');
 });
-
-//when user is logged we can display adress component and welcome phrase
-//TODO: need to modify the login component for not sending in account page
-//when the is register logic different account and message for end up the cart ?
 </script>

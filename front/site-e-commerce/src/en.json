@@ -87,7 +87,10 @@
         "add-product-cart": "We are sorry an error occured, please retry for adding this product to your cart",
         "update-status": "An error occured while the update of the order's status, please retry",
         "cart-product-removed": "We are sorry we removed some article(s) in your cart, our stock is limited",
-        "cart-validation": "An error occured while the validation of your cart, please reload"
+        "cart-validation": "An error occured while the validation of your cart, please reload",
+        "order-creation": "We are sorry an error occured while the creation of your order, please retry",
+        "no-products": "You don't proceed to order, if your cart is empty",
+        "no-address": "It seems you dont' provide an address, please retry with your delivery address"
     },
     "success": {
         "update-address": "Your adress was updating successfully",
@@ -99,7 +102,7 @@
         "update-artwork": "Your artwork was updating successfully",
         "update-status": "Status of order Updated successfully",
         "add-product-cart": "Your article was adding successfully in your cart",
-        "cart-updated": "Your cart has been updated to be align with our reservation stock available "
+        "cart-updated": "Your cart has been updated to be align with our reservation stock available"
     },
     "button": {
         "buy": "Add to cart",
@@ -108,7 +111,9 @@
         "validate": "Validate",
         "add-artworks": "Add an artwork",
         "add-product": "Add a product",
-        "out-of-stock": "out of stock"
+        "out-of-stock": "out of stock",
+        "validate-cart": "Validate my cart",
+        "validate-order": "Proceed to order"
     },
     "detail": {
         "dimensions": "Dimensions",
@@ -201,12 +206,20 @@
         "quantity": "Quantity :",
         "ordered": "The order was placed by",
         "delivery": "The order is to be delivered to",
-        "contact": "The contact email is"
+        "contact": "The contact email is",
+        "thanks": "Thanks for you order !",
+        "thanks-info": "You can consult all the details about it in your account."
     },
     "cart": {
         "title": "Your cart",
         "login": "Please log in to proceed with your order.",
         "empty": "Your cart is empty",
-        "amount": "The total amount of your order is"
+        "amount": "The total amount of your order is",
+        "delete": "Delete",
+        "price": "Unit price: ",
+        "order-address": "Would you like to have it delivered to the address provided here ?",
+        "connect-purchase": "Log in and continue my order",
+        "purchase": "You have an ongoing cart",
+        "go-to-cart": "Continue shopping"
     }
 }

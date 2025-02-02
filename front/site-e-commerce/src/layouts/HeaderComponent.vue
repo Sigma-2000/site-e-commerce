@@ -16,10 +16,11 @@
             <div class="logo-underline"></div>
         </div>
         <div class="content-top-menu-icon">
-            <RouterLink to="/cart">
+            <RouterLink to="/cart" class="cart-container">
                 <Icon icon="ph:shopping-cart-thin" width="24" class="menu-cart-icon" />
-                <!--TODO: if there is a cart in local storage 
-                might be interresting to have a coloured round for attract the user at his cart-->
+                <span v-if="cartItems.length" class="menu-cart-alert"
+                    ><Icon icon="noto:red-circle" width="10" height="10"
+                /></span>
                 <!--TODO: Potential problem when the user is on cart and he click on cart for reload the component 
                 and it does'nt change (not mounted) because the url does'nt change -->
             </RouterLink>
@@ -39,7 +40,9 @@
 <script setup>
 import { Icon } from '@iconify/vue';
 import MenuComponent from './MenuComponent.vue';
+import { computed } from 'vue';
 import { useDarkModeStore } from '@/stores/darkModeStore';
+import { useCartStore } from '@/stores/cartStore';
 
 defineProps({
     isVisible: {
@@ -53,4 +56,7 @@ defineProps({
 });
 const emit = defineEmits(['toggle-menu']);
 const darkModeStore = useDarkModeStore();
+const cartStore = useCartStore();
+
+const cartItems = computed(() => cartStore.cart);
 </script>

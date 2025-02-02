@@ -21,9 +21,6 @@
         color: inherit;
         cursor: pointer;
     }
-    .item-details-submenu {
-        margin: 20px 10px;
-    }
     h2,
     h3 {
         font-weight: $font-weight-medium;
@@ -162,6 +159,15 @@
             @include underline(40%, 40%, null);
         }
     }
+    .cart-account {
+        text-align: center;
+        margin-bottom: 5px;
+        a {
+            all: unset;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
     .order-historic {
         display: flex;
         flex-direction: column;
@@ -196,5 +202,8 @@
     }
     .order-cancelled {
         align-self: center;
+    }
+    .no-order {
+        text-align: center;
     }
 }

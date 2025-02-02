@@ -18,7 +18,10 @@
 import { RouterView } from 'vue-router';
 import FooterComponent from '@/layouts/FooterComponent.vue';
 import HeaderComponent from '@/layouts/HeaderComponent.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useCartStore } from '@/stores/cartStore';
+
+const cartStore = useCartStore();
 
 const isMenuDisplayed = ref(false);
 
@@ -29,6 +32,10 @@ const closeMenu = () => {
 const toggleMenu = () => {
     isMenuDisplayed.value = !isMenuDisplayed.value;
 };
+
+onMounted(() => {
+    cartStore.loadCart();
+});
 </script>
 
 <style>

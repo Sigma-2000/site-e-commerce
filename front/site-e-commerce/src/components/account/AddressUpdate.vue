@@ -1,5 +1,5 @@
 <template>
-    <div class="update-address">
+    <div v-if="address" class="update-address">
         <h3>
             {{ $t('account.address') }}
             <Icon

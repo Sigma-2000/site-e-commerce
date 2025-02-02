@@ -7,8 +7,20 @@ export const useOrdersStore = defineStore('orders', {
         filterType: 'all',
         error: null,
         success: null,
+        orderOrigin: null,
     }),
     actions: {
+        async createOrder(orderData) {
+            this.error = null;
+            this.success = null;
+            try {
+                const response = await axiosCaller.post('/order', orderData);
+                return response.data;
+            } catch (err) {
+                this.error = 'errors.order-creation';
+                console.error(err);
+            }
+        },
         async fetchAllOrders() {
             console.log('appel');
             this.error = null;
@@ -34,13 +46,7 @@ export const useOrdersStore = defineStore('orders', {
                     status_order: status,
                 });
                 this.success = 'success.update-status';
-
-                // Mettre à jour la commande dans le tableau local
                 //fetch de nouveau ??
-                /*const index = this.orders.findIndex((order) => order._id === orderId);
-                if (index !== -1) {
-                    this.orders[index] = response.data.order;
-                }*/
             } catch (err) {
                 this.error = 'errors.update-status';
                 console.error(err);
@@ -48,6 +54,12 @@ export const useOrdersStore = defineStore('orders', {
         },
         setFilterType(type) {
             this.filterType = type;
+        },
+        setOrderOrigin(origin) {
+            this.orderOrigin = origin;
+        },
+        resetOrderOrigin() {
+            this.orderOrigin = null;
         },
         resetErrorSuccess() {
             this.error = null;

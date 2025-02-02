@@ -11,4 +11,12 @@
 
 <script setup>
 import LoginForm from '@/components/auth/LoginForm.vue';
+import { onMounted } from 'vue';
+import { useUsersStore } from '@/stores/usersStore';
+
+const usersStore = useUsersStore();
+
+onMounted(() => {
+    usersStore.resetLoginOrigin();
+});
 </script>
