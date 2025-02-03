@@ -1,0 +1,98 @@
+.sign-up-view {
+    margin: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    h2,
+    h3 {
+        font-weight: $font-weight-medium;
+        color: var(--color-text);
+    }
+    h3 {
+        margin: 10px;
+    }
+    .underline-long {
+        @include underline(0%, 0%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 20%, null);
+        }
+        @include respond-to('desktop') {
+            @include underline(0%, 30%, null);
+        }
+    }
+
+    .underline-short {
+        @include underline(0%, 40%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 60%, null);
+        }
+    }
+    .sign-up-img {
+        width: 90%;
+        display: block;
+        align-self: center;
+        @include respond-to('tablet') {
+            width: 35%;
+            margin-left: 20px;
+        }
+        @include respond-to('desktop') {
+            width: 25%;
+            margin-left: 25px;
+        }
+    }
+    .register-form {
+        margin: 20px 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+
+        input {
+            width: 100%;
+            height: 20%;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            padding: 12px 20px;
+
+            @include respond-to('tablet') {
+                width: 40%;
+            }
+            &.invalid {
+                border-color: var(--error-color);
+            }
+        }
+        label {
+            margin: 10px;
+            width: 100%;
+            color: var(--color-text);
+            @include respond-to('tablet') {
+                width: 40%;
+            }
+        }
+        .checkbox-user-data {
+            width: 20px;
+        }
+        .register-button {
+            width: 100%;
+            margin-bottom: 10px;
+            @include respond-to('tablet') {
+                width: 40%;
+            }
+        }
+    }
+    .register-underline-center {
+        margin-bottom: 20px;
+        @include underline(20%, 20%, null);
+        @include respond-to('tablet') {
+            @include underline(40%, 40%, null);
+        }
+    }
+    .login-link {
+        text-align: center;
+        color: var(--color-text);
+        a {
+            all: unset;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+}

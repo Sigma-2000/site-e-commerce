@@ -1,0 +1,123 @@
+.category-view {
+    margin: 20px 40px;
+    .underline-long {
+        @include underline(0%, 0%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 20%, null);
+        }
+        @include respond-to('desktop') {
+            @include underline(0%, 30%, null);
+        }
+    }
+
+    .underline-short {
+        @include underline(0%, 40%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 60%, null);
+        }
+    }
+    .pages-link {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+    }
+    h2,
+    h3 {
+        font-weight: $font-weight-medium;
+        color: var(--color-text);
+    }
+    p {
+        color: var(--color-text);
+    }
+
+    .underline-extra-short {
+        @include underline(0%, 40%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 70%, null);
+        }
+    }
+
+    .category-content {
+        margin: 20px 10px;
+        .category-content-list {
+            margin: 20px 10px;
+            ul,
+            li {
+                list-style: none;
+            }
+            .shop-available {
+                margin-left: 10px;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+            .category-content-items {
+                display: flex;
+                justify-content: center;
+                img {
+                    width: 100%;
+                    height: 200px;
+                    object-fit: contain;
+                    border-radius: 5px;
+                    margin: 20px 10px;
+                    box-shadow: -3px 5px 11px 6px var(--shadow-color);
+                    @include respond-to('tablet') {
+                        width: 50%;
+                        height: 500px;
+                    }
+                }
+            }
+            .category-content-items-more-details {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                align-content: flex-end;
+                margin-left: 20px;
+                justify-content: center;
+
+                .category-content-items-more-details-button {
+                    margin: 10px -10px;
+                    .custom-button {
+                        width: 100% !important;
+                        height: 85% !important;
+                    }
+                }
+
+                .details-link {
+                    text-decoration: none;
+                    font-weight: $font-weight-semibold;
+                    font-size: $font-size-medium;
+                    color: var(--color-text);
+                    text-decoration: underline;
+                    /*margin-left: 10px;*/
+                }
+            }
+            .underline-center {
+                @include underline(-10%, -15%, null);
+                @include respond-to('tablet') {
+                    @include underline(10%, 20%, null);
+                }
+            }
+            .admin-actions {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                .edit-link {
+                    all: unset;
+                    cursor: pointer;
+                    color: var(--color-text);
+                }
+                button {
+                    all: unset;
+                    cursor: pointer;
+                    color: var(--alert-color);
+                }
+            }
+            .category-content-items-more-results-button {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+            }
+        }
+    }
+}

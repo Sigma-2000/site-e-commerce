@@ -1,0 +1,20 @@
+.delete-account {
+    margin: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    p {
+        color: var(--color-text);
+    }
+    .delete-link {
+        cursor: pointer;
+        text-decoration: underline;
+        margin-bottom: 20px;
+    }
+    .account-underline-center {
+        margin: 10px 0px;
+        @include underline(20%, 20%, null);
+        @include respond-to('tablet') {
+            @include underline(40%, 40%, null);
+        }
+    }
+}

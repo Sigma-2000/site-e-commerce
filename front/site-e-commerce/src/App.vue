@@ -16,9 +16,12 @@
 
 <script setup>
 import { RouterView } from 'vue-router';
-import FooterComponent from '@/components/layouts/FooterComponent.vue';
-import HeaderComponent from '@/components/layouts/HeaderComponent.vue';
-import { ref } from 'vue';
+import FooterComponent from '@/layouts/FooterComponent.vue';
+import HeaderComponent from '@/layouts/HeaderComponent.vue';
+import { ref, onMounted } from 'vue';
+import { useCartStore } from '@/stores/cartStore';
+
+const cartStore = useCartStore();
 
 const isMenuDisplayed = ref(false);
 
@@ -29,6 +32,10 @@ const closeMenu = () => {
 const toggleMenu = () => {
     isMenuDisplayed.value = !isMenuDisplayed.value;
 };
+
+onMounted(() => {
+    cartStore.loadCart();
+});
 </script>
 
 <style>
@@ -37,6 +44,9 @@ main,
 footer {
     width: 100%;
     max-width: 100%;
+}
+main {
+    flex: 1;
 }
 .content-header {
     position: sticky;

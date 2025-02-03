@@ -1,0 +1,27 @@
+.custom-button {
+    color: var(--color-primary);
+    background-color: var(--color-graphic-element);
+    width: 50%;
+    height: 20%;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    transition:
+        background-color 0.3s ease,
+        transform 0.2s ease;
+    &:hover {
+        color: var(--color-background);
+        transform: scale(1.1);
+    }
+    &:disabled {
+        background-color: var(--color-disabled);
+        color: var(--color-text);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+}

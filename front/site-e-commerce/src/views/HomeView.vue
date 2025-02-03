@@ -1,7 +1,11 @@
 <template>
     <div class="home">
         <div class="home-banner">
-            <img src="/images/banner-nightmare.jpg" alt="banner-img" class="home-banner-img" />
+            <img
+                src="/images/banner-nightmare.jpg"
+                alt="banner nightmare painting"
+                class="home-banner-img"
+            />
         </div>
         <div class="home-presentation">
             <div class="logo-underline-long"></div>
@@ -41,7 +45,7 @@
             <div class="logo-underline-long"></div>
             <div class="about-img">
                 <router-link to="/about">
-                    <img src="/images/sigma-2000-photo.jpg" alt="framing-original" />
+                    <img src="/images/sigma-2000-photo.jpg" alt="portrait of the artist" />
                 </router-link>
             </div>
         </div>
