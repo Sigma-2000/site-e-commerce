@@ -122,11 +122,10 @@ const handleSignUp = async () => {
     if (emailError.value || passwordError.value || phoneError.value) {
         return;
     }
-    try {
-        await usersStore.signUp(form);
+    await usersStore.signUp(form);
+
+    if (!usersStore.error) {
         router.push('/thank-you');
-    } catch (error) {
-        console.error(error);
     }
 };
 

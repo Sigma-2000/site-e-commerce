@@ -71,6 +71,7 @@
         "display-list": "We are sorry, an error occurred while retrieving the items.",
         "display-element": "We are sorry, an error occurred while displaying this item.",
         "auth": "Authentication error, please retry or create your account.",
+        "already-subscribe": "It seems this email is already link to an account.",
         "subscribe": "We are sorry, an error occured while the process, please retry.",
         "invalid-email": "Your email is not valid.",
         "password": "Your password must contain at least 8 characters.",
@@ -174,7 +175,8 @@
         "adding-product": "Adding a product associate to this artwork :",
         "consult-orders": "{consult} orders ",
         "consult-orders-in-progress": "{consult} orders in progress",
-        "modificate-status-order": "{modificate} orders's status which in progress"
+        "modificate-status-order": "{modificate} orders's status which in progress",
+        "upload": "Please make sure to upload 5 images. The first one is used for displaying the artwork, and the last one is for the product page."
     },
     "form-artworks": {
         "update": "Update of your artwork",

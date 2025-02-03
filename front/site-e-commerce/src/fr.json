@@ -72,6 +72,7 @@
         "display-element": "Nous sommes désolées, une erreur s'est produite pour l'affichage de cet item.",
         "auth": "Erreur d'authentification, veuillez réessayer ou inscrivez vous.",
         "subscribe": "Nous sommes désolées, une erreur s'est produite lors du processus, veuillez recommencer.",
+        "already-subscribe": "Il semble que cette adresse est déjà associée à un compte.",
         "invalid-email": "Votre email n'est pas valide.",
         "password": "Votre mot de passe doit contenir au moins 8 caractères.",
         "invalid-phone": "Votre numéro de téléphone doit contenir 10 chiffres",
@@ -174,7 +175,8 @@
         "adding-product": "Ajouter un produit associé à cet oeuvre :",
         "consult-orders": "{consult} les commandes",
         "consult-orders-in-progress": "{consult} les commandes en cours",
-        "modificate-status-order": "{modificate} du status des commandes en cours "
+        "modificate-status-order": "{modificate} du status des commandes en cours ",
+        "upload": "Veuillez à mettre 5 images, la première est utilisée dans l'affichage de l'oeuvre et la dernière pour la page produit."
     },
     "form-artworks": {
         "update": "Mise à jour de votre oeuvre",

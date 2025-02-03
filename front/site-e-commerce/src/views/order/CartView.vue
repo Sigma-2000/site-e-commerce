@@ -88,8 +88,8 @@ const userAddress = computed(() => usersStore.userInformation?.address_id);
 
 const removeFromCart = async (id) => {
     cartStore.removeFromCart(id);
-    console.log(cartStore.totalPrice);
 };
+
 const decrementQuantity = async (productId) => {
     await cartStore.decreaseQuantity(productId);
 };

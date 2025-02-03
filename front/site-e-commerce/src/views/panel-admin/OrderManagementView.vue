@@ -137,8 +137,6 @@ const ordersWithUserAndAddress = computed(() =>
     }))
 );
 
-console.log(ordersWithUserAndAddress.value);
-
 const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
 const editingOrderId = ref(null);
 const selectedStatus = ref('');

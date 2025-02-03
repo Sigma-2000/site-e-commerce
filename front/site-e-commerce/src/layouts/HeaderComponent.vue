@@ -21,8 +21,6 @@
                 <span v-if="cartItems.length" class="menu-cart-alert"
                     ><Icon icon="noto:red-circle" width="10" height="10"
                 /></span>
-                <!--TODO: Potential problem when the user is on cart and he click on cart for reload the component 
-                and it does'nt change (not mounted) because the url does'nt change -->
             </RouterLink>
             <Icon
                 :icon="
