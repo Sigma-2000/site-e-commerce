@@ -6,6 +6,7 @@ export const useUsersStore = defineStore('users', {
         userInformation: null,
         error: null,
         success: null,
+        loginOrigin: null,
     }),
     actions: {
         async login(credentials) {
@@ -13,10 +14,17 @@ export const useUsersStore = defineStore('users', {
             try {
                 const response = await axiosCaller.post('/login', credentials);
                 this.userInformation = response.data;
+                console.log(response.data);
             } catch (err) {
                 this.error = 'errors.auth';
                 console.error(err);
             }
+        },
+        setLoginOrigin(origin) {
+            this.loginOrigin = origin;
+        },
+        resetLoginOrigin() {
+            this.loginOrigin = null;
         },
         async signUp(data) {
             this.error = null;
@@ -51,6 +59,7 @@ export const useUsersStore = defineStore('users', {
             try {
                 const response = await axiosCaller.get(`/user/${this.userInformation.id}`);
                 this.userInformation = response.data;
+                console.log(response.data);
             } catch (err) {
                 this.userInformation = null;
                 console.error(err);

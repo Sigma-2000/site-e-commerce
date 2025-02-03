@@ -1,5 +1,5 @@
 <template>
-    <div class="modificate-artworks-products">
+    <div class="modificate-views">
         <h3 v-if="isAddingArtwork">
             <Icon
                 icon="material-symbols-light:arrow-back"
