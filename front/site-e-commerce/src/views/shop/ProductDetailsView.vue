@@ -93,7 +93,6 @@ const product = computed(() => productStore.selectedProduct);
 const error = computed(() => productStore.error);
 const successAddedCart = computed(() => cartStore.success);
 
-//TODO animation du logo panier ??
 //TODO: when user click on img, it growth
 //TODO: need to add video for digital art
 

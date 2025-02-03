@@ -98,7 +98,15 @@
                             width: 65% !important;
                         }
                         @include respond-to('desktop') {
-                            width: 50% !important;
+                            width: 70% !important;
+                        }
+                    }
+                    .cart-product-quantity {
+                        display: flex;
+                        button {
+                            width: 15px !important;
+                            height: 18px;
+                            margin: 0px 5px;
                         }
                     }
                 }

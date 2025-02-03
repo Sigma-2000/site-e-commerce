@@ -21,11 +21,35 @@ export const useCartStore = defineStore('cart', {
                 await axiosCaller.post(`/product/${product.id}/reservation`, {
                     quantity: 1,
                 });
-                this.success = 'success.add-product-cart';
-                //await this.validateCart();
+                await this.validateCart();
                 this.persistCart();
+                this.success = 'success.add-product-cart';
             } catch (err) {
-                this.error = 'error.add-product-cart';
+                this.error = 'errors.add-product-cart';
+                console.error(err);
+            }
+        },
+        //TODO: refactoring decrease and remove ...
+        async decreaseQuantity(productId) {
+            try {
+                const productInCart = this.cart.find((item) => item.id === productId);
+                if (!productInCart) return;
+
+                if (productInCart.quantity > 1) {
+                    await axiosCaller.post(`/product/${productId}/remove-reservation`, {
+                        quantity: 1,
+                    });
+
+                    productInCart.quantity--;
+                } else {
+                    await this.removeFromCart(productId);
+                    return;
+                }
+                await this.validateCart();
+                this.syncCartWithLocalStorage();
+                this.success = 'success.remove-product-cart';
+            } catch (err) {
+                this.error = 'errors.remove-product-cart';
                 console.error(err);
             }
         },
@@ -39,9 +63,9 @@ export const useCartStore = defineStore('cart', {
                 });
 
                 this.cart = this.cart.filter((item) => item.id !== productId);
-                this.success = 'success.remove-product-cart';
                 await this.validateCart();
                 this.syncCartWithLocalStorage();
+                this.success = 'success.remove-product-cart';
             } catch (err) {
                 this.error = 'errors.remove-product-cart';
                 console.error(err);
@@ -68,6 +92,7 @@ export const useCartStore = defineStore('cart', {
                 );
 
                 this.totalPrice = response.data.total_price;
+                console.log(this.totalPrice);
                 localStorage.setItem('cart', JSON.stringify(this.cart));
 
                 if (hasRemovedItems) {

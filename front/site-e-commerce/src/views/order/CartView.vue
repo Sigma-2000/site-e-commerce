@@ -24,10 +24,14 @@
                         <p>
                             {{ $t('cart.price') }} <strong>{{ item.price }} € </strong>
                         </p>
-                        <p>
-                            {{ $t('order.quantity') }} <strong>{{ item.quantity }} </strong>
-                        </p>
-                        <!--TODO: + and - for user could adjust quantity-->
+                        <div class="cart-product-quantity">
+                            <p>
+                                {{ $t('order.quantity') }}
+                                <button @click="decrementQuantity(item.id)">-</button>
+                                <strong>{{ item.quantity }} </strong>
+                                <button @click="incrementQuantity(item)">+</button>
+                            </p>
+                        </div>
                         <p>{{ item.type }}</p>
                         <ButtonComponent @click="removeFromCart(item.id)">
                             {{ $t('cart.delete') }}
@@ -49,7 +53,6 @@
                 <ButtonComponent class="validate-order-button" @click="createOrder">
                     {{ $t('button.validate-order') }}
                 </ButtonComponent>
-                <!--:disabled="!cartItems.value.length"-->
             </div>
         </div>
     </div>
@@ -61,7 +64,7 @@ import SuccessComponent from '@/components/ui/SuccessComponent.vue';
 import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import AddressUpdate from '@/components/account/AddressUpdate.vue';
 
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, watch } from 'vue';
 
 import { useCartStore } from '@/stores/cartStore.js';
 import { useUsersStore } from '@/stores/usersStore';
@@ -87,7 +90,12 @@ const removeFromCart = async (id) => {
     cartStore.removeFromCart(id);
     console.log(cartStore.totalPrice);
 };
-
+const decrementQuantity = async (productId) => {
+    await cartStore.decreaseQuantity(productId);
+};
+const incrementQuantity = async (product) => {
+    await cartStore.addToCart(product);
+};
 const createOrder = async () => {
     if (!userAddress.value) {
         cartStore.setError('errors.no-address');
@@ -106,7 +114,6 @@ const createOrder = async () => {
                 quantity: item.quantity,
             })),
         };
-
         await orderStore.createOrder(orderData);
         cartStore.resetCart();
         orderStore.setOrderOrigin('order');
@@ -115,6 +122,21 @@ const createOrder = async () => {
         console.error(error);
     }
 };
+/*
+setTimeout(() => {
+    cartStore.resetErrorSuccess();
+}, 3000);*/
+
+watch(
+    () => cartStore.success,
+    (newValue) => {
+        if (newValue) {
+            setTimeout(() => {
+                cartStore.resetErrorSuccess();
+            }, 3000);
+        }
+    }
+);
 
 onMounted(() => {
     cartStore.resetErrorSuccess();
