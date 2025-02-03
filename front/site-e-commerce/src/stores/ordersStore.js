@@ -22,12 +22,10 @@ export const useOrdersStore = defineStore('orders', {
             }
         },
         async fetchAllOrders() {
-            console.log('appel');
             this.error = null;
             try {
                 const response = await axiosCaller.get('/orders');
                 this.orders = response.data;
-                console.log(response.data);
             } catch (err) {
                 this.error = 'errors.display-list';
                 console.error(err);

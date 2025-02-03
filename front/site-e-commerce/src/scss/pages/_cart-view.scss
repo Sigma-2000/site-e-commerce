@@ -95,10 +95,10 @@
                         width: 100% !important;
 
                         @include respond-to('tablet') {
-                            width: 65% !important;
+                            width: 90% !important;
                         }
                         @include respond-to('desktop') {
-                            width: 70% !important;
+                            width: 90% !important;
                         }
                     }
                     .cart-product-quantity {
