@@ -84,7 +84,7 @@
         "update-product": "An error occured while the update of your product, please retry",
         "update-artwork": "An error occured while the update of your artwork, please retry",
         "invalid-status": "Invalid status.",
-        "add-product-cart": "We are sorry an error occured, please retry for adding this product to your cart",
+        "add-product-cart": "We are sorry an error occured while adding this product, our stock is limited ",
         "update-status": "An error occured while the update of the order's status, please retry",
         "cart-product-removed": "We are sorry we removed some article(s) in your cart, our stock is limited",
         "cart-validation": "An error occured while the validation of your cart, please reload",
@@ -102,6 +102,7 @@
         "update-artwork": "Your artwork was updating successfully",
         "update-status": "Status of order Updated successfully",
         "add-product-cart": "Your article was adding successfully in your cart",
+        "remove-product-cart": "Your article was removing successfully of your cart",
         "cart-updated": "Your cart has been updated to be align with our reservation stock available"
     },
     "button": {
