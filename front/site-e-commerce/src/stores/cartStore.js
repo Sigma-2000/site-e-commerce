@@ -82,7 +82,6 @@ export const useCartStore = defineStore('cart', {
                     cart: this.cart,
                 });
                 const updatedCart = response.data.updatedCart;
-                console.log(updatedCart);
                 this.cart = updatedCart.filter((item) => item.message.includes('valid'));
                 const hasRemovedItems = updatedCart.some((item) =>
                     item.message.includes('removed')
@@ -92,7 +91,6 @@ export const useCartStore = defineStore('cart', {
                 );
 
                 this.totalPrice = response.data.total_price;
-                console.log(this.totalPrice);
                 localStorage.setItem('cart', JSON.stringify(this.cart));
 
                 if (hasRemovedItems) {

@@ -110,10 +110,7 @@ const artworkId = route.params.id;
 const category = route.params.category;
 
 const submitForm = async () => {
-    console.log(artworkId);
-    console.log(category);
     const payload = { ...formArtwork, type: category };
-    console.log(payload);
     await artworkStore.updateArtwork(artworkId, payload);
     if (!artworkStore.error) {
         router.push(`/gallery/${category}`);

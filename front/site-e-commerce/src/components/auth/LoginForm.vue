@@ -82,9 +82,7 @@ const handleLogin = async () => {
         if (usersStore.userInformation.role === 'admin') {
             router.push('/panel-admin');
         } else if (usersStore.loginOrigin === 'cart') {
-            console.log('before cart');
             await usersStore.fetchUser();
-            console.log('cart');
             router.push('/cart');
             usersStore.resetLoginOrigin();
         } else {

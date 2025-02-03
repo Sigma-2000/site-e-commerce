@@ -7,6 +7,11 @@ const registerUser = async (req, res) => {
   const { firstName, lastName, email, password, address } = req.body;
 
   try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already in use" });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newAddress = await Address.create({
@@ -35,7 +40,6 @@ const registerUser = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log("Requête reçue pour login :", { email });
 
   try {
     const user = await User.findOne({ email }).select("+password");

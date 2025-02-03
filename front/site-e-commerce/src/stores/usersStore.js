@@ -14,7 +14,6 @@ export const useUsersStore = defineStore('users', {
             try {
                 const response = await axiosCaller.post('/login', credentials);
                 this.userInformation = response.data;
-                console.log(response.data);
             } catch (err) {
                 this.error = 'errors.auth';
                 console.error(err);
@@ -31,8 +30,11 @@ export const useUsersStore = defineStore('users', {
             try {
                 await axiosCaller.post('/sign-up', data);
             } catch (err) {
-                this.error = 'errors.subscribe';
-                console.error(err);
+                if (err.response && err.response.status === 400) {
+                    this.error = 'errors.already-subscribe';
+                } else {
+                    this.error = 'errors.subscribe';
+                }
             }
         },
         async updateAddress(address) {
@@ -59,7 +61,6 @@ export const useUsersStore = defineStore('users', {
             try {
                 const response = await axiosCaller.get(`/user/${this.userInformation.id}`);
                 this.userInformation = response.data;
-                console.log(response.data);
             } catch (err) {
                 this.userInformation = null;
                 console.error(err);

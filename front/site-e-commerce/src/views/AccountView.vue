@@ -81,7 +81,6 @@ const validOrders = computed(() => orders.filter((order) => order.status_order !
 const cancelledOrders = computed(() =>
     orders.filter((order) => order.status_order === 'cancelled')
 );
-console.log(cancelledOrders.value);
 
 const ordersWithImagesAndStatus = computed(() =>
     validOrders.value.map((order) => ({
