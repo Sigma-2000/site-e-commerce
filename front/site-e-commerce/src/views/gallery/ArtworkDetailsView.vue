@@ -13,11 +13,24 @@
             <section v-if="artwork._id" class="item-details-card">
                 <h2>{{ artwork.title[locale] }}</h2>
                 <div class="detail-card-main-image">
+                    <video
+                        v-if="artwork.videos && artwork.videos.length"
+                        :src="artwork.videos[0]"
+                        controls
+                        :alt="artwork.title[locale]"
+                    ></video>
+                    <img
+                        v-else-if="artwork.images && artwork.images.length"
+                        :src="artwork.images[0]"
+                        :alt="artwork.title[locale]"
+                    />
+                    <!--
                     <img
                         v-if="artwork.images && artwork.images.length"
                         :src="artwork.images[0]"
                         :alt="artwork.title[locale]"
                     />
+                    -->
                 </div>
                 <div class="item-details-card-text">
                     <div class="item-details-card-text-additional">

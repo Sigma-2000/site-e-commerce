@@ -64,6 +64,7 @@
             </div>
         </div>
         <form v-else @submit.prevent="handleSubmit" class="modificate-form">
+            <p>{{ $t('panel-admin.upload') }}</p>
             <i18n-t
                 keypath="panel-admin.add-artwork"
                 tag="div"
@@ -124,12 +125,15 @@
         </form>
         <ErrorComponent v-if="error" :error="error" />
         <SuccessComponent v-if="success" :success="success" />
+        <LoaderComponent v-if="isLoading" />
     </div>
 </template>
 <script setup>
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import SuccessComponent from '@/components/ui/SuccessComponent.vue';
 import ButtonComponent from '@/components/ui/ButtonComponent.vue';
+import LoaderComponent from '../ui/LoaderComponent.vue';
+
 import { Icon } from '@iconify/vue';
 import { useArtworksStore } from '@/stores/artworksStore';
 import { ref, reactive, computed, onMounted } from 'vue';
@@ -141,6 +145,7 @@ const router = useRouter();
 const isAddingArtwork = ref(false);
 const success = computed(() => artworksStore.success);
 const error = computed(() => artworksStore.error);
+const isLoading = computed(() => artworksStore.isLoading);
 
 const toggleAddArtwork = () => {
     isAddingArtwork.value = !isAddingArtwork.value;

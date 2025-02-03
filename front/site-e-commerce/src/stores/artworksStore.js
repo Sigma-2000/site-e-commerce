@@ -26,7 +26,8 @@ export const useArtworksStore = defineStore('artworks', {
             try {
                 const response = await axiosCaller.get('/artworks');
                 this.artworks = response.data;
-                const filtered = this.filteredArtworks(category);
+                const formattedCategory = category.replace(/-/g, ' ');
+                const filtered = this.filteredArtworks(formattedCategory);
                 this.artworksPaginatedList = filtered.slice(0, this.numberOfArtworkByPage);
             } catch (err) {
                 this.error = 'errors.display-list';
@@ -51,7 +52,7 @@ export const useArtworksStore = defineStore('artworks', {
         async addArtwork(form) {
             this.error = null;
             this.success = null;
-
+            this.isLoading = true;
             try {
                 const formData = new FormData();
                 formData.append('title_fr', form.title_fr);
@@ -66,14 +67,14 @@ export const useArtworksStore = defineStore('artworks', {
                 form.files.forEach((file) => {
                     formData.append('files', file);
                 });
-
                 const response = await axiosCaller.post('/artwork', formData);
-
                 this.artworks.push(response.data);
                 this.success = 'success.add-artwork';
             } catch (err) {
                 this.error = 'errors.add-artwork';
                 console.error(err);
+            } finally {
+                this.isLoading = false;
             }
         },
         async updateArtwork(id, updatedArtwork) {
