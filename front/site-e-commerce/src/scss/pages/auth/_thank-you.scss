@@ -40,9 +40,15 @@
             margin-left: 25px;
         }
     }
-    .first-login-link {
+    .first-login-link,
+    .order-thanks {
         text-align: center;
         color: var(--color-text);
         margin: 10px 0px;
+        a {
+            all: unset;
+            cursor: pointer;
+            text-decoration: underline;
+        }
     }
 }

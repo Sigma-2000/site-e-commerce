@@ -20,6 +20,12 @@ const ProductSchema = new Schema({
     required: true,
     enum: ["print", "original"],
   },
+  reservedStock: [
+    {
+      quantity: { type: Number, default: 0 },
+      expiresAt: { type: Date, default: null },
+    },
+  ],
 });
 
 const Product = mongoose.model("Product", ProductSchema);

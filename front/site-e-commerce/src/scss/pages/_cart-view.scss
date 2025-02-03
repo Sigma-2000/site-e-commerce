@@ -1,0 +1,124 @@
+.cart-view {
+    margin: 20px 40px;
+    .underline-long {
+        @include underline(0%, 0%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 20%, null);
+        }
+        @include respond-to('desktop') {
+            @include underline(0%, 30%, null);
+        }
+    }
+
+    .underline-short {
+        @include underline(0%, 40%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 60%, null);
+        }
+    }
+    .pages-link {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+    }
+
+    h2,
+    h3 {
+        font-weight: $font-weight-medium;
+        color: var(--color-text);
+    }
+    h3 {
+        margin: 20px 10px;
+    }
+    h4,
+    p {
+        color: var(--color-text);
+    }
+
+    .underline-extra-short {
+        @include underline(0%, 40%, null);
+        @include respond-to('tablet') {
+            @include underline(0%, 70%, null);
+        }
+    }
+    .account-underline-center {
+        margin: 20px 0px;
+        @include underline(20%, 20%, null);
+        @include respond-to('tablet') {
+            @include underline(40%, 40%, null);
+        }
+    }
+    .cart-list {
+        display: flex;
+        flex-direction: column;
+        margin-top: 5px;
+        .cart-amount {
+            text-align: center;
+        }
+        .cart-product-list {
+            all: unset;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            @include respond-to('tablet') {
+                margin: 20px 0px;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            @include respond-to('desktop') {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .cart-product-details {
+                all: unset;
+                display: flex;
+                flex-direction: row;
+                img {
+                    width: 60%;
+                    @include respond-to('tablet') {
+                        width: 40%;
+                    }
+                    @include respond-to('desktop') {
+                        width: 30%;
+                    }
+                }
+                .cart-text {
+                    display: flex;
+                    flex-direction: column;
+                    margin-left: 5px;
+                    @include respond-to('tablet') {
+                        gap: 4px;
+                        margin-left: 20px;
+                    }
+                    button {
+                        width: 100% !important;
+
+                        @include respond-to('tablet') {
+                            width: 65% !important;
+                        }
+                        @include respond-to('desktop') {
+                            width: 70% !important;
+                        }
+                    }
+                    .cart-product-quantity {
+                        display: flex;
+                        button {
+                            width: 15px !important;
+                            height: 18px;
+                            margin: 0px 5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .title-login-cart {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .button-purchase,
+    .no-cart {
+        text-align: center;
+    }
+}

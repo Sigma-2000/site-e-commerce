@@ -63,7 +63,7 @@ const router = createRouter({
         {
             path: '/thank-you',
             name: 'thank-you',
-            component: () => import('../views/auth/ThankYouView.vue'),
+            component: () => import('../views/ThankYouView.vue'),
         },
         {
             path: '/account',
@@ -94,6 +94,11 @@ const router = createRouter({
             path: '/gallery/:category/add-product/:id',
             name: 'add-product',
             component: () => import('../views/panel-admin/AddProductView.vue'),
+        },
+        {
+            path: '/panel-admin/orders',
+            name: 'orders',
+            component: () => import('../views/panel-admin/OrderManagementView.vue'),
         },
     ],
 

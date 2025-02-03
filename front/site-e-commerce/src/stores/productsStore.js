@@ -3,7 +3,7 @@ import { axiosCaller } from '@/services/axiosCaller';
 
 export const useProductsStore = defineStore('products', {
     state: () => ({
-        products: [], //main state, database state
+        products: [], //main state, database state (only source of truth)
         productsPaginatedList: [], //this state is specific for display products in shop, front-end state
         selectedProduct: {},
         numberOfProductByPage: 5,
@@ -39,8 +39,8 @@ export const useProductsStore = defineStore('products', {
 
             try {
                 const response = await axiosCaller.get(`/product/${id}`);
-                this.selectedProduct = response.data;
-                console.log(response.data);
+                const product = response.data;
+                this.selectedProduct = product;
             } catch (err) {
                 this.error = 'errors.display-element';
                 console.error(err);
@@ -54,6 +54,7 @@ export const useProductsStore = defineStore('products', {
             try {
                 await axiosCaller.delete(`/product/${id}`);
                 this.success = 'success.delete-product';
+                //fetch here not in component ??
             } catch (err) {
                 this.error = 'errors.delete-product';
                 console.error(err);
@@ -65,6 +66,7 @@ export const useProductsStore = defineStore('products', {
 
             try {
                 await axiosCaller.put(`/product/${id}`, updatedProduct);
+                //fetch here not in component ??
                 this.success = 'success.update-product';
             } catch (err) {
                 this.error = 'errors.update-product';
@@ -93,7 +95,6 @@ export const useProductsStore = defineStore('products', {
         resetPagination() {
             this.productsPaginatedList = [];
         },
-
         resetErrorSuccess() {
             this.error = null;
             this.success = null;

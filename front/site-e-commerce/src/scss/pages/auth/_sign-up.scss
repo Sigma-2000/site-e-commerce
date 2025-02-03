@@ -52,6 +52,7 @@
             border: 1px solid var(--color-border);
             border-radius: 4px;
             padding: 12px 20px;
+
             @include respond-to('tablet') {
                 width: 40%;
             }
@@ -62,6 +63,7 @@
         label {
             margin: 10px;
             width: 100%;
+            color: var(--color-text);
             @include respond-to('tablet') {
                 width: 40%;
             }
@@ -87,5 +89,10 @@
     .login-link {
         text-align: center;
         color: var(--color-text);
+        a {
+            all: unset;
+            cursor: pointer;
+            text-decoration: underline;
+        }
     }
 }

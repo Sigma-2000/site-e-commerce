@@ -19,10 +19,20 @@
                         :alt="product.artwork_id.title[locale]"
                     />
                 </div>
+                <SuccessComponent v-if="successAddedCart" :success="successAddedCart" />
+                <ErrorComponent v-if="error" :error="error" />
+                <!-- TODO: bug with success it appears for all products, and maybe set Interval for clear the message
+                 during shopping process of the user -->
                 <div class="item-details-card-button">
-                    <ButtonComponent class="custom-button" :disabled="product.stock === 0">{{
-                        $t('button.buy')
-                    }}</ButtonComponent>
+                    <ButtonComponent
+                        :disabled="product.stock === 0"
+                        @click="addProductToCart(product)"
+                        class="custom-button"
+                    >
+                        {{
+                            product.stock === 0 ? $t('button.out-of-stock') : $t('button.buy')
+                        }}</ButtonComponent
+                    >
                 </div>
                 <div class="item-details-card-text">
                     <p>
@@ -53,13 +63,12 @@
                 </div>
             </section>
             <LoaderComponent v-else />
-            <ErrorComponent v-if="error" :error="error" />
         </div>
     </div>
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import LoaderComponent from '@/components/ui/LoaderComponent.vue';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
@@ -67,20 +76,56 @@ import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import { useI18n } from 'vue-i18n';
 import { useLanguage } from '@/composables/useLanguage';
 import { useProductsStore } from '@/stores/productsStore';
+import { useCartStore } from '@/stores/cartStore';
+import SuccessComponent from '@/components/ui/SuccessComponent.vue';
 
 const productStore = useProductsStore();
+
 const { t } = useI18n();
 const { locale } = useLanguage();
 const route = useRoute();
+const cartStore = useCartStore();
 
 const category = route.params.category;
 const productId = route.params.id;
 
 const product = computed(() => productStore.selectedProduct);
 const error = computed(() => productStore.error);
+const successAddedCart = computed(() => cartStore.success);
+
+//TODO: when user click on img, it growth
+//TODO: need to add video for digital art
+
+const addProductToCart = (product) => {
+    if (product && product.stock > 0) {
+        product.stock -= 1;
+        const productAddedToCart = {
+            id: product._id,
+            title: product.artwork_id.title, // inside we have en and fr
+            price: product.price,
+            image: product.artwork_id.images?.[4],
+            stock: product.stock,
+            type: category,
+        };
+        console.log(productAddedToCart);
+        cartStore.addToCart(productAddedToCart);
+    }
+};
+
+watch(
+    () => cartStore.success,
+    (newValue) => {
+        if (newValue) {
+            setTimeout(() => {
+                cartStore.resetErrorSuccess();
+            }, 3000);
+        }
+    }
+);
 
 onMounted(async () => {
     productStore.resetErrorSuccess();
+    cartStore.resetErrorSuccess();
     await productStore.fetchProductById(productId);
 });
 </script>
