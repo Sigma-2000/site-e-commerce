@@ -74,7 +74,7 @@
         "already-subscribe": "It seems this email is already link to an account.",
         "subscribe": "We are sorry, an error occured while the process, please retry.",
         "invalid-email": "Your email is not valid.",
-        "password": "Your password must contain at least 8 characters.",
+        "password": "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.",
         "invalid-phone": "Your phone number must contain 10 numbers",
         "update-address": "An error occured while the update of your address, please retry",
         "delete-account": "An error occured while the delete of your account, please retry",

@@ -74,7 +74,7 @@
         "subscribe": "Nous sommes désolées, une erreur s'est produite lors du processus, veuillez recommencer.",
         "already-subscribe": "Il semble que cette adresse est déjà associée à un compte.",
         "invalid-email": "Votre email n'est pas valide.",
-        "password": "Votre mot de passe doit contenir au moins 8 caractères.",
+        "password": "Votre mot de passe doit contenir au moins 8 caractères dont une majuscule, une minuscule ainsi qu'un chiffre et un symbole.",
         "invalid-phone": "Votre numéro de téléphone doit contenir 10 chiffres",
         "update-address": "Une erreur s'est produite lors de la mise à jour de votre adresse, veuillez recommencer",
         "delete-account": "Une erreur s'est produite lors de la supression de votre compte, veuillez recommencer",
