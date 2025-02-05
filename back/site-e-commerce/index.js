@@ -24,7 +24,9 @@ const paymentsRoutes = require("./routes/payments");
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    //origin: "http://localhost:5173",
+    origin:
+      "https://site-e-commerce-git-staging-sigma2000s-projects.vercel.app",
     credentials: true,
   })
 );
