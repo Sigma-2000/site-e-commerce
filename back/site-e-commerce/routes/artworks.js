@@ -23,6 +23,4 @@ router.post(
 );
 router.put("/artwork/:id", verifyToken, isAdmin, updateArtworkById);
 
-//TODO: file updaate with upload.array ?
-
 module.exports = router;
