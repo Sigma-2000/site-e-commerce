@@ -4,23 +4,14 @@ import { axiosCaller } from '@/services/axiosCaller';
 export const useOrdersStore = defineStore('orders', {
     state: () => ({
         orders: [],
+        currentOrderId: null,
+        currentclientSecret: null,
+        orderOrigin: null,
         filterType: 'all',
         error: null,
         success: null,
-        orderOrigin: null,
     }),
     actions: {
-        async createOrder(orderData) {
-            this.error = null;
-            this.success = null;
-            try {
-                const response = await axiosCaller.post('/order', orderData);
-                return response.data;
-            } catch (err) {
-                this.error = 'errors.order-creation';
-                console.error(err);
-            }
-        },
         async fetchAllOrders() {
             this.error = null;
             try {
@@ -28,6 +19,14 @@ export const useOrdersStore = defineStore('orders', {
                 this.orders = response.data;
             } catch (err) {
                 this.error = 'errors.display-list';
+                console.error(err);
+            }
+        },
+        async cancelOrder(orderId) {
+            try {
+                await axiosCaller.post('/cancel-order', { order_id: orderId });
+                this.error = 'errors.payment-failed';
+            } catch (err) {
                 console.error(err);
             }
         },
@@ -43,8 +42,6 @@ export const useOrdersStore = defineStore('orders', {
                 await axiosCaller.put(`/order/${orderId}`, {
                     status_order: status,
                 });
-                this.success = 'success.update-status';
-                //fetch de nouveau ??
             } catch (err) {
                 this.error = 'errors.update-status';
                 console.error(err);
@@ -55,6 +52,15 @@ export const useOrdersStore = defineStore('orders', {
         },
         setOrderOrigin(origin) {
             this.orderOrigin = origin;
+        },
+        setCurrentOrderId(orderId) {
+            this.currentOrderId = orderId;
+        },
+        setCurrentSecretClient(clientSecret) {
+            this.currentclientSecret = clientSecret;
+        },
+        setError(error) {
+            this.error = error;
         },
         resetOrderOrigin() {
             this.orderOrigin = null;

@@ -50,7 +50,7 @@
             <h3 class="title-login-cart">{{ $t('cart.order-address') }}</h3>
             <AddressUpdate />
             <div class="button-purchase">
-                <ButtonComponent class="validate-order-button" @click="createOrder">
+                <ButtonComponent class="validate-order-button" @click="createOrderAndPayment">
                     {{ $t('button.validate-order') }}
                 </ButtonComponent>
             </div>
@@ -63,9 +63,9 @@ import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import SuccessComponent from '@/components/ui/SuccessComponent.vue';
 import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import AddressUpdate from '@/components/account/AddressUpdate.vue';
+import { createOrder, createCheckoutSession } from '@/services/orderPaymentServices';
 
 import { onMounted, computed, watch } from 'vue';
-
 import { useCartStore } from '@/stores/cartStore.js';
 import { useUsersStore } from '@/stores/usersStore';
 import { useOrdersStore } from '@/stores/ordersStore';
@@ -96,7 +96,8 @@ const decrementQuantity = async (productId) => {
 const incrementQuantity = async (product) => {
     await cartStore.addToCart(product);
 };
-const createOrder = async () => {
+
+const createOrderAndPayment = async () => {
     if (!userAddress.value) {
         cartStore.setError('errors.no-address');
         return;
@@ -114,18 +115,27 @@ const createOrder = async () => {
                 quantity: item.quantity,
             })),
         };
-        await orderStore.createOrder(orderData);
-        cartStore.resetCart();
-        orderStore.setOrderOrigin('order');
-        router.push('/thank-you');
+
+        const orderResponse = await createOrder(orderData);
+        orderStore.setCurrentOrderId(orderResponse._id);
+        const paymentData = {
+            order_id: orderResponse._id,
+            user_id: orderResponse.user_id,
+            amount: orderResponse.total_price * 100,
+            currency: 'eur',
+            products: orderResponse.products,
+        };
+
+        const checkoutResponse = await createCheckoutSession(paymentData);
+        orderStore.setCurrentSecretClient(checkoutResponse.data.clientSecret);
+        if (checkoutResponse) {
+            router.push('/payment');
+        }
     } catch (error) {
         console.error(error);
+        orderStore.setError('errors.order-creation');
     }
 };
-/*
-setTimeout(() => {
-    cartStore.resetErrorSuccess();
-}, 3000);*/
 
 watch(
     () => cartStore.success,
