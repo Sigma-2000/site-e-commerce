@@ -91,7 +91,10 @@
         "cart-validation": "An error occured while the validation of your cart, please reload",
         "order-creation": "We are sorry an error occured while the creation of your order, please retry",
         "no-products": "You don't proceed to order, if your cart is empty",
-        "no-address": "It seems you dont' provide an address, please retry with your delivery address"
+        "no-address": "It seems you dont' provide an address, please retry with your delivery address",
+        "create-payment": "We are sorry, we does'nt reach you payment center",
+        "payment-failed": "Your payment failed and your order is cancelled, we redirect you into your account in few instant",
+        "verification-payment": "Payment failed, verify your bank information"
     },
     "success": {
         "update-address": "Your adress was updating successfully",
@@ -115,7 +118,8 @@
         "add-product": "Add a product",
         "out-of-stock": "out of stock",
         "validate-cart": "Validate my cart",
-        "validate-order": "Proceed to order"
+        "validate-order": "Proceed to order",
+        "payment": "Pay my order"
     },
     "detail": {
         "dimensions": "Dimensions",
@@ -223,6 +227,7 @@
         "order-address": "Would you like to have it delivered to the address provided here ?",
         "connect-purchase": "Log in and continue my order",
         "purchase": "You have an ongoing cart",
-        "go-to-cart": "Continue shopping"
+        "go-to-cart": "Continue shopping",
+        "payment": "Payment"
     }
 }
