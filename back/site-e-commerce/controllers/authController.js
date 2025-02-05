@@ -184,9 +184,13 @@ const logout = (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
+      secure: false,
+      sameSite: "None",
     });
     res.clearCookie("refreshToken", {
       httpOnly: true,
+      secure: false,
+      sameSite: "None",
     });
     res.status(200).json({
       message: "User successfully logged out.",
@@ -200,6 +204,7 @@ const logout = (req, res) => {
 
 const refreshToken = async (req, res) => {
   const { refreshToken } = req.cookies;
+  console.log(refreshToken);
 
   if (!refreshToken) {
     return res.status(401).json({
@@ -223,6 +228,8 @@ const refreshToken = async (req, res) => {
 
     res.cookie("token", newAccessToken, {
       httpOnly: true,
+      secure: false,
+      sameSite: "None",
     });
 
     res.status(200).json({ message: "Operation succeed" });
