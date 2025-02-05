@@ -69,11 +69,10 @@ const login = async (req, res) => {
 
     res
       .cookie("token", token, {
-        httpOnly: true,
+        //httpOnly: true,
         sameSite: "none",
       })
       .cookie("refreshToken", refreshToken, {
-        httpOnly: true,
         sameSite: "none",
       }) //httpOnly: true,
       .json({
