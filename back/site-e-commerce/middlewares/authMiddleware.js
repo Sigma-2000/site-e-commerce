@@ -48,7 +48,7 @@ const validateRegister = async (req, res, next) => {
     !address.country ||
     !address.phone
   ) {
-    return res.status(400).json({ error: "Adress incomplete" });
+    return res.status(400).json({ error: "Address incomplete" });
   }
   const phoneRegex = /^\d{10}$/;
   if (!phoneRegex.test(address.phone)) {

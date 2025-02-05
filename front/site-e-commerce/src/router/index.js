@@ -100,6 +100,11 @@ const router = createRouter({
             name: 'orders',
             component: () => import('../views/panel-admin/OrderManagementView.vue'),
         },
+        {
+            path: '/payment',
+            name: 'payment',
+            component: () => import('../views/order/PaymentView.vue'),
+        },
     ],
 
     scrollBehavior(to, from, savedPosition) {
