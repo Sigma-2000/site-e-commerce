@@ -21,9 +21,12 @@
         color: inherit;
         cursor: pointer;
     }
-    h2 {
+    h2,
+    h3 {
         font-weight: $font-weight-medium;
         color: var(--color-text);
+    }
+    h3 {
         margin: 10px 20px;
     }
     p {

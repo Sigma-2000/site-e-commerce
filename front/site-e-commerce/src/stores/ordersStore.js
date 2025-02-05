@@ -12,50 +12,14 @@ export const useOrdersStore = defineStore('orders', {
         success: null,
     }),
     actions: {
-        async createOrder(orderData) {
-            this.error = null;
-            this.success = null;
-            try {
-                const response = await axiosCaller.post('/order', orderData);
-                const order = response.data.order;
-                return order;
-            } catch (err) {
-                this.error = 'errors.order-creation';
-                console.error(err);
-            }
-        },
-
         async fetchAllOrders() {
             this.error = null;
             try {
                 const response = await axiosCaller.get('/orders');
-                console.log(response);
                 this.orders = response.data;
             } catch (err) {
                 this.error = 'errors.display-list';
                 console.error(err);
-            }
-        },
-        async createCheckoutSession(paymentData) {
-            try {
-                const response = await axiosCaller.post('/create-checkout-session', paymentData);
-                const clientSecretFromApi = response.data.clientSecret;
-                return clientSecretFromApi;
-            } catch (error) {
-                console.error(error);
-                this.currentOrderId = null;
-                this.error = 'errors.create-payment';
-            }
-        },
-        async confirmPayment(paymentIntentId) {
-            try {
-                const response = await axiosCaller.post('/confirm-payment', {
-                    payment_intent_id: paymentIntentId,
-                });
-                return response.data.order;
-            } catch (error) {
-                console.error(error);
-                this.error = 'errors.payment-failed';
             }
         },
         async cancelOrder(orderId) {

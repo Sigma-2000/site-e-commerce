@@ -5,7 +5,7 @@
             <h2>{{ $t('menu.shop') }}</h2>
         </router-link>
         <div class="underline-long"></div>
-        <h2>{{ $t('cart.payment') }}</h2>
+        <h3>{{ $t('cart.payment') }}</h3>
         <ErrorComponent v-if="error" :error="error" />
         <form v-if="localClientSecret" @submit.prevent="handlePayment" class="payment-overview">
             <p class="cart-amount">
@@ -30,6 +30,7 @@ import { useCartStore } from '@/stores/cartStore';
 import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import LoaderComponent from '@/components/ui/LoaderComponent.vue';
+import { confirmPayment } from '@/services/orderPaymentServices';
 
 const router = useRouter();
 const ordersStore = useOrdersStore();
@@ -50,6 +51,7 @@ watchEffect(() => {
 }); //Finer control and better reactivity management
 
 onMounted(async () => {
+    ordersStore.resetErrorSuccess();
     try {
         stripe.value = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
         elements.value = stripe.value.elements();
@@ -82,7 +84,7 @@ const handlePayment = async () => {
             return;
         }
 
-        const order = await ordersStore.confirmPayment(result.paymentIntent.id);
+        const order = await confirmPayment(result.paymentIntent.id);
 
         if (order) {
             cartStore.resetCart();
