@@ -39,7 +39,6 @@ const OrderSchema = new Schema({
   payment_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Payment",
-    //required: true, TODO : reset when integrate stripe
   },
 });
 

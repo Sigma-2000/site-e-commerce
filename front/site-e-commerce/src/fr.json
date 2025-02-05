@@ -74,7 +74,7 @@
         "subscribe": "Nous sommes désolées, une erreur s'est produite lors du processus, veuillez recommencer.",
         "already-subscribe": "Il semble que cette adresse est déjà associée à un compte.",
         "invalid-email": "Votre email n'est pas valide.",
-        "password": "Votre mot de passe doit contenir au moins 8 caractères.",
+        "password": "Votre mot de passe doit contenir au moins 8 caractères dont une majuscule, une minuscule ainsi qu'un chiffre et un symbole.",
         "invalid-phone": "Votre numéro de téléphone doit contenir 10 chiffres",
         "update-address": "Une erreur s'est produite lors de la mise à jour de votre adresse, veuillez recommencer",
         "delete-account": "Une erreur s'est produite lors de la supression de votre compte, veuillez recommencer",
@@ -91,7 +91,10 @@
         "cart-validation": "Une erreur s'est produite lors de la validation de votre panier, veuillez recharger la page",
         "order-creation": "Nous sommes désolée une erreur s'est produite lors de la création de votre commande, veuillez recommencer",
         "no-products": "Vous ne pouvez pas passer commande sans selectionnez de produit.",
-        "no-address": "Il semble que vous n'avez pas renseigné d'adresse, veuillez renseignez votre adresse de livraison"
+        "no-address": "Il semble que vous n'avez pas renseigné d'adresse, veuillez renseignez votre adresse de livraison",
+        "create-payment": "Nous sommes désolée nous n'avons pas atteindre notre centre de paiement",
+        "payment-failed": "Votre paiement a échoué et votre commande a été annulée, vous allez étre redirigé vers votre compte dans quelques instants",
+        "verification-payment": "Le paiement a échoué. Vérifiez vos informations bancaires."
     },
     "success": {
         "update-address": "Votre adresse a été mise à jour avec succès",
@@ -115,7 +118,8 @@
         "add-product": "Ajouter un produit",
         "out-of-stock": "rupture de stock",
         "validate-cart": "Valider mon panier",
-        "validate-order": "Passer commande"
+        "validate-order": "Passer commande",
+        "payment": "Payer ma commande"
     },
     "detail": {
         "dimensions": "Dimensions",
@@ -223,6 +227,7 @@
         "order-address": "Souhaitez-vous faire livrer à l'adresse renseignée ici ? ",
         "connect-purchase": "Me connecter et poursuivre ma commande",
         "purchase": "Vous avez un panier en cours",
-        "go-to-cart": "Poursuivre mes achats"
+        "go-to-cart": "Poursuivre mes achats",
+        "payment": "Paiement"
     }
 }

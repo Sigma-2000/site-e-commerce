@@ -10,6 +10,7 @@ const {
   deleteOrderById,
   updateStatusOrderById,
   validateCart,
+  cancelOrder,
 } = require("../controllers/ordersController");
 
 router.post("/order", verifyToken, createOrder);
@@ -18,6 +19,7 @@ router.get("/order/:id", verifyToken, getOrderById);
 router.delete("/order/:id", verifyToken, deleteOrderById);
 router.put("/order/:id", verifyToken, isAdmin, updateStatusOrderById);
 router.post("/order/validate-cart", validateCart);
+router.post("/cancel-order", cancelOrder);
 
 //TODO: make road for payments !
 module.exports = router;
