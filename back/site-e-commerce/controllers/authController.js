@@ -29,8 +29,7 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       address_id: newAddress._id,
     });
-
-    res.status(201).json(user);
+    return res.status(201).json(user);
   } catch (error) {
     {
       res.status(500).json({ error: "User creation failed" });
@@ -70,9 +69,10 @@ const login = async (req, res) => {
 
     res
       .cookie("token", token, {
-        httpOnly: true,
+        //httpOnly: true,
+        sameSite: true,
       })
-      .cookie("refreshToken", refreshToken, { httpOnly: true })
+      .cookie("refreshToken", refreshToken, { sameSite: true }) //httpOnly: true,
       .json({
         id: user._id,
         firstName: user.firstName,
