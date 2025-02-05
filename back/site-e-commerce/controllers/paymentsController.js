@@ -7,7 +7,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const createPayment = async (req, res) => {
   const { amount, currency, user_id, order_id } = req.body;
-  console.log(req.body);
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
@@ -36,7 +35,7 @@ const createPayment = async (req, res) => {
 };
 const confirmPayment = async (req, res) => {
   const { payment_intent_id } = req.body;
-  console.log(payment_intent_id);
+
   try {
     if (!payment_intent_id) {
       return res.status(400).json({ error: "Missing payment_intent_id" });
@@ -47,7 +46,6 @@ const confirmPayment = async (req, res) => {
     );
 
     if (paymentIntent.status === "succeeded") {
-      console.log(paymentIntent);
       const updatedPayment = await Payment.findOneAndUpdate(
         { payment_intent_id },
         {
@@ -68,7 +66,7 @@ const confirmPayment = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Payment failed", details: error.message });
+    res.status(500).json({ error: "Payment failed" });
   }
 };
 
