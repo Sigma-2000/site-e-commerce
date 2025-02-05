@@ -187,6 +187,8 @@ const logout = (req, res) => {
     });
     res.clearCookie("refreshToken", {
       httpOnly: true,
+      secure: true,
+      sameSite: "None",
     });
     res.status(200).json({
       message: "User successfully logged out.",
@@ -224,6 +226,8 @@ const refreshToken = async (req, res) => {
 
     res.cookie("token", newAccessToken, {
       httpOnly: true,
+      secure: true,
+      sameSite: "None",
     });
 
     res.status(200).json({ message: "Operation succeed" });
