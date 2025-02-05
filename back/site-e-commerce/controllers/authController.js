@@ -69,12 +69,15 @@ const login = async (req, res) => {
 
     res
       .cookie("token", token, {
-        //httpOnly: true,
-        sameSite: "none",
+        httpOnly: true,
+        secure: false,
+        sameSite: "None",
       })
       .cookie("refreshToken", refreshToken, {
-        sameSite: "none",
-      }) //httpOnly: true,
+        sameSite: "None",
+        secure: false,
+        httpOnly: true,
+      })
       .json({
         id: user._id,
         firstName: user.firstName,

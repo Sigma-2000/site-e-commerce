@@ -16,7 +16,7 @@ axiosCaller.interceptors.request.use((config) => {
     }
     return config;
 });
-/*
+
 axiosCaller.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -39,5 +39,5 @@ axiosCaller.interceptors.response.use(
         return Promise.reject(error);
     }
 );
-*/
+
 export { axiosCaller };
