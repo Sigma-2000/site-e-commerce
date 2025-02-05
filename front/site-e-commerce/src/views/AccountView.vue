@@ -90,7 +90,7 @@ const ordersWithImagesAndStatus = computed(() =>
         formattedDate: formatDate(order.order_date),
         products: order.products.map((product) => ({
             id: product.id?._id || 'unknown',
-            image: product.id?.artwork_id?.images[4] || 'unknown',
+            image: product.id?.artwork_id?.images[0] || 'unknown',
             quantity: product.quantity || 'unknown',
         })),
         //image: order.products[0]?.id?.artwork_id?.images[4],

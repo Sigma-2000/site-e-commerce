@@ -20,7 +20,6 @@ const artworksRoutes = require("./routes/artworks");
 const ordersRoutes = require("./routes/orders");
 const productsRoutes = require("./routes/products");
 const authRoutes = require("./routes/auth");
-const paymentsRoutes = require("./routes/payments");
 
 app.use(
   cors({
@@ -38,7 +37,6 @@ app.use("/api", artworksRoutes);
 app.use("/api", productsRoutes);
 app.use("/api", ordersRoutes);
 app.use("/api", authRoutes);
-app.use("/api", paymentsRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

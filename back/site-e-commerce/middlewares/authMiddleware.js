@@ -29,16 +29,11 @@ const validateRegister = async (req, res, next) => {
     return res.status(400).json({ error: "User for invalid" });
   }
 
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-  if (!passwordRegex.test(password)) {
+  if (password.length < 8) {
     return res
       .status(400)
-      .json({
-        error:
-          "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.",
-      });
+      .json({ error: "Password must contain 8 characters" });
+    //TODO: must to adopt password policy more strict
   }
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
@@ -53,7 +48,7 @@ const validateRegister = async (req, res, next) => {
     !address.country ||
     !address.phone
   ) {
-    return res.status(400).json({ error: "Address incomplete" });
+    return res.status(400).json({ error: "Adress incomplete" });
   }
   const phoneRegex = /^\d{10}$/;
   if (!phoneRegex.test(address.phone)) {
