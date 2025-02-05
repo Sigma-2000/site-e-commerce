@@ -11,6 +11,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@iconify/vue": "^4.3.0",
     "@stripe/stripe-js": "^5.6.0",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
