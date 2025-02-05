@@ -74,7 +74,7 @@
         "already-subscribe": "It seems this email is already link to an account.",
         "subscribe": "We are sorry, an error occured while the process, please retry.",
         "invalid-email": "Your email is not valid.",
-        "password": "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.",
+        "password": "Your password must contain at least 8 characters.",
         "invalid-phone": "Your phone number must contain 10 numbers",
         "update-address": "An error occured while the update of your address, please retry",
         "delete-account": "An error occured while the delete of your account, please retry",
@@ -91,10 +91,7 @@
         "cart-validation": "An error occured while the validation of your cart, please reload",
         "order-creation": "We are sorry an error occured while the creation of your order, please retry",
         "no-products": "You don't proceed to order, if your cart is empty",
-        "no-address": "It seems you dont' provide an address, please retry with your delivery address",
-        "create-payment": "We are sorry, we does'nt reach you payment center",
-        "payment-failed": "Your payment failed and your order is cancelled, we redirect you into your account in few instant",
-        "verification-payment": "Payment failed, verify your bank information"
+        "no-address": "It seems you dont' provide an address, please retry with your delivery address"
     },
     "success": {
         "update-address": "Your adress was updating successfully",
@@ -118,8 +115,7 @@
         "add-product": "Add a product",
         "out-of-stock": "out of stock",
         "validate-cart": "Validate my cart",
-        "validate-order": "Proceed to order",
-        "payment": "Pay my order"
+        "validate-order": "Proceed to order"
     },
     "detail": {
         "dimensions": "Dimensions",
@@ -227,7 +223,6 @@
         "order-address": "Would you like to have it delivered to the address provided here ?",
         "connect-purchase": "Log in and continue my order",
         "purchase": "You have an ongoing cart",
-        "go-to-cart": "Continue shopping",
-        "payment": "Payment"
+        "go-to-cart": "Continue shopping"
     }
 }

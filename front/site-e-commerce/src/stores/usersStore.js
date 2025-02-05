@@ -60,7 +60,6 @@ export const useUsersStore = defineStore('users', {
             }
             try {
                 const response = await axiosCaller.get(`/user/${this.userInformation.id}`);
-                console.log(response.data);
                 this.userInformation = response.data;
             } catch (err) {
                 this.userInformation = null;

@@ -1,7 +1,6 @@
 const express = require("express");
 const Order = require("../models/Order");
 const Product = require("../models/Product");
-const Payment = require("../models/Payment");
 const { handleReservations } = require("../utils/productReservation");
 const { calculateTotalPrice } = require("../utils/cart");
 
@@ -37,6 +36,8 @@ const createOrder = async (req, res) => {
       await product.save();
     }
 
+    //TODO: add payment when integrate stripe
+
     const totalPrice = await calculateTotalPrice(products);
 
     const newOrder = await Order.create({
@@ -58,7 +59,6 @@ const getAllOrders = async (req, res) => {
     const orders = await Order.find()
       .populate("user_id")
       .populate("address_id")
-      .populate("payment_id")
       .populate({
         path: "products.id",
         populate: {
@@ -213,43 +213,6 @@ const validateCart = async (req, res) => {
   }
 };
 
-const cancelOrder = async (req, res) => {
-  const { order_id } = req.body;
-
-  try {
-    if (!order_id) {
-      return res.status(400).json({ error: "Missing order_id" });
-    }
-
-    const order = await Order.findById(order_id).populate("products.id");
-
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
-    }
-
-    for (const item of order.products) {
-      const product = item.id;
-      product.stock += item.quantity;
-      await product.save();
-    }
-
-    order.status_order = "cancelled";
-    await order.save();
-
-    if (order.payment_id) {
-      await Payment.findByIdAndUpdate(order.payment_id, {
-        payment_status: "failed",
-      });
-    }
-
-    return res.json({
-      message: "Order and payment successfully cancelled. Stock restored.",
-    });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to cancel order" });
-  }
-};
-
 module.exports = {
   createOrder,
   getAllOrders,
@@ -257,5 +220,4 @@ module.exports = {
   deleteOrderById,
   updateStatusOrderById,
   validateCart,
-  cancelOrder,
 };

@@ -15,7 +15,10 @@ const initializeAdmin = async () => {
         phone: "1234567890",
       });
 
-      const hashedPassword = await bcrypt.hash("mdp effacé", 10);
+      const hashedPassword = await bcrypt.hash(
+        "I delete that for security",
+        10
+      );
 
       await User.create({
         firstName: "Amélie",
