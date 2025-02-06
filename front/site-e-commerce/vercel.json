@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+        {
+            "source": "/front/site-e-commerce/:path*",
+            "destination": "/front/site-e-commerce/index.html"
+        }
+    ]
+}
