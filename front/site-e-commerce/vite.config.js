@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue';
 
 // https://vite.dev/config/
 export default defineConfig({
-    base: '/front/site-e-commerce/',
+    //base: '/front/site-e-commerce/',
     plugins: [vue()],
     resolve: {
         alias: {
