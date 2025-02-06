@@ -29,7 +29,7 @@ export const useCartStore = defineStore('cart', {
                 console.error(err);
             }
         },
-        //TODO: refactoring decrease and remove ...
+
         async decreaseQuantity(productId) {
             try {
                 const productInCart = this.cart.find((item) => item.id === productId);
