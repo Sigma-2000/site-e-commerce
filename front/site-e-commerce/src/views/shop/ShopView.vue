@@ -5,7 +5,6 @@
             <router-link to="/" class="pages-link">
                 <h2>{{ $t('menu.shop') }}</h2>
             </router-link>
-            <!--TODO: need to delete the road on gallery, semantic incorrect, arrow go back or Home ?-->
             <div class="underline-long"></div>
             <div v-if="isAdmin" class="admin-category-choice">
                 <h3>{{ $t('account.welcome-admin') }}</h3>
@@ -41,6 +40,7 @@ import { computed } from 'vue';
 import { useUsersStore } from '@/stores/usersStore';
 
 const userStore = useUsersStore();
-const isAdmin = computed(() => userStore.userInformation?.role === 'admin');
 const { t } = useI18n();
+
+const isAdmin = computed(() => userStore.userInformation?.role === 'admin');
 </script>

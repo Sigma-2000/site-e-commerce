@@ -70,9 +70,6 @@ import { formatDate } from '@/utils/helpers.js';
 const usersStore = useUsersStore();
 const cartStore = useCartStore();
 
-const resetGlobalError = () => {
-    usersStore.resetErrorSuccess();
-};
 const firstName = usersStore.userInformation.firstName;
 const orders = usersStore.userInformation.orders;
 
@@ -93,9 +90,11 @@ const ordersWithImagesAndStatus = computed(() =>
             image: product.id?.artwork_id?.images[4] || 'unknown',
             quantity: product.quantity || 'unknown',
         })),
-        //image: order.products[0]?.id?.artwork_id?.images[4],
     }))
 );
+const resetGlobalError = () => {
+    usersStore.resetErrorSuccess();
+};
 
 onMounted(() => resetGlobalError());
 </script>

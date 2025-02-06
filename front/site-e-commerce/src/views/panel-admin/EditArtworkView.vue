@@ -11,7 +11,6 @@
             </router-link>
             <div class="underline-extra-short"></div>
         </div>
-        <!--change the section for Artwork-->
         <section class="edit-card">
             <h2>{{ t('form-artworks.update') }}</h2>
             <div v-if="artwork._id">

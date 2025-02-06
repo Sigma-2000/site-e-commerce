@@ -1,7 +1,6 @@
 <template>
     <div class="modificate-views">
         <div class="cart-modificate">
-            <!--('all')-->
             <i18n-t keypath="panel-admin.consult-orders" tag="div" class="modificate-action">
                 <template #consult
                     ><span @click="navigateToOrderManagement('all')" class="modificate-action-click"

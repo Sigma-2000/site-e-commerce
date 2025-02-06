@@ -182,6 +182,7 @@ const navigateToGallery = () => {
 const navigateToShop = () => {
     router.push('/shop');
 };
+
 onMounted(() => {
     artworksStore.resetErrorSuccess();
 });

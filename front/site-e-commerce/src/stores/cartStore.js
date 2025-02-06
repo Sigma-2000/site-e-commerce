@@ -71,9 +71,6 @@ export const useCartStore = defineStore('cart', {
                 console.error(err);
             }
         },
-        persistCart() {
-            localStorage.setItem('cart', JSON.stringify(this.cart));
-        },
         async validateCart() {
             this.error = null;
             this.success = null;
@@ -105,6 +102,9 @@ export const useCartStore = defineStore('cart', {
                 this.error = 'errors.cart-validation';
                 console.error(err);
             }
+        },
+        persistCart() {
+            localStorage.setItem('cart', JSON.stringify(this.cart));
         },
         async loadCart() {
             const storedCart = localStorage.getItem('cart');

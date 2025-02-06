@@ -21,5 +21,4 @@ router.put("/order/:id", verifyToken, isAdmin, updateStatusOrderById);
 router.post("/order/validate-cart", validateCart);
 router.post("/cancel-order", cancelOrder);
 
-//TODO: make road for payments !
 module.exports = router;
