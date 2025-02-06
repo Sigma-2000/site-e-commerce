@@ -54,7 +54,6 @@ export const useProductsStore = defineStore('products', {
             try {
                 await axiosCaller.delete(`/product/${id}`);
                 this.success = 'success.delete-product';
-                //fetch here not in component ??
             } catch (err) {
                 this.error = 'errors.delete-product';
                 console.error(err);
@@ -66,7 +65,6 @@ export const useProductsStore = defineStore('products', {
 
             try {
                 await axiosCaller.put(`/product/${id}`, updatedProduct);
-                //fetch here not in component ??
                 this.success = 'success.update-product';
             } catch (err) {
                 this.error = 'errors.update-product';

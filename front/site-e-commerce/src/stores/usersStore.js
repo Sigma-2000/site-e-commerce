@@ -19,12 +19,6 @@ export const useUsersStore = defineStore('users', {
                 console.error(err);
             }
         },
-        setLoginOrigin(origin) {
-            this.loginOrigin = origin;
-        },
-        resetLoginOrigin() {
-            this.loginOrigin = null;
-        },
         async signUp(data) {
             this.error = null;
             try {
@@ -49,10 +43,6 @@ export const useUsersStore = defineStore('users', {
                 console.error(error);
             }
         },
-        resetErrorSuccess() {
-            this.error = null;
-            this.success = null;
-        },
         async fetchUser() {
             if (!this.userInformation?.id) {
                 this.userInformation = null;
@@ -60,7 +50,6 @@ export const useUsersStore = defineStore('users', {
             }
             try {
                 const response = await axiosCaller.get(`/user/${this.userInformation.id}`);
-                console.log(response.data);
                 this.userInformation = response.data;
             } catch (err) {
                 this.userInformation = null;
@@ -100,6 +89,16 @@ export const useUsersStore = defineStore('users', {
             } catch (err) {
                 console.error(err);
             }
+        },
+        setLoginOrigin(origin) {
+            this.loginOrigin = origin;
+        },
+        resetLoginOrigin() {
+            this.loginOrigin = null;
+        },
+        resetErrorSuccess() {
+            this.error = null;
+            this.success = null;
         },
     },
 });

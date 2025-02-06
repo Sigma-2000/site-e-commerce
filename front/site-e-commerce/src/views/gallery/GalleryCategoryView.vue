@@ -28,6 +28,7 @@
                                 v-if="artwork.images && artwork.images.length"
                                 :src="artwork.images[0]"
                                 :alt="artwork.title[locale]"
+                                loading="lazy"
                             />
                             <div class="category-content-items-more-details">
                                 <p>{{ artwork.techniques[locale] }}</p>

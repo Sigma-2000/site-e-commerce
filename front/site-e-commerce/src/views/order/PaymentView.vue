@@ -27,10 +27,11 @@ import { useRouter } from 'vue-router';
 import { loadStripe } from '@stripe/stripe-js';
 import { useOrdersStore } from '@/stores/ordersStore';
 import { useCartStore } from '@/stores/cartStore';
+import { confirmPayment } from '@/services/orderPaymentServices';
+
 import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import LoaderComponent from '@/components/ui/LoaderComponent.vue';
-import { confirmPayment } from '@/services/orderPaymentServices';
 
 const router = useRouter();
 const ordersStore = useOrdersStore();
@@ -46,9 +47,10 @@ const cartTotalPrice = computed(() => cartStore.totalPrice);
 const error = computed(() => ordersStore.error);
 const orderId = computed(() => ordersStore.currentOrderId);
 
+//Finer control and better reactivity management
 watchEffect(() => {
     localClientSecret.value = ordersStore.currentclientSecret;
-}); //Finer control and better reactivity management
+});
 
 onMounted(async () => {
     ordersStore.resetErrorSuccess();
@@ -57,8 +59,8 @@ onMounted(async () => {
         elements.value = stripe.value.elements();
         //wait for Dom updated
         await nextTick();
-        cardElement.value = elements.value.create('card');
 
+        cardElement.value = elements.value.create('card');
         cardElement.value.mount('#card-element');
     } catch (err) {
         console.error(err);

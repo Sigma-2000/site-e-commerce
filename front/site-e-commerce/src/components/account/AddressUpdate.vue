@@ -50,10 +50,10 @@ const usersStore = useUsersStore();
 const firstName = usersStore.userInformation.firstName;
 const lastName = usersStore.userInformation.lastName;
 const address = computed(() => usersStore.userInformation.address_id);
-
-const isEditing = ref(false);
 const success = computed(() => usersStore.success);
 const error = computed(() => usersStore.error);
+
+const isEditing = ref(false);
 const isPhoneUsed = ref(false);
 const phoneError = ref(null);
 

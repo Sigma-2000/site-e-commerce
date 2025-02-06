@@ -5,6 +5,19 @@ const Payment = require("../models/Payment");
 const { handleReservations } = require("../utils/productReservation");
 const { calculateTotalPrice } = require("../utils/cart");
 
+/**
+ * Create a new order, verify product stock, remove the ordered quantity in oldest reservation and then stock if it's needed
+ * Calculate the total price.
+ * @route POST /order
+ * @param {string} req.body.user_id - ID of the user who asking for the order.
+ * @param {string} req.body.address_id - ID of the user's shipping address.
+ * @param {Object[]} req.body.products - List of products in the order.
+ * @param {string} req.body.products[].id - Product ID.
+ * @param {number} req.body.products[].quantity - Quantity ordered.
+ * @returns {Object} order - Response confirming the order creation with all informations.
+ *
+ */
+
 const createOrder = async (req, res) => {
   const { user_id, address_id, products } = req.body;
 
@@ -140,6 +153,21 @@ const updateStatusOrderById = async (req, res) => {
     res.status(500).json({ error: "Error updating order status" });
   }
 };
+
+/**
+ * Validate the shopping cart by checking product availability and adjusting quantities if necessary.
+ * Calculate the total price.
+ * @route POST /cart/validate
+ * @param {Object[]} req.body.cart - List of items in the shopping cart.
+ * @param {string} req.body.cart[].id - Product ID.
+ * @param {string} req.body.cart[].image - Product image URL.
+ * @param {string} req.body.cart[].title - Product title.
+ * @param {string} req.body.cart[].type - Type of product.
+ * @param {number} req.body.cart[].quantity - Requested quantity of the product.
+ * @param {number} req.body.cart[].price - Price per unit of the product.
+ * @returns {Object} updatedCart, total_price - Response with the updated cart and total price.
+ */
+
 const validateCart = async (req, res) => {
   const { cart } = req.body;
 

@@ -10,7 +10,13 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "video/mp4"];
+  const allowedTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp",
+    "video/mp4",
+  ];
   if (!allowedTypes.includes(file.mimetype)) {
     return cb(new Error("Only jpeg, png and mp4 are authorized"), false);
   }

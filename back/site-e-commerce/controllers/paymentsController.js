@@ -33,6 +33,7 @@ const createPayment = async (req, res) => {
       .json({ error: "Error occurred while the creation of the payment" });
   }
 };
+
 const confirmPayment = async (req, res) => {
   const { payment_intent_id } = req.body;
 
