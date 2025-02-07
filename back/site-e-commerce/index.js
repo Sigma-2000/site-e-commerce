@@ -9,10 +9,10 @@ const cookieParser = require("cookie-parser");
 const fs = require("fs");
 const path = require("path");
 
+/**create a folder if it does'nt exist yet, render seems to delete the folder because it's an empty folder*/
 const uploadPath = path.join(__dirname, "tmp/uploads");
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
-  console.log("Dossier temporaire crée");
 }
 
 const port = process.env.PORT;
