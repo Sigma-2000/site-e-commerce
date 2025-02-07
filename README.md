@@ -191,7 +191,7 @@ Il peut être nécessaire de **recharger l'application** pour la réveiller.
 
 [Multer](https://github.com/expressjs/multer/blob/master/doc/README-fr.md)
 
-Exemple d'articles consultés pour résolution de problème:
+### Exemple d'articles consultés au cours du développement de l'app:
 
 [erreur-404-deploy-vercel](http://medium.com/%40awdhesh1700/how-to-resolve-the-404-not-found-error-in-vercel-deployments-a0fe90c1447a)
 
