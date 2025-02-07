@@ -1,9 +1,8 @@
 <template>
     <div class="payment-view">
         <div class="underline-short"></div>
-        <router-link to="/shop" class="pages-link">
-            <h2>{{ $t('menu.shop') }}</h2>
-        </router-link>
+        <!--<router-link to="/shop" class="pages-link">-->
+        <h2>{{ $t('menu.shop') }}</h2>
         <div class="underline-long"></div>
         <h3>{{ $t('cart.payment') }}</h3>
         <ErrorComponent v-if="error" :error="error" />
