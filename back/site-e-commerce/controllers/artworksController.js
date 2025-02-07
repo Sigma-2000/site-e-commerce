@@ -67,7 +67,6 @@ const addArtworks = async (req, res) => {
     const files = req.files;
     const images = [];
     const videos = [];
-    console.log(images);
 
     for (const file of files) {
       const result = await cloudinary.uploader.upload(file.path, {

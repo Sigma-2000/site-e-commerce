@@ -163,3 +163,4 @@ Exemple d'articles consultés pour résolution de problème:
 [read-me](https://medium.com/@lexnotor/%C3%A9crire-un-fichier-readme-md-37bad6cb2a7e)
 [manage-cart](https://medium.com/@qausa/the-dynamics-of-shopping-carts-in-e-commerce-bridging-the-frontend-and-backend-786c19def4cb)
 [cart-process](https://www.quora.com/What-happens-at-the-back-end-of-a-website-between-when-a-user-adds-a-product-to-cart-and-the-final-checkout-process-is-complete-Can-a-developer-please-give-a-step-by-step-overview-that-a-layperson-would-understand)
+[tmp-remove-by-render](https://nodejs.org/api/fs.html)
