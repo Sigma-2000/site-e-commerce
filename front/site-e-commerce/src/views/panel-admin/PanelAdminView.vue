@@ -34,6 +34,7 @@ onMounted(() => {
     orderStore.fetchAllOrders();
 });
 </script>
+
 <style>
 .order-admin-number {
     text-align: center;

@@ -66,6 +66,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const usersStore = useUsersStore();
+
 const error = computed(() => usersStore.error);
 
 const form = reactive({
@@ -109,6 +110,7 @@ watch(
         resetGlobalError();
     }
 );
+
 watch(
     () => form.address.phone,
     (newPhone) => {

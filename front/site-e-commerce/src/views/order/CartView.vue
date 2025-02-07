@@ -63,8 +63,8 @@ import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import SuccessComponent from '@/components/ui/SuccessComponent.vue';
 import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import AddressUpdate from '@/components/account/AddressUpdate.vue';
-import { createOrder, createCheckoutSession } from '@/services/orderPaymentServices';
 
+import { createOrder, createCheckoutSession } from '@/services/orderPaymentServices';
 import { onMounted, computed, watch } from 'vue';
 import { useCartStore } from '@/stores/cartStore.js';
 import { useUsersStore } from '@/stores/usersStore';
