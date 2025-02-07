@@ -8,6 +8,8 @@ Ce projet est un **site e-commerce** destiné à promouvoir et vendre les œuvre
 
 Dépôt **GitHub** : Sigma-2000/site-e-commerce
 
+La branche **Staging** contient les dernières mises à jour.
+
 Déploiement **Front-end** sur [Vercel](https://site-e-commerce-git-staging-sigma2000s-projects.vercel.app?_vercel_share=Vc6VxGuArxuoxQwbRv7RyGUfDCwk5gQK)
 
 Deploiement **Back-end** sur [render](https://site-e-commerce-ydc0.onrender.com/)
@@ -38,7 +40,7 @@ Bcrypt
 
 Cookie Parser + JWT
 
-Stripe
+Stripe (mode test)
 
 ### Déploiement & CI/CD
 
@@ -155,8 +157,17 @@ npm run dev
 
 ### Tester le tableau de bord de l'admin
 
-connectez-vous à amelieguyot7@gmail.com
-entrez le mdp: PASSWORDsoutenance7@
+Connectez-vous à amelieguyot7@gmail.com
+
+Entrez le mdp: PASSWORDsoutenance7@
+
+### Test de l'app en prod
+
+**Stripe est en mode test**: les paiements ne seront pas réels.
+
+L'API est hébergée sur Render : Render met automatiquement l'**API en veille** après une période d'inactivité.
+
+Il peut être nécessaire de **recharger l'application** pour la réveiller.
 
 ## Ressources
 
@@ -195,3 +206,5 @@ Exemple d'articles consultés pour résolution de problème:
 [cart-process](https://www.quora.com/What-happens-at-the-back-end-of-a-website-between-when-a-user-adds-a-product-to-cart-and-the-final-checkout-process-is-complete-Can-a-developer-please-give-a-step-by-step-overview-that-a-layperson-would-understand)
 
 [tmp-remove-by-render](https://nodejs.org/api/fs.html)
+
+[lazy-loading](https://developer.mozilla.org/fr/docs/Web/Performance/Lazy_loading)
