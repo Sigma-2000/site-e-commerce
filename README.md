@@ -92,50 +92,64 @@ Choix de langue (FR/EN)
 
 ### Cloner le projet
 
+```sh
 git clone https://github.com/Sigma-2000/site-e-commerce.git
 cd site-e-commerce
+```
 
 ### Installation des dépendances
 
 #### Front-end
 
+```sh
 cd front
 cd site-e-commerce
 npm install
+```
 
 #### Back-end
 
+```sh
 cd back
 cd site-e-commerce
 npm install
+```
 
 #### Configuration des variables d'environnement
 
 Créer un fichier **.env** dans le dossier back avec les variables nécessaires :
 
+```sh
 MONGO_URI=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
 STRIPE_SECRET=your_stripe_key
 CLOUDINARY_URL=your_cloudinary_url
+```
 
 Créer un fichier **.env** dans le dossier front avec les variables nécessaires :
 
+```sh
 VITE_BACK_API_BASE_URL
 VITE_STRIPE_PUBLIC_KEY
+```
 
 ## Lancer le projet en local
 
 ### Démarrer le back-end
 
+```sh
 cd back
 cd site-e-commerce
 npm start
+```
 
 ### Démarrer le front-end
 
+```sh
 cd front
 cd site-e-commerce
 npm run dev
+```
 
 ### Tester le tableau de bord de l'admin
 
@@ -145,22 +159,37 @@ entrez le mdp: PASSWORDsoutenance7@
 ## Ressources
 
 [Vue](https://vuejs.org/)
+
 [Vue-Router](https://router.vuejs.org/)
+
 [Sass](https://sass-lang.com/blog/import-is-deprecated/)
+
 [i18n](https://vue-i18n.intlify.dev/)
+
 [Axios](https://axios-http.com/fr/docs/intro)
+
 [Express](https://expressjs.com/)
+
 [Mongoose](https://mongoosejs.com/)
+
 [Stripe](https://docs.stripe.com/payments/checkout)
+
 [Stripe-js](https://docs.stripe.com/js)
+
 [Multer](https://github.com/expressjs/multer/blob/master/doc/README-fr.md)
 
 Exemple d'articles consultés pour résolution de problème:
 
 [erreur-404-deploy-vercel](http://medium.com/%40awdhesh1700/how-to-resolve-the-404-not-found-error-in-vercel-deployments-a0fe90c1447a)
+
 [no-password-in-api-response](https://stackoverflow.com/questions/28838640/mongoose-how-can-i-access-a-selectfalse-property-in-a-schema-method)
+
 [remove-vue-html](https://vue-i18n.intlify.dev/guide/advanced/component)
+
 [read-me](https://medium.com/@lexnotor/%C3%A9crire-un-fichier-readme-md-37bad6cb2a7e)
+
 [manage-cart](https://medium.com/@qausa/the-dynamics-of-shopping-carts-in-e-commerce-bridging-the-frontend-and-backend-786c19def4cb)
+
 [cart-process](https://www.quora.com/What-happens-at-the-back-end-of-a-website-between-when-a-user-adds-a-product-to-cart-and-the-final-checkout-process-is-complete-Can-a-developer-please-give-a-step-by-step-overview-that-a-layperson-would-understand)
+
 [tmp-remove-by-render](https://nodejs.org/api/fs.html)
