@@ -7,7 +7,9 @@ Ce projet est un **site e-commerce** destiné à promouvoir et vendre les œuvre
 ## Lien du projet
 
 Dépôt **GitHub** : Sigma-2000/site-e-commerce
+
 Déploiement **Front-end** sur [Vercel](https://site-e-commerce-git-staging-sigma2000s-projects.vercel.app?_vercel_share=Vc6VxGuArxuoxQwbRv7RyGUfDCwk5gQK)
+
 Deploiement **Back-end** sur [render](https://site-e-commerce-ydc0.onrender.com/)
 
 ## Technologies utilisées
@@ -72,7 +74,7 @@ Interface de gestion des comptes
 
 Suivi des commandes
 
-Suppression du compte
+Suppression du compte utilisateur
 
 Interface administrateur
 
