@@ -6,6 +6,15 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 //const initializeAdmin = require("./utils/initializeAdmin");
 
+const fs = require("fs");
+const path = require("path");
+
+const uploadPath = path.join(__dirname, "tmp/uploads");
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+  console.log("Dossier temporaire crée");
+}
+
 const port = process.env.PORT;
 const mongoUri = process.env.MONGO_URI;
 
