@@ -40,6 +40,7 @@ import { validateEmail, validatePassword } from '@/utils/validators';
 
 const usersStore = useUsersStore();
 const router = useRouter();
+
 const error = computed(() => usersStore.error);
 
 const form = reactive({
@@ -64,6 +65,7 @@ watch(
         resetGlobalError();
     }
 );
+
 watch(
     () => form.password,
     (newPassword) => {
@@ -72,6 +74,7 @@ watch(
         resetGlobalError();
     }
 );
+
 const handleLogin = async () => {
     if (emailError.value || passwordError.value) {
         return;

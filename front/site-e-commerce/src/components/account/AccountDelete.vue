@@ -27,5 +27,4 @@ const deleteAccount = async () => {
         console.error(err);
     }
 };
-//TODO: set up an pop up for user to be sure to delete ?
 </script>

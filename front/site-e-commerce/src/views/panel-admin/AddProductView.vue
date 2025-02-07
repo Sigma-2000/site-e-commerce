@@ -58,14 +58,14 @@
 
 <script setup>
 import { reactive, computed, onMounted } from 'vue';
-import ErrorComponent from '@/components/ui/ErrorComponent.vue';
-import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useProductsStore } from '@/stores/productsStore';
 import { useArtworksStore } from '@/stores/artworksStore';
 import { useI18n } from 'vue-i18n';
 import { useLanguage } from '@/composables/useLanguage';
 import { Icon } from '@iconify/vue';
+import ErrorComponent from '@/components/ui/ErrorComponent.vue';
+import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 
 const { t } = useI18n();
 const route = useRoute();

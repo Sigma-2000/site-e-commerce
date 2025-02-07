@@ -17,12 +17,11 @@
                         v-if="product.artwork_id.images && product.artwork_id.images.length"
                         :src="product.artwork_id.images[4]"
                         :alt="product.artwork_id.title[locale]"
+                        loading="lazy"
                     />
                 </div>
                 <SuccessComponent v-if="successAddedCart" :success="successAddedCart" />
                 <ErrorComponent v-if="error" :error="error" />
-                <!-- TODO: bug with success it appears for all products, and maybe set Interval for clear the message
-                 during shopping process of the user -->
                 <div class="item-details-card-button">
                     <ButtonComponent
                         :disabled="product.stock === 0"
@@ -58,6 +57,7 @@
                         :key="index"
                         :src="image"
                         :alt="`${product.artwork_id} - ${index}`"
+                        loading="lazy"
                         class="detail-image"
                     />
                 </div>
@@ -92,9 +92,6 @@ const productId = route.params.id;
 const product = computed(() => productStore.selectedProduct);
 const error = computed(() => productStore.error);
 const successAddedCart = computed(() => cartStore.success);
-
-//TODO: when user click on img, it growth
-//TODO: need to add video for digital art
 
 const addProductToCart = (product) => {
     if (product && product.stock > 0) {

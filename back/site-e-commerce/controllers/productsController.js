@@ -16,6 +16,7 @@ const getAllProducts = async (req, res) => {
     });
   }
 };
+
 const getProductById = async (req, res) => {
   const { id } = req.params;
 
@@ -115,13 +116,6 @@ const updateProductById = async (req, res) => {
   }
 };
 
-/*TODO: in future implement all the shopping cart at the beginning in back-end for a better user experience friendly, 
-he can have access to his cart whith his mobile and continue to shop with it in dekstop for example when he is identify.
-We can use a jeton for identify and recovery the cart shopping, 
-might be better than local storage especially when the user is not identify (tuftingshop example).
-Added an expiration date for the cart shopping 
-the back end sould be the only source of truth for calculation of cart also*/
-
 const reserveProductStock = async (req, res) => {
   const { id } = req.params;
   const { quantity } = req.body;
@@ -147,6 +141,16 @@ const reserveProductStock = async (req, res) => {
     res.status(500).json({ error: "Error occurred while product reservation" });
   }
 };
+
+/**
+ * Remove some stock quantity reservation for a product and ensure to take back in stock.
+ * We remove the oldest reservation.
+ * @route POST /product/:id/remove-reservation
+ * @param {string} req.params.id - Product ID.
+ * @param {number} req.body.quantity - Quantity to removing from the product reservation.
+ * @returns {Object} product - Product stock update after the removing
+ *
+ */
 
 const removeReservationProductStock = async (req, res) => {
   const { id } = req.params;

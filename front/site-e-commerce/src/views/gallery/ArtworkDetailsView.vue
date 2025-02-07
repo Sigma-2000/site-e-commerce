@@ -23,14 +23,8 @@
                         v-else-if="artwork.images && artwork.images.length"
                         :src="artwork.images[0]"
                         :alt="artwork.title[locale]"
+                        loading="lazy"
                     />
-                    <!--
-                    <img
-                        v-if="artwork.images && artwork.images.length"
-                        :src="artwork.images[0]"
-                        :alt="artwork.title[locale]"
-                    />
-                    -->
                 </div>
                 <div class="item-details-card-text">
                     <div class="item-details-card-text-additional">
@@ -61,6 +55,7 @@
                         :key="index"
                         :src="image"
                         :alt="`${artwork.title} - ${index}`"
+                        loading="lazy"
                         class="detail-image"
                     />
                 </div>

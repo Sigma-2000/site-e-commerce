@@ -7,6 +7,5 @@ cloudinary.config({
   api_key: cloudinaryApiKey,
   api_secret: cloudinaryApiSecret,
 });
-//TODO: maybe regenerate api key with
 
 module.exports = { cloudinary };

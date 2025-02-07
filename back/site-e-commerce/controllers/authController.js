@@ -84,12 +84,12 @@ const login = async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         role: user.role,
-        //no password but it can change with the possibility to change password future feat?
       });
   } catch (error) {
     res.status(500).json({ error: "Authentification failed" });
   }
 };
+
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().populate("address_id");

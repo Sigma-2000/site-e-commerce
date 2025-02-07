@@ -64,9 +64,11 @@ const FormProduct = reactive({
     price: 0,
     stock: 0,
 });
+
 const error = computed(() => productStore.error);
 const success = computed(() => productStore.success);
 const product = computed(() => productStore.selectedProduct);
+
 const productId = route.params.id;
 const category = route.params.category;
 

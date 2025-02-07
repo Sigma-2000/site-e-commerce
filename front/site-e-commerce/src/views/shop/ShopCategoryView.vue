@@ -25,6 +25,7 @@
                                 v-if="product.artwork_id.images && product.artwork_id.images.length"
                                 :src="product.artwork_id.images[4]"
                                 :alt="product.artwork_id.title[locale]"
+                                loading="lazy"
                             />
                             <div class="category-content-items-more-details">
                                 <p>
