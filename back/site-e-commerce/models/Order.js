@@ -12,6 +12,13 @@ const OrderSchema = new Schema({
     ref: "Address",
     required: true,
   },
+  cart_token: {
+    type: String,
+  },
+  cart_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Cart",
+  },
   products: [
     {
       id: {
@@ -40,6 +47,7 @@ const OrderSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Payment",
   },
+  /**cart_token: String, */
 });
 
 const Order = mongoose.model("Order", OrderSchema);

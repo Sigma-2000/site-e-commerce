@@ -1,13 +1,15 @@
 const express = require("express");
 const Product = require("../models/Product");
 const Artwork = require("../models/Artwork");
-const { cleanExpiredReservations } = require("../utils/productReservation");
+const {
+  cleanExpiredReservationsByProductId,
+} = require("../utils/productReservation");
 
 const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find().populate("artwork_id");
     for (const product of products) {
-      await cleanExpiredReservations(product._id);
+      await cleanExpiredReservationsByProductId(product._id);
     }
     res.status(200).json(products);
   } catch (error) {
@@ -22,7 +24,7 @@ const getProductById = async (req, res) => {
 
   try {
     const product = await Product.findById(id).populate("artwork_id");
-    await cleanExpiredReservations(id);
+    await cleanExpiredReservationsByProductId(id);
 
     if (!product) {
       return res.status(404).json({
@@ -43,9 +45,8 @@ const deleteProductById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deletedProduct = await Product.findByIdAndDelete(id).populate(
-      "artwork_id"
-    );
+    const deletedProduct =
+      await Product.findByIdAndDelete(id).populate("artwork_id");
 
     if (!deletedProduct) {
       return res.status(404).json({
@@ -101,7 +102,7 @@ const updateProductById = async (req, res) => {
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
       { price, stock, category },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedProduct) {
@@ -133,6 +134,7 @@ const reserveProductStock = async (req, res) => {
     product.stock -= quantity;
     const expiresAt = new Date(Date.now() + 12 * 60 * 60 * 1000);
     product.reservedStock.push({ quantity, expiresAt });
+    /**product.reservedStock.push({ cartToken, quantity, expiresAt }); */
 
     await product.save();
 
@@ -170,23 +172,24 @@ const removeReservationProductStock = async (req, res) => {
     }
 
     product.reservedStock.sort((a, b) => a.expiresAt - b.expiresAt);
-
+    /*const reservations = product.reservedStock.filter(r => r.cartToken === cartToken);*/
+    /*"cartToken": "...",*/
     let quantityToRemove = quantity;
     const reservedTotal = product.reservedStock.reduce(
       (sum, reservation) => sum + reservation.quantity,
-      0
+      0,
     );
 
     const totalQuantityToRemoveFromReservation = Math.min(
       quantityToRemove,
-      reservedTotal
+      reservedTotal,
     );
 
     product.reservedStock = product.reservedStock.filter((reservation) => {
       if (quantityToRemove > 0) {
         const removeFromReservation = Math.min(
           quantityToRemove,
-          reservation.quantity
+          reservation.quantity,
         );
         reservation.quantity -= removeFromReservation;
         quantityToRemove -= removeFromReservation;

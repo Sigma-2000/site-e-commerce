@@ -4,6 +4,8 @@ const Payment = require("../models/Payment");
 const Order = require("../models/Order");
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+/**createCheckoutSession
+stripeWebhook quand on change pour stripe balal */
 
 const createPayment = async (req, res) => {
   const { amount, currency, user_id, order_id } = req.body;
@@ -42,9 +44,8 @@ const confirmPayment = async (req, res) => {
       return res.status(400).json({ error: "Missing payment_intent_id" });
     }
 
-    const paymentIntent = await stripe.paymentIntents.retrieve(
-      payment_intent_id
-    );
+    const paymentIntent =
+      await stripe.paymentIntents.retrieve(payment_intent_id);
 
     if (paymentIntent.status === "succeeded") {
       const updatedPayment = await Payment.findOneAndUpdate(
@@ -52,12 +53,12 @@ const confirmPayment = async (req, res) => {
         {
           payment_status: "completed",
         },
-        { new: true }
+        { new: true },
       );
 
       await Order.findOneAndUpdate(
         { payment_id: updatedPayment._id },
-        { $set: { payment_id: updatedPayment._id } }
+        { $set: { payment_id: updatedPayment._id } },
       );
 
       return res.json({

@@ -2,7 +2,10 @@ const express = require("express");
 const Order = require("../models/Order");
 const Product = require("../models/Product");
 const Payment = require("../models/Payment");
+const Cart = require("../models/Cart");
+
 const { handleReservations } = require("../utils/productReservation");
+//const { cleanExpiredReservations } = require("../utils/productReservation");
 const { calculateTotalPrice } = require("../utils/cart");
 
 /**
@@ -17,7 +20,85 @@ const { calculateTotalPrice } = require("../utils/cart");
  * @returns {Object} order - Response confirming the order creation with all informations.
  *
  */
+/**const createOrder = async (req, res) => {
+  const { address_id, cartToken } = req.body;
+  const user_id = req.user.id;
 
+  try {
+    if (!user_id || !address_id || !cartToken) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const cart = await Cart.findOne({
+      token: cartToken,
+      status: "active",
+    }).populate("items.product_id");
+
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ error: "Cart is empty or expired" });
+    }
+
+    const orderProducts = [];
+    let totalPrice = 0;
+
+    for (const item of cart.items) {
+      const product = await Product.findById(item.product_id._id);
+
+      if (!product) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+
+      await cleanExpiredReservations(product);
+
+      const reservation = product.reservedStock.find(
+        (r) => r.cartToken === cartToken
+      );
+
+      if (!reservation || reservation.quantity < item.quantity) {
+        return res.status(400).json({
+          error: "Reservation expired or insufficient",
+        });
+      }
+
+      reservation.quantity -= item.quantity;
+
+      product.reservedStock = product.reservedStock.filter(
+        (r) => r.quantity > 0
+      );
+
+      await product.save();
+
+      orderProducts.push({
+        id: product._id,
+        quantity: item.quantity,
+      });
+
+      totalPrice += product.price * item.quantity;
+    }
+
+    const newOrder = await Order.create({
+      user_id,
+      address_id,
+      products: orderProducts,
+      total_price: totalPrice,
+      cart_token: cartToken,
+      status_order: "pending",
+    });
+
+    cart.status = "ordered";
+    await cart.save();
+
+    return res.status(201).json({
+      message: "Order created successfully",
+      order: newOrder,
+    });
+  } catch (error) {
+    console.error("createOrder error:", error);
+    return res.status(500).json({ error: "Error creating order" });
+  }
+}; */
+
+//validate Cart à déplacer
 const createOrder = async (req, res) => {
   const { user_id, address_id, products } = req.body;
 
@@ -35,7 +116,7 @@ const createOrder = async (req, res) => {
 
       const reservedTotal = product.reservedStock.reduce(
         (sum, reservation) => sum + reservation.quantity,
-        0
+        0,
       );
       const totalStock = product.stock + reservedTotal;
 
@@ -57,6 +138,7 @@ const createOrder = async (req, res) => {
       address_id,
       products,
       total_price: totalPrice,
+      /**cartToken */
     });
     res
       .status(201)
@@ -187,7 +269,7 @@ const validateCart = async (req, res) => {
 
       const reservedQuantity = product.reservedStock.reduce(
         (sum, reservation) => sum + reservation.quantity,
-        0
+        0,
       );
 
       if (reservedQuantity === 0) {
@@ -230,7 +312,7 @@ const validateCart = async (req, res) => {
 
     const total_price = updatedCart.reduce(
       (sum, item) => sum + (item.totalPrice || 0),
-      0
+      0,
     );
 
     res.status(200).json({ updatedCart, total_price });

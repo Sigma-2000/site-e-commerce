@@ -19,7 +19,7 @@
                             v-if="successAddedCart && lastAddedProductId === product._id"
                             :success="successAddedCart"
                         />
-                        <h2>{{ product.artwork_id.title[locale] }}</h2>
+                        <h3>{{ product.artwork_id.title[locale] }}</h3>
                         <div class="category-content-items">
                             <img
                                 v-if="product.artwork_id.images && product.artwork_id.images.length"

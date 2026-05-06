@@ -7,11 +7,27 @@ export const useCartStore = defineStore('cart', {
         totalPrice: 0,
         success: null,
         error: null,
+        cartToken: null,
+        /**  cartToken: localStorage.getItem("cartToken") || crypto.randomUUID(), */
     }),
+    /**localStorage.setItem("cartToken", this.cartToken); premier chargement à déplacer en dehors d'ici */
     actions: {
+        getOrCreateCartToken() {
+            let token = localStorage.getItem('cartToken');
+
+            if (!token) {
+                token = crypto.randomUUID();
+                localStorage.setItem('cartToken', token);
+            }
+
+            this.cartToken = token;
+            //  return token;
+        },
         async addToCart(product) {
             this.success = null;
             try {
+                const cartToken = this.getOrCreateCartToken();
+                console.log(cartToken);
                 const alreadyProducts = this.cart.find((item) => item.id === product.id);
                 if (alreadyProducts) {
                     alreadyProducts.quantity++;
@@ -20,16 +36,20 @@ export const useCartStore = defineStore('cart', {
                 }
                 await axiosCaller.post(`/product/${product.id}/reservation`, {
                     quantity: 1,
+                    // cartToken,
+                    /** "cartToken": "...", dans le local storage au lieu du panier du coup
+                     * faire sur tout les demande api concernant product
+                     */
                 });
                 await this.validateCart();
-                this.persistCart();
+                //this.persistCart();
+                this.syncCartWithLocalStorage();
                 this.success = 'success.add-product-cart';
             } catch (err) {
                 this.error = 'errors.add-product-cart';
                 console.error(err);
             }
         },
-
         async decreaseQuantity(productId) {
             try {
                 const productInCart = this.cart.find((item) => item.id === productId);
@@ -38,9 +58,11 @@ export const useCartStore = defineStore('cart', {
                 if (productInCart.quantity > 1) {
                     await axiosCaller.post(`/product/${productId}/remove-reservation`, {
                         quantity: 1,
+                        /**"cartToken": "...", recup du local storgae */
                     });
 
                     productInCart.quantity--;
+                    //bloquer quand rupture de stock !
                 } else {
                     await this.removeFromCart(productId);
                     return;
@@ -74,6 +96,7 @@ export const useCartStore = defineStore('cart', {
         async validateCart() {
             this.error = null;
             this.success = null;
+            //recup le cart Token en premier lieu
             try {
                 const response = await axiosCaller.post('/order/validate-cart', {
                     cart: this.cart,
@@ -105,13 +128,14 @@ export const useCartStore = defineStore('cart', {
         },
         persistCart() {
             localStorage.setItem('cart', JSON.stringify(this.cart));
+            //delete persistCart
         },
         async loadCart() {
             const storedCart = localStorage.getItem('cart');
             if (storedCart) {
                 this.cart = JSON.parse(storedCart);
             }
-            await this.validateCart();
+            await this.validateCart(); //devra surement recup le carte Token
         },
         syncCartWithLocalStorage() {
             if (this.cart.length > 0) {
@@ -124,6 +148,11 @@ export const useCartStore = defineStore('cart', {
             this.cart = [];
             this.totalPrice = 0;
             localStorage.removeItem('cart');
+            localStorage.removeItem('cartToken');
+            this.cartToken = null;
+            /** ranme it clearLocalCartState()
+             * clearCartClientState()
+             * clearCartFrontendOnly()*/
         },
         setError(errorMessage) {
             this.error = errorMessage;
