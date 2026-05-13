@@ -74,7 +74,7 @@ const addToCart = async (req, res) => {
       product.reservedStock.push({
         cartToken,
         quantity,
-        expiresAt: new Date(cart.expires_at), //necessary to have a date ?
+        expiresAt: new Date(cart.expires_at),
       });
     }
 
