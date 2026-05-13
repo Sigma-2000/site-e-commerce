@@ -8,7 +8,7 @@ const {
   deleteProductById,
   addProduct,
   updateProductById,
-  reserveProductStock,
+  //reserveProductStock,
   removeReservationProductStock,
 } = require("../controllers/productsController");
 
@@ -17,7 +17,8 @@ router.get("/product/:id", getProductById);
 router.delete("/product/:id", verifyToken, isAdmin, deleteProductById);
 router.post("/product/:artwork_id", verifyToken, isAdmin, addProduct);
 router.put("/product/:id", verifyToken, isAdmin, updateProductById);
-router.post("/product/:id/reservation", reserveProductStock);
+//effacer les deux routes
+//router.post("/product/:id/reservation", reserveProductStock);
 router.post("/product/:id/remove-reservation", removeReservationProductStock);
 
 module.exports = router;

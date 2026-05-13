@@ -116,7 +116,7 @@ const updateProductById = async (req, res) => {
     });
   }
 };
-
+/*
 const reserveProductStock = async (req, res) => {
   const { id } = req.params;
   const { quantity } = req.body;
@@ -134,7 +134,7 @@ const reserveProductStock = async (req, res) => {
     product.stock -= quantity;
     const expiresAt = new Date(Date.now() + 12 * 60 * 60 * 1000);
     product.reservedStock.push({ quantity, expiresAt });
-    /**product.reservedStock.push({ cartToken, quantity, expiresAt }); */
+    /**product.reservedStock.push({ cartToken, quantity, expiresAt }); 
 
     await product.save();
 
@@ -142,8 +142,8 @@ const reserveProductStock = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Error occurred while product reservation" });
   }
-};
-
+};*/
+//pareil plus besoin de ça
 /**
  * Remove some stock quantity reservation for a product and ensure to take back in stock.
  * We remove the oldest reservation.
@@ -220,6 +220,6 @@ module.exports = {
   deleteProductById,
   addProduct,
   updateProductById,
-  reserveProductStock,
+  //reserveProductStock,
   removeReservationProductStock,
 };

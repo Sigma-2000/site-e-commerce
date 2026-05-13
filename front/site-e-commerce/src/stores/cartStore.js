@@ -21,7 +21,7 @@ export const useCartStore = defineStore('cart', {
             }
 
             this.cartToken = token;
-            //  return token;
+            return token;
         },
         async addToCart(product) {
             this.success = null;
@@ -34,14 +34,16 @@ export const useCartStore = defineStore('cart', {
                 } else {
                     this.cart.push({ ...product, quantity: 1 });
                 }
-                await axiosCaller.post(`/product/${product.id}/reservation`, {
+                //changer ici l'appel api pour la route cart avec le cartToken
+                /*await axiosCaller.post(`/product/${product.id}/reservation`, {
                     quantity: 1,
-                    // cartToken,
-                    /** "cartToken": "...", dans le local storage au lieu du panier du coup
-                     * faire sur tout les demande api concernant product
-                     */
+                });*/
+                await axiosCaller.post(`/cart/${product.id}/add`, {
+                    cartToken,
+                    quantity: 1,
                 });
-                await this.validateCart();
+
+                await this.validateCart(); //vérifier si on en a besoin ou pas
                 //this.persistCart();
                 this.syncCartWithLocalStorage();
                 this.success = 'success.add-product-cart';
@@ -53,14 +55,19 @@ export const useCartStore = defineStore('cart', {
         async decreaseQuantity(productId) {
             try {
                 const productInCart = this.cart.find((item) => item.id === productId);
-                if (!productInCart) return;
-
-                if (productInCart.quantity > 1) {
+                if (!productInCart) return; //va devoir changer ça car back source vérité
+                const cartToken = this.getOrCreateCartToken();
+                //changer ici l'appel api pour la route cart avec le cartToken
+                /*if (productInCart.quantity > 1) {
                     await axiosCaller.post(`/product/${productId}/remove-reservation`, {
                         quantity: 1,
-                        /**"cartToken": "...", recup du local storgae */
+                    });*/
+                if (productInCart.quantity > 1) {
+                    await axiosCaller.post(`/cart/${productId}/remove`, {
+                        cartToken,
+                        quantity: 1,
                     });
-
+                    //voir car si reponse back nop le front ici s'est direct mis à jour et à pas attendu
                     productInCart.quantity--;
                     //bloquer quand rupture de stock !
                 } else {
@@ -79,11 +86,16 @@ export const useCartStore = defineStore('cart', {
             try {
                 const productInCart = this.cart.find((item) => item.id === productId);
                 if (!productInCart) return;
-
-                await axiosCaller.post(`/product/${productId}/remove-reservation`, {
+                const cartToken = this.getOrCreateCartToken();
+                //changer ici l'appel api pour la route cart avec le cartToken
+                /*await axiosCaller.post(`/product/${productId}/remove-reservation`, {
+                    quantity: productInCart.quantity,
+                });*/
+                await axiosCaller.post(`/cart/${productId}/remove`, {
+                    cartToken,
                     quantity: productInCart.quantity,
                 });
-
+                //checker si le flow est bon
                 this.cart = this.cart.filter((item) => item.id !== productId);
                 await this.validateCart();
                 this.syncCartWithLocalStorage();
@@ -97,6 +109,7 @@ export const useCartStore = defineStore('cart', {
             this.error = null;
             this.success = null;
             //recup le cart Token en premier lieu
+            // sans doute à enlever
             try {
                 const response = await axiosCaller.post('/order/validate-cart', {
                     cart: this.cart,

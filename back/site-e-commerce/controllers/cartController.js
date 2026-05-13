@@ -1,7 +1,9 @@
 const Cart = require("../models/Cart");
 const Product = require("../models/Product");
-const { cleanExpiredReservations } = require("../utils/productReservation");
-//await cleanExpiredReservationsForProduct(product); //le jobs
+const {
+  cleanExpiredReservationsByProductId,
+} = require("../utils/productReservation");
+
 const CART_DURATION_MS = 30 * 60 * 1000;
 
 const getCartExpiresAt = () => new Date(Date.now() + CART_DURATION_MS);
@@ -24,20 +26,21 @@ const getOrCreateCart = async (cartToken) => {
 };
 
 const addToCart = async (req, res) => {
-  const { productId, quantity = 1, cartToken } = req.body;
+  const { productId } = req.params;
+  const { cartToken, quantity } = req.body;
 
   try {
     if (!productId || !cartToken) {
       return res.status(400).json({ error: "Missing productId or cartToken" });
     }
 
+    await cleanExpiredReservationsByProductId(productId);
+
     const product = await Product.findById(productId);
 
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
-
-    await cleanExpiredReservations(product);
 
     if (product.stock < quantity) {
       return res.status(400).json({ error: "Stock insufficient" });
@@ -66,12 +69,12 @@ const addToCart = async (req, res) => {
 
     if (existingReservation) {
       existingReservation.quantity += quantity;
-      existingReservation.expiresAt = cart.expires_at;
+      existingReservation.expiresAt = new Date(cart.expires_at);
     } else {
       product.reservedStock.push({
         cartToken,
         quantity,
-        expiresAt: cart.expires_at,
+        expiresAt: new Date(cart.expires_at),
       });
     }
 
@@ -91,7 +94,8 @@ const addToCart = async (req, res) => {
 };
 
 const removeFromCart = async (req, res) => {
-  const { productId, quantity, cartToken } = req.body;
+  const { productId } = req.params;
+  const { cartToken, quantity } = req.body;
 
   try {
     if (!productId || !cartToken || !quantity) {
@@ -99,13 +103,12 @@ const removeFromCart = async (req, res) => {
     }
 
     const cart = await Cart.findOne({ token: cartToken });
+    await cleanExpiredReservationsByProductId(productId);
     const product = await Product.findById(productId);
 
     if (!cart || !product) {
       return res.status(404).json({ error: "Cart or product not found" });
     }
-
-    await cleanExpiredReservations(product);
 
     const cartItem = cart.items.find(
       (item) => String(item.product_id) === String(productId),

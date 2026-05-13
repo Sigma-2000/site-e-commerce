@@ -10,56 +10,6 @@ const Product = require("../models/Product");
  * @param {number} orderQuantity - The quantity of the product being ordered.
  */
 
-/**rajouter ça "cartToken": "...", */
-/**
-const handleReservations = (product, orderQuantity) => {
-  product.reservedStock.sort((a, b) => a.expiresAt - b.expiresAt);
-
-  for (const reservation of product.reservedStock) {
-    if (orderQuantity <= 0) break;
-
-    const removeFromReservation = Math.min(orderQuantity, reservation.quantity);
-    reservation.quantity -= removeFromReservation;
-    orderQuantity -= removeFromReservation;
-  }
-
-  product.reservedStock = product.reservedStock.filter(
-    (reservation) => reservation.quantity > 0,
-  );
-
-  if (orderQuantity > 0) {
-    product.stock -= orderQuantity;
-  }
-};
-
-const cleanExpiredReservations = async (productId) => {
-  const now = new Date();
-  try {
-    const product = await Product.findById(productId);
-
-    if (!product) return;
-
-    const expiredReservations = product.reservedStock.filter(
-      (reservation) => reservation.expiresAt && reservation.expiresAt <= now,
-    );
-
-    const expiredQuantity = expiredReservations.reduce(
-      (sum, res) => sum + res.quantity,
-      0,
-    );
-
-    product.stock += expiredQuantity;
-
-    product.reservedStock = product.reservedStock.filter(
-      (reservation) => reservation.expiresAt && reservation.expiresAt > now,
-    );
-
-    await product.save();
-  } catch (error) {
-    console.error("Error cleaning reservations ");
-  }
-}; */
-
 const handleReservations = (product, orderQuantity, cartToken) => {
   let quantityToConsume = orderQuantity;
 
@@ -121,19 +71,39 @@ const cleanExpiredReservationsByProductId = async (productId) => {
 };
 
 const cleanAllExpiredReservations = async () => {
-  const products = await Product.find({
-    reservedStock: {
-      $elemMatch: {
-        expiresAt: { $lte: new Date() },
-      },
-    },
-  });
+  const products = await Product.find();
+  s;
+  let cleanedProductsCount = 0;
 
   for (const product of products) {
-    await cleanExpiredReservationsForProduct(product);
-  }
+    if (product.reservedStock && product.reservedStock.length > 0) {
+      const expiredReservations = product.reservedStock.filter(
+        (reservation) =>
+          reservation.expiresAt &&
+          new Date(reservation.expiresAt) <= new Date(),
+      );
 
-  return products.length;
+      if (expiredReservations.length > 0) {
+        const expiredQuantity = expiredReservations.reduce(
+          (sum, reservation) => sum + reservation.quantity,
+          0,
+        );
+        product.stock += expiredQuantity;
+
+        product.reservedStock = product.reservedStock.filter(
+          (reservation) => new Date(reservation.expiresAt) > new Date(),
+        );
+
+        await product.save();
+        cleanedProductsCount++;
+
+        console.log(`Produit ${product._id} nettoyé, stock mis à jour.`);
+      }
+    } else {
+      console.log(`Produit ${product._id} n'a pas de réservations.`);
+    }
+  }
+  return cleanedProductsCount;
 };
 
 module.exports = {

@@ -20,7 +20,7 @@ const { calculateTotalPrice } = require("../utils/cart");
  * @returns {Object} order - Response confirming the order creation with all informations.
  *
  */
-/**const createOrder = async (req, res) => {
+const createOrder = async (req, res) => {
   const { address_id, cartToken } = req.body;
   const user_id = req.user.id;
 
@@ -51,7 +51,7 @@ const { calculateTotalPrice } = require("../utils/cart");
       await cleanExpiredReservations(product);
 
       const reservation = product.reservedStock.find(
-        (r) => r.cartToken === cartToken
+        (r) => r.cartToken === cartToken,
       );
 
       if (!reservation || reservation.quantity < item.quantity) {
@@ -63,7 +63,7 @@ const { calculateTotalPrice } = require("../utils/cart");
       reservation.quantity -= item.quantity;
 
       product.reservedStock = product.reservedStock.filter(
-        (r) => r.quantity > 0
+        (r) => r.quantity > 0,
       );
 
       await product.save();
@@ -96,9 +96,10 @@ const { calculateTotalPrice } = require("../utils/cart");
     console.error("createOrder error:", error);
     return res.status(500).json({ error: "Error creating order" });
   }
-}; */
+};
 
 //validate Cart à déplacer
+/** 
 const createOrder = async (req, res) => {
   const { user_id, address_id, products } = req.body;
 
@@ -138,7 +139,6 @@ const createOrder = async (req, res) => {
       address_id,
       products,
       total_price: totalPrice,
-      /**cartToken */
     });
     res
       .status(201)
@@ -146,7 +146,7 @@ const createOrder = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Error creating order" });
   }
-};
+};*/
 
 const getAllOrders = async (req, res) => {
   try {
@@ -251,6 +251,7 @@ const updateStatusOrderById = async (req, res) => {
  */
 
 const validateCart = async (req, res) => {
+  // rajouter cartToken et méme voir si encore utile !
   const { cart } = req.body;
 
   try {
@@ -325,7 +326,7 @@ const validateCart = async (req, res) => {
 
 const cancelOrder = async (req, res) => {
   const { order_id } = req.body;
-
+  //va devoir rajouter le cartToken dans cette affaire
   try {
     if (!order_id) {
       return res.status(400).json({ error: "Missing order_id" });
