@@ -4,8 +4,10 @@ const Product = require("../models/Product");
 const Payment = require("../models/Payment");
 const Cart = require("../models/Cart");
 
-const { handleReservations } = require("../utils/productReservation");
-//const { cleanExpiredReservations } = require("../utils/productReservation");
+const {
+  cleanExpiredReservationsForProduct,
+  //handleReservations,
+} = require("../utils/productReservation");
 const { calculateTotalPrice } = require("../utils/cart");
 
 /**
@@ -20,9 +22,11 @@ const { calculateTotalPrice } = require("../utils/cart");
  * @returns {Object} order - Response confirming the order creation with all informations.
  *
  */
+
 const createOrder = async (req, res) => {
   const { address_id, cartToken } = req.body;
   const user_id = req.user.id;
+  console.log("BODY", req.body);
 
   try {
     if (!user_id || !address_id || !cartToken) {
@@ -47,9 +51,22 @@ const createOrder = async (req, res) => {
       if (!product) {
         return res.status(404).json({ error: "Product not found" });
       }
+      try {
+        await cleanExpiredReservationsForProduct(product);
+      } catch (cleanError) {
+        console.error("cleanExpiredReservationsForProduct error:", cleanError);
 
-      await cleanExpiredReservations(product);
-
+        return res.status(500).json({
+          error: "Error while validating product reservations",
+        });
+      }
+      console.log("ORDER cartToken:", cartToken);
+      console.log("PRODUCT reservedStock:", product.reservedStock);
+      console.log(
+        "MATCH:",
+        product.reservedStock.find((r) => r.cartToken === cartToken),
+      );
+      console.log("ITEM quantity:", item.quantity);
       const reservation = product.reservedStock.find(
         (r) => r.cartToken === cartToken,
       );
@@ -94,46 +111,43 @@ const createOrder = async (req, res) => {
     });
   } catch (error) {
     console.error("createOrder error:", error);
+    console.error(error.stack);
     return res.status(500).json({ error: "Error creating order" });
   }
-};
-
-//validate Cart à déplacer
-/** 
+}; /*
 const createOrder = async (req, res) => {
   const { user_id, address_id, products } = req.body;
-
   try {
     if (!user_id || !address_id || !products) {
       return res.status(400).json({ error: "Missing required fields" });
     }
-
+    console.log("BODY", req.body);
     for (const item of products) {
       const product = await Product.findById(item.id);
-
       if (!product) {
         return res.status(404).json({ error: "Product not found" });
       }
-
+      console.log("ORDER cartToken:", cartToken);
+      console.log("PRODUCT reservedStock:", product.reservedStock);
+      console.log(
+        "MATCH:",
+        product.reservedStock.find((r) => r.cartToken === cartToken),
+      );
+      console.log("ITEM quantity:", item.quantity);
       const reservedTotal = product.reservedStock.reduce(
         (sum, reservation) => sum + reservation.quantity,
         0,
       );
       const totalStock = product.stock + reservedTotal;
-
       if (item.quantity > totalStock) {
         return res
           .status(400)
           .json({ error: "Insufficient stock for product " });
       }
-
-      handleReservations(product, item.quantity);
-
+      //handleReservations(product, item.quantity);
       await product.save();
     }
-
     const totalPrice = await calculateTotalPrice(products);
-
     const newOrder = await Order.create({
       user_id,
       address_id,
@@ -144,10 +158,11 @@ const createOrder = async (req, res) => {
       .status(201)
       .json({ message: "Order created successfully", order: newOrder });
   } catch (error) {
+    console.error(error.stack);
     res.status(500).json({ error: "Error creating order" });
   }
-};*/
-
+};
+*/
 const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()

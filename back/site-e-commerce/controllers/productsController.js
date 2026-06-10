@@ -116,103 +116,6 @@ const updateProductById = async (req, res) => {
     });
   }
 };
-/*
-const reserveProductStock = async (req, res) => {
-  const { id } = req.params;
-  const { quantity } = req.body;
-
-  try {
-    const product = await Product.findById(id);
-
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-
-    if (product.stock < quantity) {
-      return res.status(400).json({ error: "Stock insufficient" });
-    }
-    product.stock -= quantity;
-    const expiresAt = new Date(Date.now() + 12 * 60 * 60 * 1000);
-    product.reservedStock.push({ quantity, expiresAt });
-    /**product.reservedStock.push({ cartToken, quantity, expiresAt }); 
-
-    await product.save();
-
-    res.status(200).json(product);
-  } catch (error) {
-    res.status(500).json({ error: "Error occurred while product reservation" });
-  }
-};*/
-//pareil plus besoin de ça
-/**
- * Remove some stock quantity reservation for a product and ensure to take back in stock.
- * We remove the oldest reservation.
- * @route POST /product/:id/remove-reservation
- * @param {string} req.params.id - Product ID.
- * @param {number} req.body.quantity - Quantity to removing from the product reservation.
- * @returns {Object} product - Product stock update after the removing
- *
- */
-
-const removeReservationProductStock = async (req, res) => {
-  const { id } = req.params;
-  const { quantity } = req.body;
-
-  try {
-    const product = await Product.findById(id);
-
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-
-    if (product.reservedStock.length === 0) {
-      return res.status(400).json({
-        error: "No reserved stock available to remove.",
-      });
-    }
-
-    product.reservedStock.sort((a, b) => a.expiresAt - b.expiresAt);
-    /*const reservations = product.reservedStock.filter(r => r.cartToken === cartToken);*/
-    /*"cartToken": "...",*/
-    let quantityToRemove = quantity;
-    const reservedTotal = product.reservedStock.reduce(
-      (sum, reservation) => sum + reservation.quantity,
-      0,
-    );
-
-    const totalQuantityToRemoveFromReservation = Math.min(
-      quantityToRemove,
-      reservedTotal,
-    );
-
-    product.reservedStock = product.reservedStock.filter((reservation) => {
-      if (quantityToRemove > 0) {
-        const removeFromReservation = Math.min(
-          quantityToRemove,
-          reservation.quantity,
-        );
-        reservation.quantity -= removeFromReservation;
-        quantityToRemove -= removeFromReservation;
-      }
-
-      return reservation.quantity > 0;
-    });
-
-    product.stock += totalQuantityToRemoveFromReservation;
-
-    await product.save();
-
-    res.status(200).json({
-      message: "Stock reservation successfully removed.",
-      product,
-    });
-  } catch (error) {
-    console.error("Error in removeReservationProductStock:", error);
-    res.status(500).json({
-      error: "Error occurred while removing product stock reservation.",
-    });
-  }
-};
 
 module.exports = {
   getAllProducts,
@@ -220,6 +123,4 @@ module.exports = {
   deleteProductById,
   addProduct,
   updateProductById,
-  //reserveProductStock,
-  removeReservationProductStock,
 };

@@ -108,8 +108,11 @@ const createOrderAndPayment = async () => {
     }
     try {
         const orderData = {
+            cartToken: cartStore.getOrCreateCartToken(),
+            //faire passer par back avec onlyhttps
             user_id: usersStore.userInformation.id,
-            address_id: userAddress.value,
+            //address_id: userAddress.value,
+            address_id: userAddress.value._id,
             products: cartItems.value.map((item) => ({
                 id: item.id,
                 quantity: item.quantity,
@@ -117,7 +120,10 @@ const createOrderAndPayment = async () => {
         };
 
         const orderResponse = await createOrder(orderData);
+        const order = orderResponse.data.order;
+        console.log(order);
         orderStore.setCurrentOrderId(orderResponse._id);
+        //order ok quand pas nettoyer par cron mais va plus sur le paiement
         const paymentData = {
             order_id: orderResponse._id,
             user_id: orderResponse.user_id,
