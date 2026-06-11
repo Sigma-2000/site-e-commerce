@@ -9,6 +9,7 @@ stripeWebhook quand on change pour stripe balal */
 
 const createPayment = async (req, res) => {
   const { amount, currency, user_id, order_id } = req.body;
+  console.log("PAYMENT BODY", req.body);
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
@@ -18,6 +19,7 @@ const createPayment = async (req, res) => {
 
     const newPayment = new Payment({
       user_id,
+      order_id,
       payment_intent_id: paymentIntent.id,
       amount,
       currency,
@@ -30,9 +32,10 @@ const createPayment = async (req, res) => {
 
     res.json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error occurred while the creation of the payment" });
+    res.status(500).json({
+      error: "Error occurred while the creation of the payment",
+      details: error.message,
+    });
   }
 };
 
@@ -59,6 +62,11 @@ const confirmPayment = async (req, res) => {
       await Order.findOneAndUpdate(
         { payment_id: updatedPayment._id },
         { $set: { payment_id: updatedPayment._id } },
+      );
+
+      await Cart.findOneAndUpdate(
+        { token: order.cart_token },
+        { status: "ordered" },
       );
 
       return res.json({

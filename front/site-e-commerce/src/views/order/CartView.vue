@@ -120,10 +120,8 @@ const createOrderAndPayment = async () => {
         };
 
         const orderResponse = await createOrder(orderData);
-        const order = orderResponse.data.order;
-        console.log(order);
+        console.log(orderResponse);
         orderStore.setCurrentOrderId(orderResponse._id);
-        //order ok quand pas nettoyer par cron mais va plus sur le paiement
         const paymentData = {
             order_id: orderResponse._id,
             user_id: orderResponse.user_id,
@@ -133,7 +131,8 @@ const createOrderAndPayment = async () => {
         };
 
         const checkoutResponse = await createCheckoutSession(paymentData);
-        orderStore.setCurrentSecretClient(checkoutResponse.data.clientSecret);
+        console.log(checkoutResponse);
+        orderStore.setCurrentSecretClient(checkoutResponse.clientSecret);
         if (checkoutResponse) {
             router.push('/payment');
         }

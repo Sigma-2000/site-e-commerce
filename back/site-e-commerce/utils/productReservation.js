@@ -131,7 +131,6 @@ const cleanAllExpiredReservations = async () => {
 };
 
 module.exports = {
-  //handleReservations,
   cleanExpiredReservationsForProduct,
   cleanExpiredReservationsByProductId,
   cleanAllExpiredReservations,

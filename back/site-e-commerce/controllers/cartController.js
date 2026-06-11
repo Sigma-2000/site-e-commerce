@@ -18,7 +18,9 @@ const getOrCreateCart = async (cartToken) => {
       expires_at: getCartExpiresAt(),
     });
   }
-
+  if (cart.status !== "active") {
+    throw new Error("Cart is not active anymore");
+  }
   cart.expires_at = getCartExpiresAt();
   cart.status = "active";
 

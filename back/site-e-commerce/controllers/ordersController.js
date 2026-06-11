@@ -60,13 +60,6 @@ const createOrder = async (req, res) => {
           error: "Error while validating product reservations",
         });
       }
-      console.log("ORDER cartToken:", cartToken);
-      console.log("PRODUCT reservedStock:", product.reservedStock);
-      console.log(
-        "MATCH:",
-        product.reservedStock.find((r) => r.cartToken === cartToken),
-      );
-      console.log("ITEM quantity:", item.quantity);
       const reservation = product.reservedStock.find(
         (r) => r.cartToken === cartToken,
       );
@@ -101,8 +94,8 @@ const createOrder = async (req, res) => {
       cart_token: cartToken,
       status_order: "pending",
     });
+    cart.status = "checkout_pending";
 
-    cart.status = "ordered";
     await cart.save();
 
     return res.status(201).json({
@@ -114,55 +107,7 @@ const createOrder = async (req, res) => {
     console.error(error.stack);
     return res.status(500).json({ error: "Error creating order" });
   }
-}; /*
-const createOrder = async (req, res) => {
-  const { user_id, address_id, products } = req.body;
-  try {
-    if (!user_id || !address_id || !products) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-    console.log("BODY", req.body);
-    for (const item of products) {
-      const product = await Product.findById(item.id);
-      if (!product) {
-        return res.status(404).json({ error: "Product not found" });
-      }
-      console.log("ORDER cartToken:", cartToken);
-      console.log("PRODUCT reservedStock:", product.reservedStock);
-      console.log(
-        "MATCH:",
-        product.reservedStock.find((r) => r.cartToken === cartToken),
-      );
-      console.log("ITEM quantity:", item.quantity);
-      const reservedTotal = product.reservedStock.reduce(
-        (sum, reservation) => sum + reservation.quantity,
-        0,
-      );
-      const totalStock = product.stock + reservedTotal;
-      if (item.quantity > totalStock) {
-        return res
-          .status(400)
-          .json({ error: "Insufficient stock for product " });
-      }
-      //handleReservations(product, item.quantity);
-      await product.save();
-    }
-    const totalPrice = await calculateTotalPrice(products);
-    const newOrder = await Order.create({
-      user_id,
-      address_id,
-      products,
-      total_price: totalPrice,
-    });
-    res
-      .status(201)
-      .json({ message: "Order created successfully", order: newOrder });
-  } catch (error) {
-    console.error(error.stack);
-    res.status(500).json({ error: "Error creating order" });
-  }
 };
-*/
 const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
@@ -341,7 +286,6 @@ const validateCart = async (req, res) => {
 
 const cancelOrder = async (req, res) => {
   const { order_id } = req.body;
-  //va devoir rajouter le cartToken dans cette affaire
   try {
     if (!order_id) {
       return res.status(400).json({ error: "Missing order_id" });
@@ -361,6 +305,11 @@ const cancelOrder = async (req, res) => {
 
     order.status_order = "cancelled";
     await order.save();
+
+    await Cart.findOneAndUpdate(
+      { token: order.cart_token },
+      { status: "cancelled" },
+    );
 
     if (order.payment_id) {
       await Payment.findByIdAndUpdate(order.payment_id, {

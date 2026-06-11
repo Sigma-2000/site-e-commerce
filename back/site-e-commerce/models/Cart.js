@@ -42,7 +42,7 @@ const CartSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["active", "ordered", "expired"],
+      enum: ["active", "checkout_pending", "ordered", "expired", "cancelled"],
       default: "active",
     },
   },
