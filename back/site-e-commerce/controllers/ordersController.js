@@ -6,7 +6,6 @@ const Cart = require("../models/Cart");
 
 const {
   cleanExpiredReservationsForProduct,
-  //handleReservations,
 } = require("../utils/productReservation");
 const { calculateTotalPrice } = require("../utils/cart");
 
@@ -196,94 +195,6 @@ const updateStatusOrderById = async (req, res) => {
   }
 };
 
-/**
- * Validate the shopping cart by checking product availability and adjusting quantities if necessary.
- * Calculate the total price.
- * @route POST /cart/validate
- * @param {Object[]} req.body.cart - List of items in the shopping cart.
- * @param {string} req.body.cart[].id - Product ID.
- * @param {string} req.body.cart[].image - Product image URL.
- * @param {string} req.body.cart[].title - Product title.
- * @param {string} req.body.cart[].type - Type of product.
- * @param {number} req.body.cart[].quantity - Requested quantity of the product.
- * @param {number} req.body.cart[].price - Price per unit of the product.
- * @returns {Object} updatedCart, total_price - Response with the updated cart and total price.
- */
-
-const validateCart = async (req, res) => {
-  // rajouter cartToken et méme voir si encore utile !
-  const { cart } = req.body;
-
-  try {
-    let updatedCart = [];
-
-    for (const item of cart) {
-      const product = await Product.findById(item.id);
-
-      if (!product) {
-        updatedCart.push({
-          id: item.id,
-          message: "This product no longer exists.",
-        });
-        continue;
-      }
-
-      const reservedQuantity = product.reservedStock.reduce(
-        (sum, reservation) => sum + reservation.quantity,
-        0,
-      );
-
-      if (reservedQuantity === 0) {
-        updatedCart.push({
-          id: item.id,
-          image: item.image,
-          title: item.title,
-          message:
-            "The requested quantity is not available anymore, we removed it from your cart.",
-        });
-        continue;
-      }
-
-      if (item.quantity > reservedQuantity) {
-        updatedCart.push({
-          id: item.id,
-          image: item.image,
-          title: item.title,
-          type: item.type,
-          quantity: reservedQuantity,
-          price: item.price,
-          totalPrice: reservedQuantity * item.price,
-          message: "Insufficient stock, adjusted to valid your cart.",
-        });
-        continue;
-      }
-
-      updatedCart.push({
-        id: item.id,
-        image: item.image,
-        price: item.price,
-        quantity: item.quantity,
-        totalPrice: item.quantity * item.price,
-        stock: product.stock,
-        title: item.title,
-        type: item.type,
-        message: "Product quantity is valid.",
-      });
-    }
-
-    const total_price = updatedCart.reduce(
-      (sum, item) => sum + (item.totalPrice || 0),
-      0,
-    );
-
-    res.status(200).json({ updatedCart, total_price });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error occurred while validating the cart." });
-  }
-};
-
 const cancelOrder = async (req, res) => {
   const { order_id } = req.body;
   try {
@@ -331,6 +242,6 @@ module.exports = {
   getOrderById,
   deleteOrderById,
   updateStatusOrderById,
-  validateCart,
+  //validateCart,
   cancelOrder,
 };

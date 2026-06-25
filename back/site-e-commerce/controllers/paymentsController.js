@@ -2,6 +2,7 @@ const express = require("express");
 const Stripe = require("stripe");
 const Payment = require("../models/Payment");
 const Order = require("../models/Order");
+const Cart = require("../models/Cart");
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 /**createCheckoutSession
@@ -9,7 +10,6 @@ stripeWebhook quand on change pour stripe balal */
 
 const createPayment = async (req, res) => {
   const { amount, currency, user_id, order_id } = req.body;
-  console.log("PAYMENT BODY", req.body);
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
@@ -58,11 +58,15 @@ const confirmPayment = async (req, res) => {
         },
         { new: true },
       );
-
-      await Order.findOneAndUpdate(
+      const order = await Order.findOneAndUpdate(
         { payment_id: updatedPayment._id },
-        { $set: { payment_id: updatedPayment._id } },
+        { status_order: "paid" },
+        { new: true },
       );
+
+      if (!order) {
+        return res.status(404).json({ error: "Order not found for payment" });
+      }
 
       await Cart.findOneAndUpdate(
         { token: order.cart_token },

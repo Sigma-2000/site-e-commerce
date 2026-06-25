@@ -23,33 +23,37 @@ export const useCartStore = defineStore('cart', {
             this.cartToken = token;
             return token;
         },
-        async addToCart(product) {
+        async addToCart(product, retry = true) {
             this.success = null;
+            this.error = null;
+            //vérifier pertinence retry
             try {
                 const cartToken = this.getOrCreateCartToken();
-                console.log(cartToken);
-                const alreadyProducts = this.cart.find((item) => item.id === product.id);
-                if (alreadyProducts) {
-                    alreadyProducts.quantity++;
-                } else {
-                    this.cart.push({ ...product, quantity: 1 });
-                }
-                //changer ici l'appel api pour la route cart avec le cartToken
-                /*await axiosCaller.post(`/product/${product.id}/reservation`, {
-                    quantity: 1,
-                });*/
+
                 await axiosCaller.post(`/cart/${product.id}/add`, {
                     cartToken,
                     quantity: 1,
                 });
 
-                await this.validateCart(); //vérifier si on en a besoin ou pas
-                //this.persistCart();
+                const alreadyProducts = this.cart.find((item) => item.id === product.id);
+
+                if (alreadyProducts) {
+                    alreadyProducts.quantity++;
+                } else {
+                    this.cart.push({ ...product, quantity: 1 });
+                }
+
+                await this.validateCart();
                 this.syncCartWithLocalStorage();
                 this.success = 'success.add-product-cart';
             } catch (err) {
+                if (err.response?.status === 409 && retry) {
+                    this.resetCart();
+                    return this.addToCart(product, false);
+                }
+
                 this.error = 'errors.add-product-cart';
-                console.error(err);
+                console.error(err.response?.data || err);
             }
         },
         async decreaseQuantity(productId) {
@@ -105,6 +109,7 @@ export const useCartStore = defineStore('cart', {
                 console.error(err);
             }
         },
+        /*
         async validateCart() {
             this.error = null;
             this.success = null;
@@ -138,6 +143,32 @@ export const useCartStore = defineStore('cart', {
                 this.error = 'errors.cart-validation';
                 console.error(err);
             }
+        },*/
+        async validateCart() {
+            this.error = null;
+            this.success = null;
+
+            try {
+                const cartToken = this.getOrCreateCartToken();
+
+                const response = await axiosCaller.post('/cart/validate-cart', {
+                    cartToken,
+                    cart: this.cart,
+                });
+
+                this.cart = response.data.updatedCart;
+                this.totalPrice = response.data.total_price;
+
+                this.syncCartWithLocalStorage();
+            } catch (err) {
+                if (err.response?.status === 409) {
+                    this.resetCart();
+                    return;
+                }
+
+                this.error = 'errors.cart-validation';
+                console.error(err.response?.data || err);
+            }
         },
         persistCart() {
             localStorage.setItem('cart', JSON.stringify(this.cart));
@@ -160,12 +191,9 @@ export const useCartStore = defineStore('cart', {
         resetCart() {
             this.cart = [];
             this.totalPrice = 0;
+            this.cartToken = null;
             localStorage.removeItem('cart');
             localStorage.removeItem('cartToken');
-            this.cartToken = null;
-            /** ranme it clearLocalCartState()
-             * clearCartClientState()
-             * clearCartFrontendOnly()*/
         },
         setError(errorMessage) {
             this.error = errorMessage;
