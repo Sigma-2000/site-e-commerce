@@ -100,9 +100,20 @@ const router = createRouter({
             name: 'orders',
             component: () => import('../views/panel-admin/OrderManagementView.vue'),
         },
+        /*
         {
             path: '/payment',
             name: 'payment',
+            component: () => import('../views/order/PaymentView.vue'),
+        },*/
+        {
+            path: '/payment/success',
+            name: 'payment-success',
+            component: () => import('../views/order/PaymentView.vue'),
+        },
+        {
+            path: '/payment/cancel',
+            name: 'payment-cancel',
             component: () => import('../views/order/PaymentView.vue'),
         },
     ],

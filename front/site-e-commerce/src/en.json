@@ -93,6 +93,7 @@
         "no-products": "You don't proceed to order, if your cart is empty",
         "no-address": "It seems you dont' provide an address, please retry with your delivery address",
         "create-payment": "We are sorry, we does'nt reach you payment center",
+        "payment": "Payment failed",
         "payment-failed": "Your payment failed and your order is cancelled, we redirect you into your account in few instant",
         "verification-payment": "Payment failed, verify your bank information"
     },
@@ -107,7 +108,9 @@
         "update-status": "Status of order Updated successfully",
         "add-product-cart": "Your article was adding successfully in your cart",
         "remove-product-cart": "Your article was removing successfully of your cart",
-        "cart-updated": "Your cart has been updated to be align with our reservation stock available"
+        "cart-updated": "Your cart has been updated to be align with our reservation stock available",
+        "payment": "Payment approved",
+        "payment-approved": "Payment suceed, we are redirect you"
     },
     "button": {
         "buy": "Add to cart",
@@ -228,6 +231,6 @@
         "connect-purchase": "Log in and continue my order",
         "purchase": "You have an ongoing cart",
         "go-to-cart": "Continue shopping",
-        "payment": "Payment"
+        "payment-progress": "Payment in progress"
     }
 }

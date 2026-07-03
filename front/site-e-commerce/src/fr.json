@@ -93,6 +93,7 @@
         "no-products": "Vous ne pouvez pas passer commande sans selectionnez de produit.",
         "no-address": "Il semble que vous n'avez pas renseigné d'adresse, veuillez renseignez votre adresse de livraison",
         "create-payment": "Nous sommes désolée nous n'avons pas atteindre notre centre de paiement",
+        "payment": "Paiement annulé",
         "payment-failed": "Votre paiement a échoué et votre commande a été annulée, vous allez étre redirigé vers votre compte dans quelques instants",
         "verification-payment": "Le paiement a échoué. Vérifiez vos informations bancaires."
     },
@@ -107,7 +108,9 @@
         "update-status": "Statut de la commande mis à jour.",
         "add-product-cart": "Votre article a été ajouté avec succes à votre panier",
         "remove-product-cart": "Votre article a été supprimé avec succes de votre panier",
-        "cart-updated": "Votre panier a été mis à jour selon en fonction des stocks réservés disponible"
+        "cart-updated": "Votre panier a été mis à jour selon en fonction des stocks réservés disponible",
+        "payment": "Paiement validé",
+        "payment-approved": "Paiement confirmé, vous allez étre redirigé"
     },
     "button": {
         "buy": "Ajouter au panier",
@@ -228,6 +231,7 @@
         "connect-purchase": "Me connecter et poursuivre ma commande",
         "purchase": "Vous avez un panier en cours",
         "go-to-cart": "Poursuivre mes achats",
-        "payment": "Paiement"
+        "payment": "Paiement",
+        "payment-progress": "Payment en cours de traitement"
     }
 }

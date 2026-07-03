@@ -70,13 +70,13 @@ import { useCartStore } from '@/stores/cartStore.js';
 import { useUsersStore } from '@/stores/usersStore';
 import { useOrdersStore } from '@/stores/ordersStore';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+//import { useRouter } from 'vue-router';
 
 const { locale } = useI18n();
 const cartStore = useCartStore();
 const usersStore = useUsersStore();
 const orderStore = useOrdersStore();
-const router = useRouter();
+//const router = useRouter();
 
 const cartItems = computed(() => cartStore.cart);
 const cartTotalPrice = computed(() => cartStore.totalPrice);
@@ -122,20 +122,25 @@ const createOrderAndPayment = async () => {
         const orderResponse = await createOrder(orderData);
         console.log(orderResponse);
         orderStore.setCurrentOrderId(orderResponse._id);
-        const paymentData = {
+        /*const paymentData = {
             order_id: orderResponse._id,
             user_id: orderResponse.user_id,
             amount: orderResponse.total_price * 100,
             currency: 'eur',
             products: orderResponse.products,
-        };
+        };*/
+        const checkoutSession = await createCheckoutSession({
+            order_id: orderResponse._id,
+        });
 
+        window.location.href = checkoutSession.url;
+        /*
         const checkoutResponse = await createCheckoutSession(paymentData);
         console.log(checkoutResponse);
         orderStore.setCurrentSecretClient(checkoutResponse.clientSecret);
         if (checkoutResponse) {
             router.push('/payment');
-        }
+        }*/
     } catch (error) {
         console.error(error);
         orderStore.setError('errors.order-creation');

@@ -20,13 +20,13 @@ const PaymentSchema = new Schema(
     },*/,
     stripe_checkout_session_id: {
       type: String,
-      required: false,
+      required: true, //false de base
       unique: true,
       sparse: true,
     },
     payment_intent_id: {
       type: String,
-      required: true,
+      required: false, //true de base
     },
     amount: {
       type: Number,

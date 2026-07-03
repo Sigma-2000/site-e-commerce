@@ -5,86 +5,156 @@ const Order = require("../models/Order");
 const Cart = require("../models/Cart");
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-/**createCheckoutSession
-stripeWebhook quand on change pour stripe balal */
 
-const createPayment = async (req, res) => {
-  const { amount, currency, user_id, order_id } = req.body;
+const createCheckoutSession = async (req, res) => {
+  console.log("🔥 NEW CHECKOUT SESSION CONTROLLER", req.body);
+
+  const { order_id } = req.body;
+  const frontendUrl = process.env.FRONTEND_URL;
+
   try {
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency,
-      payment_method_types: ["card"],
+    if (!frontendUrl) {
+      return res.status(500).json({
+        error: "Missing FRONTEND_URL env variable",
+      });
+    }
+
+    if (!order_id) {
+      return res.status(400).json({
+        error: "Missing order_id",
+      });
+    }
+
+    const order = await Order.findById(order_id).populate("products.id");
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      line_items: order.products.map((item) => ({
+        price_data: {
+          currency: "eur",
+          product_data: {
+            name: item.id.title?.fr || item.id.title?.en || "Artwork",
+          },
+          unit_amount: Math.round(item.id.price * 100),
+        },
+        quantity: item.quantity,
+      })),
+
+      success_url: `${frontendUrl}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${frontendUrl}/payment/cancel?order_id=${order._id}`,
+
+      metadata: {
+        order_id: String(order._id),
+        cart_token: order.cart_token,
+      },
     });
 
-    const newPayment = new Payment({
-      user_id,
-      order_id,
-      payment_intent_id: paymentIntent.id,
-      amount,
-      currency,
+    const payment = await Payment.create({
+      user_id: order.user_id,
+      order_id: order._id,
+      stripe_checkout_session_id: session.id,
+      amount: order.total_price * 100,
+      currency: "eur",
       payment_status: "pending",
     });
 
-    await newPayment.save();
+    order.payment_id = payment._id;
+    await order.save();
 
-    await Order.findByIdAndUpdate(order_id, { payment_id: newPayment._id });
-
-    res.json({ clientSecret: paymentIntent.client_secret });
+    return res.json({ url: session.url });
   } catch (error) {
-    res.status(500).json({
-      error: "Error occurred while the creation of the payment",
+    console.error("createCheckoutSession error:", error);
+    return res.status(500).json({
+      error: "Error creating checkout session",
       details: error.message,
     });
   }
 };
 
-const confirmPayment = async (req, res) => {
-  const { payment_intent_id } = req.body;
+const stripeWebhook = async (req, res) => {
+  const signature = req.headers["stripe-signature"];
+
+  let event;
 
   try {
-    if (!payment_intent_id) {
-      return res.status(400).json({ error: "Missing payment_intent_id" });
-    }
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET,
+    );
+  } catch (error) {
+    return res.status(400).send(`Webhook Error: ${error.message}`);
+  }
 
-    const paymentIntent =
-      await stripe.paymentIntents.retrieve(payment_intent_id);
+  try {
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
 
-    if (paymentIntent.status === "succeeded") {
-      const updatedPayment = await Payment.findOneAndUpdate(
-        { payment_intent_id },
+      const payment = await Payment.findOneAndUpdate(
+        { stripe_checkout_session_id: session.id },
         {
           payment_status: "completed",
+          payment_intent_id: session.payment_intent,
+          paid_at: new Date(),
         },
         { new: true },
       );
-      const order = await Order.findOneAndUpdate(
-        { payment_id: updatedPayment._id },
+
+      if (!payment) {
+        return res.status(404).json({ error: "Payment not found" });
+      }
+
+      const order = await Order.findByIdAndUpdate(
+        payment.order_id,
         { status_order: "paid" },
         { new: true },
       );
 
-      if (!order) {
-        return res.status(404).json({ error: "Order not found for payment" });
+      if (order?.cart_token) {
+        await Cart.findOneAndUpdate(
+          { token: order.cart_token },
+          { status: "ordered" },
+        );
       }
+    }
 
-      await Cart.findOneAndUpdate(
-        { token: order.cart_token },
-        { status: "ordered" },
+    if (event.type === "checkout.session.expired") {
+      const session = event.data.object;
+
+      const payment = await Payment.findOneAndUpdate(
+        { stripe_checkout_session_id: session.id },
+        { payment_status: "expired" },
+        { new: true },
       );
 
-      return res.json({
-        message: "Payment successfully confirmed",
-        order: updatedPayment,
-      });
+      if (payment) {
+        const order = await Order.findByIdAndUpdate(
+          payment.order_id,
+          { status_order: "cancelled" },
+          { new: true },
+        );
+
+        if (order?.cart_token) {
+          await Cart.findOneAndUpdate(
+            { token: order.cart_token },
+            { status: "cancelled" },
+          );
+        }
+      }
     }
+
+    return res.json({ received: true });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Payment failed" });
+    console.error("stripeWebhook error:", error);
+    return res.status(500).json({ error: "Webhook handling failed" });
   }
 };
-
+////createPayment,confirmPayment,
 module.exports = {
-  createPayment,
-  confirmPayment,
+  createCheckoutSession,
+  stripeWebhook,
 };
