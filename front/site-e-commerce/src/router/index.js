@@ -116,6 +116,21 @@ const router = createRouter({
             name: 'payment-cancel',
             component: () => import('../views/order/PaymentView.vue'),
         },
+        {
+            path: '/legal-notice',
+            name: 'legal-notice',
+            component: () => import('../views/legals-mention/LegalNoticeView.vue'),
+        },
+        {
+            path: '/terms',
+            name: 'terms',
+            component: () => import('../views/legals-mention/TermsView.vue'),
+        },
+        {
+            path: '/privacy',
+            name: 'privacy',
+            component: () => import('../views/legals-mention/PrivacyView.vue'),
+        },
     ],
 
     scrollBehavior(to, from, savedPosition) {

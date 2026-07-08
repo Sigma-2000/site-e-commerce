@@ -49,8 +49,21 @@
         <div v-else>
             <h3 class="title-login-cart">{{ $t('cart.order-address') }}</h3>
             <AddressUpdate />
+            <label class="terms-checkbox">
+                <input v-model="hasAcceptedTerms" type="checkbox" />
+                <span>
+                    {{ $t('cart.acceptTerms') }}
+                    <router-link to="/terms" target="_blank">
+                        {{ $t('legal.terms') }}
+                    </router-link>
+                </span>
+            </label>
             <div class="button-purchase">
-                <ButtonComponent class="validate-order-button" @click="createOrderAndPayment">
+                <ButtonComponent
+                    class="validate-order-button"
+                    @click="createOrderAndPayment"
+                    :disabled="!hasAcceptedTerms"
+                >
                     {{ $t('button.validate-order') }}
                 </ButtonComponent>
             </div>
@@ -65,18 +78,16 @@ import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import AddressUpdate from '@/components/account/AddressUpdate.vue';
 
 import { createOrder, createCheckoutSession } from '@/services/orderPaymentServices';
-import { onMounted, computed, watch } from 'vue';
+import { onMounted, computed, watch, ref } from 'vue';
 import { useCartStore } from '@/stores/cartStore.js';
 import { useUsersStore } from '@/stores/usersStore';
 import { useOrdersStore } from '@/stores/ordersStore';
 import { useI18n } from 'vue-i18n';
-//import { useRouter } from 'vue-router';
-
+/**Todo rajouter livraison */
 const { locale } = useI18n();
 const cartStore = useCartStore();
 const usersStore = useUsersStore();
 const orderStore = useOrdersStore();
-//const router = useRouter();
 
 const cartItems = computed(() => cartStore.cart);
 const cartTotalPrice = computed(() => cartStore.totalPrice);
@@ -85,6 +96,8 @@ const errorCart = computed(() => cartStore.error);
 const isLoggedIn = computed(() => !!usersStore.userInformation);
 const userName = computed(() => usersStore.userInformation?.firstName);
 const userAddress = computed(() => usersStore.userInformation?.address_id);
+
+const hasAcceptedTerms = ref(false);
 
 const removeFromCart = async (id) => {
     cartStore.removeFromCart(id);
@@ -106,12 +119,14 @@ const createOrderAndPayment = async () => {
         cartStore.setError('errors.no-products');
         return;
     }
+    if (!hasAcceptedTerms.value) {
+        cartStore.setError('cart.acceptTermsError');
+        return;
+    }
     try {
         const orderData = {
             cartToken: cartStore.getOrCreateCartToken(),
-            //faire passer par back avec onlyhttps
             user_id: usersStore.userInformation.id,
-            //address_id: userAddress.value,
             address_id: userAddress.value._id,
             products: cartItems.value.map((item) => ({
                 id: item.id,
@@ -122,25 +137,11 @@ const createOrderAndPayment = async () => {
         const orderResponse = await createOrder(orderData);
         console.log(orderResponse);
         orderStore.setCurrentOrderId(orderResponse._id);
-        /*const paymentData = {
-            order_id: orderResponse._id,
-            user_id: orderResponse.user_id,
-            amount: orderResponse.total_price * 100,
-            currency: 'eur',
-            products: orderResponse.products,
-        };*/
         const checkoutSession = await createCheckoutSession({
             order_id: orderResponse._id,
         });
 
         window.location.href = checkoutSession.url;
-        /*
-        const checkoutResponse = await createCheckoutSession(paymentData);
-        console.log(checkoutResponse);
-        orderStore.setCurrentSecretClient(checkoutResponse.clientSecret);
-        if (checkoutResponse) {
-            router.push('/payment');
-        }*/
     } catch (error) {
         console.error(error);
         orderStore.setError('errors.order-creation');
