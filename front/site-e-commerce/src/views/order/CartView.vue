@@ -76,13 +76,6 @@
                     />
                     {{ $t('cart.colissimoSignature') }}
                 </label>
-                <!--
-                <p v-if="shippingMethod">
-                    {{ $t('cart.shippingPrice') }} <strong>{{ shippingPrice }} €</strong>
-                </p>
-                 <div class="account-underline-center"></div>
-                -->
-
                 <p v-if="shippingMethod">
                     {{ $t('cart.amount-shipping') }}
                     <strong>{{ cartTotalPrice }} €</strong>

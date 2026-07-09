@@ -12,21 +12,16 @@ const PaymentSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Order",
       required: true,
-    } /*
+    },
     stripe_checkout_session_id: {
       type: String,
       required: true,
-      unique: true,
-    },*/,
-    stripe_checkout_session_id: {
-      type: String,
-      required: true, //false de base
       unique: true,
       sparse: true,
     },
     payment_intent_id: {
       type: String,
-      required: false, //true de base
+      required: false,
     },
     amount: {
       type: Number,

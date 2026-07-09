@@ -15,7 +15,9 @@
         "pratices": "Chacune de ses pratiques s'influencent et interagissent, formant un style unique, marqué par une ligne dansante et acerbe. ",
         "abstraction": "Son travail déforme souvent la réalité, mue par un véritable maelstrom qui conduit ses œuvres jusqu'à l’abstraction pure.",
         "conclusion": "Animée par une envie viscérale de capturer l'instant, Sigma.2000 fige les fragments d’un monde en perpétuelle transformation. ",
-        "exhibition": "Parcours et Exposition"
+        "exhibition": "Parcours et Exposition",
+        "contactQuestion": "Une question ou un projet ?",
+        "contactFallback": "Si le lien email ne s'ouvre pas, écrivez-moi à"
     },
     "exhibitions-sales": "Expositions et ventes",
     "exhibitions": {

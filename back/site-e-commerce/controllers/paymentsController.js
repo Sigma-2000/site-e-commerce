@@ -170,7 +170,7 @@ const stripeWebhook = async (req, res) => {
     return res.status(500).json({ error: "Webhook handling failed" });
   }
 };
-////createPayment,confirmPayment,
+
 module.exports = {
   createCheckoutSession,
   stripeWebhook,

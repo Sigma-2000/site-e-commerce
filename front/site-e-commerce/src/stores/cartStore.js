@@ -10,9 +10,7 @@ export const useCartStore = defineStore('cart', {
         cartToken: null,
         shippingMethod: null,
         shippingPrice: 0,
-        /**  cartToken: localStorage.getItem("cartToken") || crypto.randomUUID(), */
     }),
-    /**localStorage.setItem("cartToken", this.cartToken); premier chargement à déplacer en dehors d'ici */
     actions: {
         getOrCreateCartToken() {
             let token = localStorage.getItem('cartToken');

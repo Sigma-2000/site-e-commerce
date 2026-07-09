@@ -15,7 +15,9 @@
         "pratices": "Each of her practices influences and interacts with the others, forming a unique style characterized by a dancing and sharp line.",
         "abstraction": "Her work often distorts reality, driven by a genuine maelstrom that leads her creations toward pure abstraction.",
         "conclusion": "Fueled by a visceral desire to capture the moment, Sigma.2000 freezes fragments of a world in constant transformation.",
-        "exhibition": "Career and Exhibitions"
+        "exhibition": "Career and Exhibitions",
+        "contactQuestion": "A question or a project?",
+        "contactFallback": "If the email link does not open, you can write to me at"
     },
     "exhibitions-sales": "Exhibitions and sales",
     "exhibitions": {
