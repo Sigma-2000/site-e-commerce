@@ -40,7 +40,9 @@
         "igem": "IGEM",
         "university": "University Science Library",
         "group-igem": "{group} with {igem} at the {maison} in Nantes, September and October 2020.",
-        "maison": " Maison des Hommes et Techniques"
+        "maison": " Maison des Hommes et Techniques",
+        "sale-flaneur": "{sale} of impressions and monotypes at {flaneur} in Lyon, 30 août 2025.",
+        "flaneur": "the festival Eté éternel of flaneur"
     },
     "career": {
         "presentation": "Formation",

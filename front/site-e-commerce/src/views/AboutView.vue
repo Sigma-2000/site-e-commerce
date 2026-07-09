@@ -44,6 +44,24 @@
             <h3>{{ $t('exhibitions-sales') }}</h3>
             <ul>
                 <li>
+                    <i18n-t keypath="exhibitions.sale-flaneur" tag="span"
+                        ><template #sale>
+                            <span>
+                                <strong>{{ $t('exhibitions.sale') }}</strong></span
+                            >
+                        </template>
+                        <template #sale-flaneur>
+                            <span>
+                                <em>{{ $t('exhibitions.sale-flaneur') }}</em></span
+                            > </template
+                        ><template #flaneur>
+                            <span>
+                                <strong>{{ $t('exhibitions.flaneur') }}</strong></span
+                            >
+                        </template></i18n-t
+                    >
+                </li>
+                <li>
                     <i18n-t keypath="exhibitions.group-vacarmes" tag="span"
                         ><template #group>
                             <span>
