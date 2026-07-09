@@ -8,6 +8,8 @@ export const useCartStore = defineStore('cart', {
         success: null,
         error: null,
         cartToken: null,
+        shippingMethod: null,
+        shippingPrice: 0,
         /**  cartToken: localStorage.getItem("cartToken") || crypto.randomUUID(), */
     }),
     /**localStorage.setItem("cartToken", this.cartToken); premier chargement à déplacer en dehors d'ici */
@@ -59,21 +61,14 @@ export const useCartStore = defineStore('cart', {
         async decreaseQuantity(productId) {
             try {
                 const productInCart = this.cart.find((item) => item.id === productId);
-                if (!productInCart) return; //va devoir changer ça car back source vérité
+                if (!productInCart) return;
                 const cartToken = this.getOrCreateCartToken();
-                //changer ici l'appel api pour la route cart avec le cartToken
-                /*if (productInCart.quantity > 1) {
-                    await axiosCaller.post(`/product/${productId}/remove-reservation`, {
-                        quantity: 1,
-                    });*/
                 if (productInCart.quantity > 1) {
                     await axiosCaller.post(`/cart/${productId}/remove`, {
                         cartToken,
                         quantity: 1,
                     });
-                    //voir car si reponse back nop le front ici s'est direct mis à jour et à pas attendu
                     productInCart.quantity--;
-                    //bloquer quand rupture de stock !
                 } else {
                     await this.removeFromCart(productId);
                     return;
@@ -91,15 +86,10 @@ export const useCartStore = defineStore('cart', {
                 const productInCart = this.cart.find((item) => item.id === productId);
                 if (!productInCart) return;
                 const cartToken = this.getOrCreateCartToken();
-                //changer ici l'appel api pour la route cart avec le cartToken
-                /*await axiosCaller.post(`/product/${productId}/remove-reservation`, {
-                    quantity: productInCart.quantity,
-                });*/
                 await axiosCaller.post(`/cart/${productId}/remove`, {
                     cartToken,
                     quantity: productInCart.quantity,
                 });
-                //checker si le flow est bon
                 this.cart = this.cart.filter((item) => item.id !== productId);
                 await this.validateCart();
                 this.syncCartWithLocalStorage();
@@ -109,41 +99,6 @@ export const useCartStore = defineStore('cart', {
                 console.error(err);
             }
         },
-        /*
-        async validateCart() {
-            this.error = null;
-            this.success = null;
-            //recup le cart Token en premier lieu
-            // sans doute à enlever
-            try {
-                const response = await axiosCaller.post('/order/validate-cart', {
-                    cart: this.cart,
-                });
-                const updatedCart = response.data.updatedCart;
-                this.cart = updatedCart.filter((item) => item.message.includes('valid'));
-                const hasRemovedItems = updatedCart.some((item) =>
-                    item.message.includes('removed')
-                );
-                const hasAdjustedItems = updatedCart.some((item) =>
-                    item.message.includes('adjusted')
-                );
-
-                this.totalPrice = response.data.total_price;
-                localStorage.setItem('cart', JSON.stringify(this.cart));
-
-                if (hasRemovedItems) {
-                    this.error = 'errors.cart-product-removed';
-                } else if (hasAdjustedItems) {
-                    this.success = 'success.cart-updated';
-                } else {
-                    this.success = null;
-                    this.error = null;
-                }
-            } catch (err) {
-                this.error = 'errors.cart-validation';
-                console.error(err);
-            }
-        },*/
         async validateCart() {
             this.error = null;
             this.success = null;
@@ -170,6 +125,21 @@ export const useCartStore = defineStore('cart', {
                 console.error(err.response?.data || err);
             }
         },
+        setShippingMethod(method) {
+            const shippingPrices = {
+                pickup_lyon: 0,
+                colissimo_signature: 8,
+            };
+
+            if (!(method in shippingPrices)) {
+                this.shippingMethod = null;
+                this.shippingPrice = 0;
+                return;
+            }
+
+            this.shippingMethod = method;
+            this.shippingPrice = shippingPrices[method];
+        },
         persistCart() {
             localStorage.setItem('cart', JSON.stringify(this.cart));
             //delete persistCart
@@ -179,7 +149,7 @@ export const useCartStore = defineStore('cart', {
             if (storedCart) {
                 this.cart = JSON.parse(storedCart);
             }
-            await this.validateCart(); //devra surement recup le carte Token
+            await this.validateCart();
         },
         syncCartWithLocalStorage() {
             if (this.cart.length > 0) {
@@ -192,6 +162,8 @@ export const useCartStore = defineStore('cart', {
             this.cart = [];
             this.totalPrice = 0;
             this.cartToken = null;
+            this.shippingMethod = null;
+            this.shippingPrice = 0;
             localStorage.removeItem('cart');
             localStorage.removeItem('cartToken');
         },

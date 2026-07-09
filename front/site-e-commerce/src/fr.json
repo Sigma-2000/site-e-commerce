@@ -95,7 +95,8 @@
         "create-payment": "Nous sommes désolée nous n'avons pas atteindre notre centre de paiement",
         "payment": "Paiement annulé",
         "payment-failed": "Votre paiement a échoué et votre commande a été annulée, vous allez étre redirigé vers votre compte dans quelques instants",
-        "verification-payment": "Le paiement a échoué. Vérifiez vos informations bancaires."
+        "verification-payment": "Le paiement a échoué. Vérifiez vos informations bancaires.",
+        "no-shipping-method": "Veuillez choisir un mode de livraison."
     },
     "success": {
         "update-address": "Votre adresse a été mise à jour avec succès",
@@ -224,7 +225,8 @@
         "title": "Votre panier",
         "login": "Veuillez vous connectez pour finaliser votre commande",
         "empty": "Votre panier est vide",
-        "amount": "Le montant total de votre commande s'éléve à",
+        "amount": "Le montant de votre commande, hors frais de livraion s'éléve à",
+        "amount-shipping": "Le montant total de votre commande s'éléve à",
         "delete": "Supprimer",
         "price": "Prix à l'unité: ",
         "order-address": "Souhaitez-vous faire livrer à l'adresse renseignée ici ? ",
@@ -234,7 +236,11 @@
         "payment": "Paiement",
         "payment-progress": "Payment en cours de traitement",
         "acceptTerms": "J'ai lu et j'accepte les",
-        "acceptTermsError": "Veuillez accepter les conditions générales de vente avant de passer commande."
+        "acceptTermsError": "Veuillez accepter les conditions générales de vente avant de passer commande.",
+        "shippingMethod": "Mode de livraison",
+        "pickupLyon": "Remise en main propre à Lyon — gratuit",
+        "colissimoSignature": "Colissimo France avec signature — 8 €",
+        "shippingPrice": "Frais de livraison :"
     },
     "legal": {
         "notice": "Mentions légales",

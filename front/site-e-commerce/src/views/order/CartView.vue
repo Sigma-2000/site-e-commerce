@@ -13,7 +13,7 @@
         </div>
         <div v-if="cartItems.length" class="cart-list">
             <p class="cart-amount">
-                {{ $t('cart.amount') }} <strong>{{ cartTotalPrice }} €</strong>
+                {{ $t('cart.amount') }} <strong>{{ cartSubtotalPrice }} €</strong>
             </p>
             <div class="account-underline-center"></div>
             <ul class="cart-product-list">
@@ -21,15 +21,18 @@
                     <img :src="item.image" :alt="item.title" />
                     <div class="cart-text">
                         <h4>{{ item.title[locale] }}</h4>
-                        <p>
+                        <p class="cart-text-price">
                             {{ $t('cart.price') }} <strong>{{ item.price }} € </strong>
                         </p>
                         <div class="cart-product-quantity">
-                            <p>
-                                {{ $t('order.quantity') }}
-                                <button @click="decrementQuantity(item.id)">-</button>
-                                <strong>{{ item.quantity }} </strong>
-                                <button @click="incrementQuantity(item)">+</button>
+                            <p class="cart-item-quantity">
+                                <span>{{ $t('order.quantity') }}</span>
+
+                                <span class="quantity-controls">
+                                    <button @click="decrementQuantity(item.id)">-</button>
+                                    <strong>{{ item.quantity }} </strong>
+                                    <button @click="incrementQuantity(item)">+</button>
+                                </span>
                             </p>
                         </div>
                         <p>{{ item.type }}</p>
@@ -49,6 +52,42 @@
         <div v-else>
             <h3 class="title-login-cart">{{ $t('cart.order-address') }}</h3>
             <AddressUpdate />
+
+            <div class="account-underline-center"></div>
+            <div class="shipping-options">
+                <h3>{{ $t('cart.shippingMethod') }}</h3>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="shipping"
+                        :checked="shippingMethod === 'pickup_lyon'"
+                        @change="cartStore.setShippingMethod('pickup_lyon')"
+                    />
+                    {{ $t('cart.pickupLyon') }}
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="shipping"
+                        :checked="shippingMethod === 'colissimo_signature'"
+                        @change="cartStore.setShippingMethod('colissimo_signature')"
+                    />
+                    {{ $t('cart.colissimoSignature') }}
+                </label>
+                <!--
+                <p v-if="shippingMethod">
+                    {{ $t('cart.shippingPrice') }} <strong>{{ shippingPrice }} €</strong>
+                </p>
+                 <div class="account-underline-center"></div>
+                -->
+
+                <p v-if="shippingMethod">
+                    {{ $t('cart.amount-shipping') }}
+                    <strong>{{ cartTotalPrice }} €</strong>
+                </p>
+            </div>
             <label class="terms-checkbox">
                 <input v-model="hasAcceptedTerms" type="checkbox" />
                 <span>
@@ -62,7 +101,7 @@
                 <ButtonComponent
                     class="validate-order-button"
                     @click="createOrderAndPayment"
-                    :disabled="!hasAcceptedTerms"
+                    :disabled="!hasAcceptedTerms || !shippingMethod"
                 >
                     {{ $t('button.validate-order') }}
                 </ButtonComponent>
@@ -90,12 +129,15 @@ const usersStore = useUsersStore();
 const orderStore = useOrdersStore();
 
 const cartItems = computed(() => cartStore.cart);
-const cartTotalPrice = computed(() => cartStore.totalPrice);
+const cartSubtotalPrice = computed(() => cartStore.totalPrice);
+const cartTotalPrice = computed(() => cartSubtotalPrice.value + shippingPrice.value);
 const successCart = computed(() => cartStore.success);
 const errorCart = computed(() => cartStore.error);
 const isLoggedIn = computed(() => !!usersStore.userInformation);
 const userName = computed(() => usersStore.userInformation?.firstName);
 const userAddress = computed(() => usersStore.userInformation?.address_id);
+const shippingMethod = computed(() => cartStore.shippingMethod);
+const shippingPrice = computed(() => cartStore.shippingPrice);
 
 const hasAcceptedTerms = ref(false);
 
@@ -123,6 +165,10 @@ const createOrderAndPayment = async () => {
         cartStore.setError('cart.acceptTermsError');
         return;
     }
+    if (!cartStore.shippingMethod) {
+        cartStore.setError('errors.no-shipping-method');
+        return;
+    }
     try {
         const orderData = {
             cartToken: cartStore.getOrCreateCartToken(),
@@ -132,6 +178,7 @@ const createOrderAndPayment = async () => {
                 id: item.id,
                 quantity: item.quantity,
             })),
+            shipping_method: cartStore.shippingMethod,
         };
 
         const orderResponse = await createOrder(orderData);

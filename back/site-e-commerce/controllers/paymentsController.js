@@ -30,19 +30,36 @@ const createCheckoutSession = async (req, res) => {
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }
+    const lineItems = order.products.map((item) => ({
+      price_data: {
+        currency: "eur",
+        product_data: {
+          name: item.id.title?.fr || item.id.title?.en || "Artwork",
+        },
+        unit_amount: Math.round(item.id.price * 100),
+      },
+      quantity: item.quantity,
+    }));
 
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      line_items: order.products.map((item) => ({
+    if (order.shipping_price > 0) {
+      lineItems.push({
         price_data: {
           currency: "eur",
           product_data: {
-            name: item.id.title?.fr || item.id.title?.en || "Artwork",
+            name:
+              order.shipping_method === "colissimo_signature"
+                ? "Colissimo France avec signature"
+                : "Livraison",
           },
-          unit_amount: Math.round(item.id.price * 100),
+          unit_amount: Math.round(order.shipping_price * 100),
         },
-        quantity: item.quantity,
-      })),
+        quantity: 1,
+      });
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      line_items: lineItems,
 
       success_url: `${frontendUrl}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${frontendUrl}/payment/cancel?order_id=${order._id}`,

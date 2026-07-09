@@ -95,7 +95,8 @@
         "create-payment": "We are sorry, we does'nt reach you payment center",
         "payment": "Payment failed",
         "payment-failed": "Your payment failed and your order is cancelled, we redirect you into your account in few instant",
-        "verification-payment": "Payment failed, verify your bank information"
+        "verification-payment": "Payment failed, verify your bank information",
+        "no-shipping-method": "Please choose a delivery method."
     },
     "success": {
         "update-address": "Your adress was updating successfully",
@@ -224,7 +225,8 @@
         "title": "Your cart",
         "login": "Please log in to proceed with your order.",
         "empty": "Your cart is empty",
-        "amount": "The total amount of your order is",
+        "amount": "The amount of your order, without shipping is",
+        "amount-shipping": "The total amount of your order is",
         "delete": "Delete",
         "price": "Unit price: ",
         "order-address": "Would you like to have it delivered to the address provided here ?",
@@ -233,7 +235,11 @@
         "go-to-cart": "Continue shopping",
         "payment-progress": "Payment in progress",
         "acceptTerms": "I have read and accept the",
-        "acceptTermsError": "Please accept the terms and conditions before placing your order."
+        "acceptTermsError": "Please accept the terms and conditions before placing your order.",
+        "shippingMethod": "Delivery method",
+        "pickupLyon": "Hand delivery in Lyon — free",
+        "colissimoSignature": "Colissimo France with signature — €8",
+        "shippingPrice": "Delivery fee:"
     },
     "legal": {
         "notice": "Legal notice",

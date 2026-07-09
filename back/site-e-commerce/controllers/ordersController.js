@@ -23,7 +23,7 @@ const { calculateTotalPrice } = require("../utils/cart");
  */
 
 const createOrder = async (req, res) => {
-  const { address_id, cartToken } = req.body;
+  const { address_id, cartToken, shipping_method } = req.body;
   const user_id = req.user.id;
   console.log("BODY", req.body);
 
@@ -43,6 +43,17 @@ const createOrder = async (req, res) => {
 
     const orderProducts = [];
     let totalPrice = 0;
+
+    const SHIPPING_PRICES = {
+      pickup_lyon: 0,
+      colissimo_signature: 8,
+    }; //déplacer cette variable magic string
+
+    const shippingPrice = SHIPPING_PRICES[shipping_method];
+
+    if (shippingPrice === undefined) {
+      return res.status(400).json({ error: "Invalid shipping method" });
+    }
 
     for (const item of cart.items) {
       const product = await Product.findById(item.product_id._id);
@@ -89,7 +100,9 @@ const createOrder = async (req, res) => {
       user_id,
       address_id,
       products: orderProducts,
-      total_price: totalPrice,
+      total_price: totalPrice + shippingPrice,
+      shipping_method,
+      shipping_price: shippingPrice,
       cart_token: cartToken,
       status_order: "pending",
     });

@@ -29,6 +29,16 @@ const OrderSchema = new Schema({
       quantity: { type: Number, required: true },
     },
   ],
+  shipping_method: {
+    type: String,
+    enum: ["pickup_lyon", "colissimo_signature"],
+    required: true,
+  },
+  shipping_price: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
   total_price: {
     type: Number,
     required: true,
