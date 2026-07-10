@@ -5,6 +5,11 @@
     width: 100%;
     padding: 10px 20px;
     background-color: var(--color-background);
+    .logo-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
 
     .content-top-menu-logo {
         color: var(--color-text);

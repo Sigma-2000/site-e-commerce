@@ -1,11 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const {
-  createPayment,
-  confirmPayment,
+  createCheckoutSession,
+  stripeWebhook,
 } = require("../controllers/paymentsController");
 
-router.post("/create-checkout-session", createPayment);
-router.post("/confirm-payment", confirmPayment);
+router.post(
+  "/api/stripe-webhook",
+  express.raw({ type: "application/json" }),
+  stripeWebhook,
+);
+router.post("/create-checkout-session", createCheckoutSession);
 
 module.exports = router;

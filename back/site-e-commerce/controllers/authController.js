@@ -58,13 +58,13 @@ const login = async (req, res) => {
       process.env.JWT_SECRET,
       {
         expiresIn: "15m",
-      }
+      },
     );
 
     const refreshToken = jwt.sign(
       { id: user._id },
       process.env.JWT_REFRESH_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "1d" },
     );
 
     res
@@ -129,6 +129,31 @@ const getOneUser = async (req, res) => {
   }
 };
 
+const getCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id)
+      .populate("address_id")
+      .populate({
+        path: "orders",
+        populate: {
+          path: "products.id",
+          populate: {
+            path: "artwork_id",
+            select: "images",
+          },
+        },
+      });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.json(user);
+  } catch (error) {
+    return res.status(500).json({ error: "Error retrieving current user" });
+  }
+};
+
 const updateUserAddress = async (req, res) => {
   const { street, city, postal_code, country, phone } = req.body;
   try {
@@ -143,7 +168,7 @@ const updateUserAddress = async (req, res) => {
     const updatedAddress = await Address.findByIdAndUpdate(
       user.address_id._id,
       { street, city, postal_code, country, phone },
-      { new: true }
+      { new: true },
     );
 
     res.json(updatedAddress);
@@ -221,7 +246,7 @@ const refreshToken = async (req, res) => {
     const newAccessToken = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "15m" }
+      { expiresIn: "15m" },
     );
 
     res.cookie("token", newAccessToken, {
@@ -241,6 +266,7 @@ module.exports = {
   login,
   getAllUsers,
   getOneUser,
+  getCurrentUser,
   updateUserAddress,
   deleteUserById,
   logout,

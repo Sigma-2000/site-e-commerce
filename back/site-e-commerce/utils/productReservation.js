@@ -1,4 +1,5 @@
 const Product = require("../models/Product");
+const Cart = require("../models/Cart");
 /**
  * Adjusts product reservations when we have an order.
  * It remove the ordered quantity from the oldest reserved stock.
@@ -9,55 +10,128 @@ const Product = require("../models/Product");
  * @param {number} product.stock - Current available stock for the product.
  * @param {number} orderQuantity - The quantity of the product being ordered.
  */
+/*
+const handleReservations = (product, orderQuantity, cartToken) => {
+  let quantityToConsume = orderQuantity;
 
-const handleReservations = (product, orderQuantity) => {
-  product.reservedStock.sort((a, b) => a.expiresAt - b.expiresAt);
+  const cartReservations = product.reservedStock
+    .filter((reservation) => reservation.cartToken === cartToken)
+    .sort((a, b) => a.expiresAt - b.expiresAt);
 
-  for (const reservation of product.reservedStock) {
-    if (orderQuantity <= 0) break;
+  for (const reservation of cartReservations) {
+    if (quantityToConsume <= 0) break;
 
-    const removeFromReservation = Math.min(orderQuantity, reservation.quantity);
-    reservation.quantity -= removeFromReservation;
-    orderQuantity -= removeFromReservation;
+    const consumedQuantity = Math.min(quantityToConsume, reservation.quantity);
+
+    reservation.quantity -= consumedQuantity;
+    quantityToConsume -= consumedQuantity;
+  }
+
+  if (quantityToConsume > 0) {
+    throw new Error("Insufficient reserved quantity for this cart");
   }
 
   product.reservedStock = product.reservedStock.filter(
-    (reservation) => reservation.quantity > 0
+    (reservation) => reservation.quantity > 0,
+  );
+};*/
+
+const cleanExpiredReservationsForProduct = async (product) => {
+  const now = new Date();
+
+  const expiredReservations = product.reservedStock.filter(
+    (reservation) => reservation.expiresAt && reservation.expiresAt <= now,
   );
 
-  if (orderQuantity > 0) {
-    product.stock -= orderQuantity;
+  if (!expiredReservations.length) {
+    return product;
   }
+
+  const expiredQuantity = expiredReservations.reduce(
+    (sum, reservation) => sum + reservation.quantity,
+    0,
+  );
+
+  product.stock += expiredQuantity;
+
+  product.reservedStock = product.reservedStock.filter(
+    (reservation) => reservation.expiresAt && reservation.expiresAt > now,
+  );
+
+  await product.save();
+
+  return product;
 };
 
-const cleanExpiredReservations = async (productId) => {
+const cleanExpiredReservationsByProductId = async (productId) => {
+  const product = await Product.findById(productId);
+
+  if (!product) return null;
+
+  return cleanExpiredReservationsForProduct(product);
+};
+//refacto pour intégrer logique cart dedans ?
+const cleanAllExpiredReservations = async () => {
+  const products = await Product.find();
+  let cleanedProductsCount = 0;
   const now = new Date();
-  try {
-    const product = await Product.findById(productId);
 
-    if (!product) return;
+  for (const product of products) {
+    if (product.reservedStock && product.reservedStock.length > 0) {
+      const expiredReservations = product.reservedStock.filter(
+        (reservation) =>
+          reservation.expiresAt && new Date(reservation.expiresAt) <= now,
+      );
 
-    const expiredReservations = product.reservedStock.filter(
-      (reservation) => reservation.expiresAt && reservation.expiresAt <= now
-    );
+      if (expiredReservations.length > 0) {
+        const expiredQuantity = expiredReservations.reduce(
+          (sum, reservation) => sum + reservation.quantity,
+          0,
+        );
+        product.stock += expiredQuantity;
+        //ici ajout cart
+        for (const reservation of expiredReservations) {
+          const cart = await Cart.findOne({
+            token: reservation.cartToken,
+            status: "active",
+          });
 
-    const expiredQuantity = expiredReservations.reduce(
-      (sum, res) => sum + res.quantity,
-      0
-    );
+          if (!cart) continue;
 
-    product.stock += expiredQuantity;
+          cart.items = cart.items
+            .map((item) => {
+              if (String(item.product_id) !== String(product._id)) {
+                return item;
+              }
 
-    product.reservedStock = product.reservedStock.filter(
-      (reservation) => reservation.expiresAt && reservation.expiresAt > now
-    );
+              return {
+                ...(item.toObject?.() ?? item),
+                quantity: item.quantity - reservation.quantity,
+              };
+            })
+            .filter((item) => item.quantity > 0);
 
-    await product.save();
-  } catch (error) {
-    console.error("Error cleaning reservations ");
+          await cart.save();
+        }
+
+        product.reservedStock = product.reservedStock.filter(
+          (reservation) => new Date(reservation.expiresAt) > now,
+        );
+
+        await product.save();
+        cleanedProductsCount++;
+
+        console.log(`Produit ${product._id} nettoyé, stock mis à jour.`);
+      }
+    } else {
+      console.log(`Produit ${product._id} n'a pas de réservations.`);
+    }
   }
+  return cleanedProductsCount;
 };
+
 module.exports = {
-  handleReservations,
-  cleanExpiredReservations,
+  cleanExpiredReservationsForProduct,
+  cleanExpiredReservationsByProductId,
+  cleanAllExpiredReservations,
 };

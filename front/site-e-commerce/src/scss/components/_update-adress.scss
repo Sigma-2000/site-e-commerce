@@ -1,7 +1,11 @@
 .update-address {
-    margin: 20px 40px;
     display: flex;
     flex-direction: column;
+
+    @include respond-to('tablet') {
+        margin: 20px 40px;
+    }
+
     h3 {
         font-weight: $font-weight-medium;
         color: var(--color-text);

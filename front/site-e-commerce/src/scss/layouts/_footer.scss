@@ -2,32 +2,91 @@
     position: sticky;
     bottom: 0;
     width: 100vw;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+        'lang . mode'
+        'legal legal legal';
     align-items: center;
-    padding: 10px 20px;
+    padding: 8px 20px;
     background-color: var(--color-background);
     box-sizing: border-box;
     z-index: 1000;
-    .content-footer .selected {
+
+    .footer-language {
+        grid-area: lang;
+        display: flex;
+        align-items: center;
+        span {
+            font-size: $font-size-x-small;
+        }
+    }
+
+    .content-footer-mode {
+        grid-area: mode;
+        justify-self: end;
+        display: flex;
+        align-items: center;
+
+        .content-footer-mode-icon {
+            cursor: pointer;
+            color: var(--color-text);
+        }
+    }
+
+    .footer-legal-links {
+        grid-area: legal;
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 4px;
+        line-height: 1;
+
+        a {
+            color: var(--color-text);
+            font-size: $font-size-xs-small;
+            opacity: 0.75;
+            text-decoration: underline;
+            white-space: nowrap;
+        }
+    }
+
+    .selected {
         font-weight: $font-weight-semibold;
     }
+
     span {
-        font-size: $font-size-medium;
+        font-size: $font-size-x-small;
         color: var(--color-text);
         margin-right: 8px;
         cursor: pointer;
     }
 
-    .content-footer-mode {
+    @include respond-to('tablet') {
         display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        flex-grow: 1;
+        flex-wrap: nowrap;
+        //padding: 10px 20px;
+        .footer-language {
+            span {
+                font-size: $font-size-small;
+            }
+        }
 
-        .content-footer-mode-icon {
-            cursor: pointer;
-            color: var(--color-text);
+        .footer-legal-links {
+            margin-top: 0;
+            margin-left: 16px;
+            gap: 18px;
+
+            a {
+                font-size: $font-size-small;
+            }
+        }
+
+        .content-footer-mode {
+            margin-left: auto;
+            span {
+                font-size: $font-size-medium;
+            }
         }
     }
 }

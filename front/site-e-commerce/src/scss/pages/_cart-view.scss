@@ -61,7 +61,7 @@
             flex-direction: column;
             gap: 25px;
             @include respond-to('tablet') {
-                margin: 20px 0px;
+                margin: 20px 40px;
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 20px;
@@ -91,18 +91,44 @@
                         gap: 4px;
                         margin-left: 20px;
                     }
+                    .cart-text-price {
+                        strong {
+                            display: block;
+                            margin: 2px 0 0;
+                        }
+
+                        @include respond-to('tablet') {
+                            strong {
+                                display: inline;
+                                margin: 4px;
+                            }
+                        }
+                    }
                     button {
                         width: 100% !important;
+                        height: 14%;
 
                         @include respond-to('tablet') {
                             width: 90% !important;
+                            height: 20%;
                         }
                         @include respond-to('desktop') {
                             width: 90% !important;
+                            height: 20%;
                         }
                     }
                     .cart-product-quantity {
                         display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 4px;
+
+                        .quantity-controls {
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 4px;
+                        }
+
                         button {
                             width: 15px !important;
                             height: 18px;
@@ -117,8 +143,46 @@
         text-align: center;
         margin-bottom: 30px;
     }
+    .shipping-options {
+        label {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+            input {
+                margin-top: -22px;
+                @include respond-to('tablet') {
+                    margin-top: 0px;
+                }
+            }
+        }
+        p {
+            margin-bottom: 8px;
+        }
+        @include respond-to('tablet') {
+            margin: 8px 40px;
+        }
+    }
+    .terms-checkbox {
+        span {
+            padding-left: 4px;
+        }
+        a {
+            color: var(--color-text);
+        }
+        @include respond-to('tablet') {
+            display: flex;
+            margin: 8px 40px;
+        }
+    }
     .button-purchase,
     .no-cart {
         text-align: center;
+        padding-top: 20px;
+        button {
+            width: 65%;
+            @include respond-to('tablet') {
+                width: 50%;
+            }
+        }
     }
 }

@@ -7,39 +7,65 @@ export const useCartStore = defineStore('cart', {
         totalPrice: 0,
         success: null,
         error: null,
+        cartToken: null,
+        shippingMethod: null,
+        shippingPrice: 0,
     }),
     actions: {
-        async addToCart(product) {
+        getOrCreateCartToken() {
+            let token = localStorage.getItem('cartToken');
+
+            if (!token) {
+                token = crypto.randomUUID();
+                localStorage.setItem('cartToken', token);
+            }
+
+            this.cartToken = token;
+            return token;
+        },
+        async addToCart(product, retry = true) {
             this.success = null;
+            this.error = null;
+            //vérifier pertinence retry
             try {
+                const cartToken = this.getOrCreateCartToken();
+
+                await axiosCaller.post(`/cart/${product.id}/add`, {
+                    cartToken,
+                    quantity: 1,
+                });
+
                 const alreadyProducts = this.cart.find((item) => item.id === product.id);
+
                 if (alreadyProducts) {
                     alreadyProducts.quantity++;
                 } else {
                     this.cart.push({ ...product, quantity: 1 });
                 }
-                await axiosCaller.post(`/product/${product.id}/reservation`, {
-                    quantity: 1,
-                });
+
                 await this.validateCart();
-                this.persistCart();
+                this.syncCartWithLocalStorage();
                 this.success = 'success.add-product-cart';
             } catch (err) {
+                if (err.response?.status === 409 && retry) {
+                    this.resetCart();
+                    return this.addToCart(product, false);
+                }
+
                 this.error = 'errors.add-product-cart';
-                console.error(err);
+                console.error(err.response?.data || err);
             }
         },
-
         async decreaseQuantity(productId) {
             try {
                 const productInCart = this.cart.find((item) => item.id === productId);
                 if (!productInCart) return;
-
+                const cartToken = this.getOrCreateCartToken();
                 if (productInCart.quantity > 1) {
-                    await axiosCaller.post(`/product/${productId}/remove-reservation`, {
+                    await axiosCaller.post(`/cart/${productId}/remove`, {
+                        cartToken,
                         quantity: 1,
                     });
-
                     productInCart.quantity--;
                 } else {
                     await this.removeFromCart(productId);
@@ -57,11 +83,11 @@ export const useCartStore = defineStore('cart', {
             try {
                 const productInCart = this.cart.find((item) => item.id === productId);
                 if (!productInCart) return;
-
-                await axiosCaller.post(`/product/${productId}/remove-reservation`, {
+                const cartToken = this.getOrCreateCartToken();
+                await axiosCaller.post(`/cart/${productId}/remove`, {
+                    cartToken,
                     quantity: productInCart.quantity,
                 });
-
                 this.cart = this.cart.filter((item) => item.id !== productId);
                 await this.validateCart();
                 this.syncCartWithLocalStorage();
@@ -74,37 +100,47 @@ export const useCartStore = defineStore('cart', {
         async validateCart() {
             this.error = null;
             this.success = null;
+
             try {
-                const response = await axiosCaller.post('/order/validate-cart', {
+                const cartToken = this.getOrCreateCartToken();
+
+                const response = await axiosCaller.post('/cart/validate-cart', {
+                    cartToken,
                     cart: this.cart,
                 });
-                const updatedCart = response.data.updatedCart;
-                this.cart = updatedCart.filter((item) => item.message.includes('valid'));
-                const hasRemovedItems = updatedCart.some((item) =>
-                    item.message.includes('removed')
-                );
-                const hasAdjustedItems = updatedCart.some((item) =>
-                    item.message.includes('adjusted')
-                );
 
+                this.cart = response.data.updatedCart;
                 this.totalPrice = response.data.total_price;
-                localStorage.setItem('cart', JSON.stringify(this.cart));
 
-                if (hasRemovedItems) {
-                    this.error = 'errors.cart-product-removed';
-                } else if (hasAdjustedItems) {
-                    this.success = 'success.cart-updated';
-                } else {
-                    this.success = null;
-                    this.error = null;
-                }
+                this.syncCartWithLocalStorage();
             } catch (err) {
+                if (err.response?.status === 409) {
+                    this.resetCart();
+                    return;
+                }
+
                 this.error = 'errors.cart-validation';
-                console.error(err);
+                console.error(err.response?.data || err);
             }
+        },
+        setShippingMethod(method) {
+            const shippingPrices = {
+                pickup_lyon: 0,
+                colissimo_signature: 8,
+            };
+
+            if (!(method in shippingPrices)) {
+                this.shippingMethod = null;
+                this.shippingPrice = 0;
+                return;
+            }
+
+            this.shippingMethod = method;
+            this.shippingPrice = shippingPrices[method];
         },
         persistCart() {
             localStorage.setItem('cart', JSON.stringify(this.cart));
+            //delete persistCart
         },
         async loadCart() {
             const storedCart = localStorage.getItem('cart');
@@ -123,7 +159,11 @@ export const useCartStore = defineStore('cart', {
         resetCart() {
             this.cart = [];
             this.totalPrice = 0;
+            this.cartToken = null;
+            this.shippingMethod = null;
+            this.shippingPrice = 0;
             localStorage.removeItem('cart');
+            localStorage.removeItem('cartToken');
         },
         setError(errorMessage) {
             this.error = errorMessage;

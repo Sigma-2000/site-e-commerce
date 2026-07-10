@@ -11,7 +11,7 @@
             </router-link>
             <div class="underline-extra-short"></div>
             <section v-if="product.artwork_id" class="item-details-card">
-                <h2>{{ product.artwork_id.title[locale] }}</h2>
+                <h3>{{ product.artwork_id.title[locale] }}</h3>
                 <div class="detail-card-main-image">
                     <img
                         v-if="product.artwork_id.images && product.artwork_id.images.length"

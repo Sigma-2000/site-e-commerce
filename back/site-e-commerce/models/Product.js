@@ -19,11 +19,20 @@ const ProductSchema = new Schema({
     type: String,
     required: true,
     enum: ["print", "original"],
-  },
+  } /*
   reservedStock: [
     {
       quantity: { type: Number, default: 0 },
       expiresAt: { type: Date, default: null },
+    },
+  ],
+});*/,
+  //, required: true à mettre quand front et back ok pour cartToken
+  reservedStock: [
+    {
+      cartToken: { type: String },
+      quantity: { type: Number, required: true },
+      expiresAt: { type: Date, required: true },
     },
   ],
 });

@@ -15,7 +15,7 @@
                         :key="artwork._id"
                         class="category-items"
                     >
-                        <h2>{{ artwork.title[locale] }}</h2>
+                        <h3>{{ artwork.title[locale] }}</h3>
                         <p
                             v-if="artwork.products && artwork.products.length > 0"
                             class="shop-available"
