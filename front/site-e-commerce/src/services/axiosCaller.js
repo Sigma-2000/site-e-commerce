@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useUsersStore } from '@/stores/usersStore.js';
 
 const axiosCaller = axios.create({
-    baseURL: import.meta.env.VITE_BACK_API_BASE_URL,
+    baseURL: import.meta.env.VITE_BACK_API_BASE_URL_DEV,
     headers: {
         Accept: 'application/json',
     },

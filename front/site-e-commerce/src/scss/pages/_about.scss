@@ -58,7 +58,7 @@
         display: flex;
         justify-content: center;
         gap: 20%;
-        margin: 50px 0px;
+        margin: 30px 0px;
         @include respond-to('tablet') {
             justify-content: start;
         }
@@ -79,19 +79,27 @@
             }
         }
     }
+    .contact-fallback {
+        margin-bottom: 25px;
+        a {
+            color: var(--color-text);
+        }
+    }
     .exhibitions-career {
         margin: 20px 0px;
         h3 {
             font-weight: $font-weight-medium;
             color: var(--color-text);
         }
-        ul,
-        p {
+        ul {
             margin: 20px 20px;
             color: var(--color-text);
         }
         li {
             margin-bottom: 10px;
+        }
+        p {
+            margin-left: 2px;
         }
     }
 }

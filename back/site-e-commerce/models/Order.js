@@ -12,6 +12,13 @@ const OrderSchema = new Schema({
     ref: "Address",
     required: true,
   },
+  cart_token: {
+    type: String,
+  },
+  cart_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Cart",
+  },
   products: [
     {
       id: {
@@ -22,6 +29,16 @@ const OrderSchema = new Schema({
       quantity: { type: Number, required: true },
     },
   ],
+  shipping_method: {
+    type: String,
+    enum: ["pickup_lyon", "colissimo_signature"],
+    required: true,
+  },
+  shipping_price: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
   total_price: {
     type: Number,
     required: true,
@@ -40,6 +57,7 @@ const OrderSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Payment",
   },
+  /**cart_token: String, */
 });
 
 const Order = mongoose.model("Order", OrderSchema);

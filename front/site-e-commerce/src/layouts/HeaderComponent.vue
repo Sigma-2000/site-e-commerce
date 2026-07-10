@@ -1,20 +1,22 @@
 <template>
     <div class="content-top-menu">
-        <div class="content-top-menu-logo">
-            <div class="logo-underline"></div>
-            -
-            <img
-                :src="
-                    darkModeStore.isDarkMode
-                        ? '/images/sigma-logo-white.png'
-                        : '/images/sigma-logo.png'
-                "
-                alt="Sigma.2000"
-                class="menu-logo"
-            />
-            -
-            <div class="logo-underline"></div>
-        </div>
+        <RouterLink to="/" class="logo-link">
+            <div class="content-top-menu-logo">
+                <div class="logo-underline"></div>
+                -
+                <img
+                    :src="
+                        darkModeStore.isDarkMode
+                            ? '/images/sigma-logo-white.png'
+                            : '/images/sigma-logo.png'
+                    "
+                    alt="Sigma.2000"
+                    class="menu-logo"
+                />
+                -
+                <div class="logo-underline"></div>
+            </div>
+        </RouterLink>
         <div class="content-top-menu-icon">
             <RouterLink to="/cart" class="cart-container">
                 <Icon icon="ph:shopping-cart-thin" width="24" class="menu-cart-icon" />

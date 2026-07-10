@@ -16,12 +16,26 @@
             <a href="https://www.instagram.com/sigma.2000/" target="_blank" aria-label="Instagram">
                 <Icon icon="skill-icons:instagram"
             /></a>
-            <a href="amelieguyot7@gmail.com" aria-label="Email">
+            <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=amelieguyot7@gmail.com&su=Demande%20depuis%20Sigma.2000"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Envoyer un email"
+            >
                 <Icon icon="iconamoon:email-light" style="color: var(--color-text)" />
             </a>
             <a href="https://www.facebook.com/sigma.2000.art" target="_blank" aria-label="Facebook">
                 <Icon icon="devicon:facebook" />
             </a>
+        </div>
+        <div class="contact-fallback">
+            <p>
+                <strong>{{ $t('about.contactQuestion') }}</strong>
+            </p>
+            <p>
+                {{ $t('about.contactFallback') }}
+                <a href="mailto:amelieguyot7@gmail.com">amelieguyot7@gmail.com</a>
+            </p>
         </div>
         <div class="logo-underline-short"></div>
         <h2>{{ $t('about.exhibition') }}</h2>
@@ -29,6 +43,24 @@
         <div class="exhibitions-career">
             <h3>{{ $t('exhibitions-sales') }}</h3>
             <ul>
+                <li>
+                    <i18n-t keypath="exhibitions.sale-flaneur" tag="span"
+                        ><template #sale>
+                            <span>
+                                <strong>{{ $t('exhibitions.sale') }}</strong></span
+                            >
+                        </template>
+                        <template #sale-flaneur>
+                            <span>
+                                <em>{{ $t('exhibitions.sale-flaneur') }}</em></span
+                            > </template
+                        ><template #flaneur>
+                            <span>
+                                <strong>{{ $t('exhibitions.flaneur') }}</strong></span
+                            >
+                        </template></i18n-t
+                    >
+                </li>
                 <li>
                     <i18n-t keypath="exhibitions.group-vacarmes" tag="span"
                         ><template #group>

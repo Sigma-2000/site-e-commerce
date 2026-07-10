@@ -5,6 +5,7 @@ const {
   login,
   getAllUsers,
   getOneUser,
+  getCurrentUser,
   updateUserAddress,
   deleteUserById,
   logout,
@@ -20,6 +21,7 @@ const {
 router.post("/sign-up", validateRegister, registerUser);
 router.post("/login", validateLogin, login);
 router.get("/users", verifyToken, isAdmin, getAllUsers);
+router.get("/me", verifyToken, getCurrentUser);
 router.get("/user/:id", verifyToken, getOneUser);
 router.delete("/user/:id", verifyToken, deleteUserById);
 router.put("/user/address", verifyToken, updateUserAddress);

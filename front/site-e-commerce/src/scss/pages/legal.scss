@@ -1,0 +1,6 @@
+.legal-section {
+    margin: 10px 20px;
+    @include respond-to('tablet') {
+        margin: 10px 12px;
+    }
+}

@@ -2,7 +2,11 @@ const express = require("express");
 const Order = require("../models/Order");
 const Product = require("../models/Product");
 const Payment = require("../models/Payment");
-const { handleReservations } = require("../utils/productReservation");
+const Cart = require("../models/Cart");
+
+const {
+  cleanExpiredReservationsForProduct,
+} = require("../utils/productReservation");
 const { calculateTotalPrice } = require("../utils/cart");
 
 /**
@@ -19,53 +23,103 @@ const { calculateTotalPrice } = require("../utils/cart");
  */
 
 const createOrder = async (req, res) => {
-  const { user_id, address_id, products } = req.body;
+  const { address_id, cartToken, shipping_method } = req.body;
+  const user_id = req.user.id;
+  console.log("BODY", req.body);
 
   try {
-    if (!user_id || !address_id || !products) {
+    if (!user_id || !address_id || !cartToken) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    for (const item of products) {
-      const product = await Product.findById(item.id);
+    const cart = await Cart.findOne({
+      token: cartToken,
+      status: "active",
+    }).populate("items.product_id");
+
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ error: "Cart is empty or expired" });
+    }
+
+    const orderProducts = [];
+    let totalPrice = 0;
+
+    const SHIPPING_PRICES = {
+      pickup_lyon: 0,
+      colissimo_signature: 8,
+    }; //déplacer cette variable magic string
+
+    const shippingPrice = SHIPPING_PRICES[shipping_method];
+
+    if (shippingPrice === undefined) {
+      return res.status(400).json({ error: "Invalid shipping method" });
+    }
+
+    for (const item of cart.items) {
+      const product = await Product.findById(item.product_id._id);
 
       if (!product) {
         return res.status(404).json({ error: "Product not found" });
       }
+      try {
+        await cleanExpiredReservationsForProduct(product);
+      } catch (cleanError) {
+        console.error("cleanExpiredReservationsForProduct error:", cleanError);
 
-      const reservedTotal = product.reservedStock.reduce(
-        (sum, reservation) => sum + reservation.quantity,
-        0
+        return res.status(500).json({
+          error: "Error while validating product reservations",
+        });
+      }
+      const reservation = product.reservedStock.find(
+        (r) => r.cartToken === cartToken,
       );
-      const totalStock = product.stock + reservedTotal;
 
-      if (item.quantity > totalStock) {
-        return res
-          .status(400)
-          .json({ error: "Insufficient stock for product " });
+      if (!reservation || reservation.quantity < item.quantity) {
+        return res.status(400).json({
+          error: "Reservation expired or insufficient",
+        });
       }
 
-      handleReservations(product, item.quantity);
+      reservation.quantity -= item.quantity;
+
+      product.reservedStock = product.reservedStock.filter(
+        (r) => r.quantity > 0,
+      );
 
       await product.save();
-    }
 
-    const totalPrice = await calculateTotalPrice(products);
+      orderProducts.push({
+        id: product._id,
+        quantity: item.quantity,
+      });
+
+      totalPrice += product.price * item.quantity;
+    }
 
     const newOrder = await Order.create({
       user_id,
       address_id,
-      products,
-      total_price: totalPrice,
+      products: orderProducts,
+      total_price: totalPrice + shippingPrice,
+      shipping_method,
+      shipping_price: shippingPrice,
+      cart_token: cartToken,
+      status_order: "pending",
     });
-    res
-      .status(201)
-      .json({ message: "Order created successfully", order: newOrder });
+    cart.status = "checkout_pending";
+
+    await cart.save();
+
+    return res.status(201).json({
+      message: "Order created successfully",
+      order: newOrder,
+    });
   } catch (error) {
-    res.status(500).json({ error: "Error creating order" });
+    console.error("createOrder error:", error);
+    console.error(error.stack);
+    return res.status(500).json({ error: "Error creating order" });
   }
 };
-
 const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
@@ -154,96 +208,8 @@ const updateStatusOrderById = async (req, res) => {
   }
 };
 
-/**
- * Validate the shopping cart by checking product availability and adjusting quantities if necessary.
- * Calculate the total price.
- * @route POST /cart/validate
- * @param {Object[]} req.body.cart - List of items in the shopping cart.
- * @param {string} req.body.cart[].id - Product ID.
- * @param {string} req.body.cart[].image - Product image URL.
- * @param {string} req.body.cart[].title - Product title.
- * @param {string} req.body.cart[].type - Type of product.
- * @param {number} req.body.cart[].quantity - Requested quantity of the product.
- * @param {number} req.body.cart[].price - Price per unit of the product.
- * @returns {Object} updatedCart, total_price - Response with the updated cart and total price.
- */
-
-const validateCart = async (req, res) => {
-  const { cart } = req.body;
-
-  try {
-    let updatedCart = [];
-
-    for (const item of cart) {
-      const product = await Product.findById(item.id);
-
-      if (!product) {
-        updatedCart.push({
-          id: item.id,
-          message: "This product no longer exists.",
-        });
-        continue;
-      }
-
-      const reservedQuantity = product.reservedStock.reduce(
-        (sum, reservation) => sum + reservation.quantity,
-        0
-      );
-
-      if (reservedQuantity === 0) {
-        updatedCart.push({
-          id: item.id,
-          image: item.image,
-          title: item.title,
-          message:
-            "The requested quantity is not available anymore, we removed it from your cart.",
-        });
-        continue;
-      }
-
-      if (item.quantity > reservedQuantity) {
-        updatedCart.push({
-          id: item.id,
-          image: item.image,
-          title: item.title,
-          type: item.type,
-          quantity: reservedQuantity,
-          price: item.price,
-          totalPrice: reservedQuantity * item.price,
-          message: "Insufficient stock, adjusted to valid your cart.",
-        });
-        continue;
-      }
-
-      updatedCart.push({
-        id: item.id,
-        image: item.image,
-        price: item.price,
-        quantity: item.quantity,
-        totalPrice: item.quantity * item.price,
-        stock: product.stock,
-        title: item.title,
-        type: item.type,
-        message: "Product quantity is valid.",
-      });
-    }
-
-    const total_price = updatedCart.reduce(
-      (sum, item) => sum + (item.totalPrice || 0),
-      0
-    );
-
-    res.status(200).json({ updatedCart, total_price });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error occurred while validating the cart." });
-  }
-};
-
 const cancelOrder = async (req, res) => {
   const { order_id } = req.body;
-
   try {
     if (!order_id) {
       return res.status(400).json({ error: "Missing order_id" });
@@ -263,6 +229,11 @@ const cancelOrder = async (req, res) => {
 
     order.status_order = "cancelled";
     await order.save();
+
+    await Cart.findOneAndUpdate(
+      { token: order.cart_token },
+      { status: "cancelled" },
+    );
 
     if (order.payment_id) {
       await Payment.findByIdAndUpdate(order.payment_id, {
@@ -284,6 +255,6 @@ module.exports = {
   getOrderById,
   deleteOrderById,
   updateStatusOrderById,
-  validateCart,
+  //validateCart,
   cancelOrder,
 };

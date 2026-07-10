@@ -100,10 +100,36 @@ const router = createRouter({
             name: 'orders',
             component: () => import('../views/panel-admin/OrderManagementView.vue'),
         },
+        /*
         {
             path: '/payment',
             name: 'payment',
             component: () => import('../views/order/PaymentView.vue'),
+        },*/
+        {
+            path: '/payment/success',
+            name: 'payment-success',
+            component: () => import('../views/order/PaymentView.vue'),
+        },
+        {
+            path: '/payment/cancel',
+            name: 'payment-cancel',
+            component: () => import('../views/order/PaymentView.vue'),
+        },
+        {
+            path: '/legal-notice',
+            name: 'legal-notice',
+            component: () => import('../views/legals-mention/LegalNoticeView.vue'),
+        },
+        {
+            path: '/terms',
+            name: 'terms',
+            component: () => import('../views/legals-mention/TermsView.vue'),
+        },
+        {
+            path: '/privacy',
+            name: 'privacy',
+            component: () => import('../views/legals-mention/PrivacyView.vue'),
         },
     ],
 

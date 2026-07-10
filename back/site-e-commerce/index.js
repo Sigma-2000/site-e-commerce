@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 //const initializeAdmin = require("./utils/initializeAdmin");
+const startCleanExpiredReservationsJob = require("./jobs/cleanExpiredReservationsJob");
 
 const fs = require("fs");
 const path = require("path");
@@ -24,20 +25,24 @@ mongoose.connect(mongoUri).then(() => {
   console.log("Base de donnée connectée");
   //initializeAdmin(); TODO Delete that before launch in prod
 });
+startCleanExpiredReservationsJob();
 
 const artworksRoutes = require("./routes/artworks");
 const ordersRoutes = require("./routes/orders");
 const productsRoutes = require("./routes/products");
 const authRoutes = require("./routes/auth");
 const paymentsRoutes = require("./routes/payments");
+const cartRoutes = require("./routes/cart");
 
 app.use(
   cors({
     //origin: "http://localhost:5173",
-    origin:
+    origin: [
+      "http://localhost:5173",
       "https://site-e-commerce-git-staging-sigma2000s-projects.vercel.app",
+    ],
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json());
@@ -50,6 +55,7 @@ app.use("/api", productsRoutes);
 app.use("/api", ordersRoutes);
 app.use("/api", authRoutes);
 app.use("/api", paymentsRoutes);
+app.use("/api", cartRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

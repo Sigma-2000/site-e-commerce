@@ -12,16 +12,29 @@ export const createOrder = async (orderData) => {
         orderStore.setError('errors.order-creation');
     }
 };
+export const createCheckoutSession = async ({ order_id }) => {
+    try {
+        const response = await axiosCaller.post('/create-checkout-session', {
+            order_id,
+        });
 
+        return response.data; // { url: "https://checkout.stripe.com/..." }
+    } catch (err) {
+        console.error(err.response?.data || err);
+        orderStore.setError('errors.create-payment');
+        throw err;
+    }
+};
+/*
 export const createCheckoutSession = async (paymentData) => {
     try {
         const response = await axiosCaller.post('/create-checkout-session', paymentData);
-        return response;
+        return response.data;
     } catch (err) {
         console.error(err);
         orderStore.setError('errors.create-payment');
     }
-};
+};*/
 
 export const confirmPayment = async (paymentIntentId) => {
     try {

@@ -44,16 +44,12 @@ export const useUsersStore = defineStore('users', {
             }
         },
         async fetchUser() {
-            if (!this.userInformation?.id) {
-                this.userInformation = null;
-                return;
-            }
             try {
-                const response = await axiosCaller.get(`/user/${this.userInformation.id}`);
+                const response = await axiosCaller.get('/me');
                 this.userInformation = response.data;
             } catch (err) {
                 this.userInformation = null;
-                console.error(err);
+                console.error(err.response?.data || err);
             }
         },
         async logout() {
