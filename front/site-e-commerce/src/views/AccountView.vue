@@ -52,7 +52,7 @@
             <div class="account-underline-center"></div>
         </div>
         <div v-if="!validOrders.length && !cancelledOrders.length" class="account-underline-center">
-            <!-- no orders historic -->
+            <!-- no orders historic !-->
         </div>
     </div>
     <AdressUpdate />
