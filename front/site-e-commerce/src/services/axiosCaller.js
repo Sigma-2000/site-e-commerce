@@ -21,8 +21,12 @@ axiosCaller.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
+        const noRefreshRoutes = ['/login', '/logout', '/refresh-token'];
+        const shouldNotRefresh = noRefreshRoutes.some((route) =>
+            originalRequest.url?.includes(route)
+        );
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        if (error.response?.status === 401 && !originalRequest._retry && !shouldNotRefresh) {
             originalRequest._retry = true;
 
             try {

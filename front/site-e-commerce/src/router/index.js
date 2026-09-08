@@ -140,6 +140,10 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
     const usersStore = useUsersStore();
+
+    if (to.name === 'sign-in' || to.name === 'sign-up') {
+        return next();
+    }
     try {
         await usersStore.fetchUser();
     } catch (error) {
