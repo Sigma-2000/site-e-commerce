@@ -48,6 +48,8 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://site-e-commerce-git-staging-sigma2000s-projects.vercel.app",
+      "https://sigma2000.com",
+      "https://www.sigma2000.com",
     ],
     credentials: true,
   }),
