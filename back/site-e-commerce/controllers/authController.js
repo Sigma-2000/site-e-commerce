@@ -209,6 +209,8 @@ const logout = (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
+      secure: true,
+      sameSite: "None",
     });
     res.clearCookie("refreshToken", {
       httpOnly: true,
