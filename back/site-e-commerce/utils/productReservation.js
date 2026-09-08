@@ -120,11 +120,7 @@ const cleanAllExpiredReservations = async () => {
 
         await product.save();
         cleanedProductsCount++;
-
-        console.log(`Produit ${product._id} nettoyé, stock mis à jour.`);
       }
-    } else {
-      console.log(`Produit ${product._id} n'a pas de réservations.`);
     }
   }
   return cleanedProductsCount;
