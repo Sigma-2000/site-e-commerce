@@ -6,9 +6,17 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 //const initializeAdmin = require("./utils/initializeAdmin");
 const startCleanExpiredReservationsJob = require("./jobs/cleanExpiredReservationsJob");
+const { stripeWebhook } = require("./controllers/paymentsController");
 
 const fs = require("fs");
 const path = require("path");
+
+const artworksRoutes = require("./routes/artworks");
+const ordersRoutes = require("./routes/orders");
+const productsRoutes = require("./routes/products");
+const authRoutes = require("./routes/auth");
+const paymentsRoutes = require("./routes/payments");
+const cartRoutes = require("./routes/cart");
 
 /**create a folder if it does'nt exist yet, render seems to delete the folder because it's an empty folder*/
 const uploadPath = path.join(__dirname, "tmp/uploads");
@@ -25,14 +33,14 @@ mongoose.connect(mongoUri).then(() => {
   console.log("Base de donnée connectée");
   //initializeAdmin(); TODO Delete that before launch in prod
 });
+
 startCleanExpiredReservationsJob();
 
-const artworksRoutes = require("./routes/artworks");
-const ordersRoutes = require("./routes/orders");
-const productsRoutes = require("./routes/products");
-const authRoutes = require("./routes/auth");
-const paymentsRoutes = require("./routes/payments");
-const cartRoutes = require("./routes/cart");
+app.post(
+  "/api/stripe-webhook",
+  express.raw({ type: "application/json" }),
+  stripeWebhook,
+);
 
 app.use(
   cors({
