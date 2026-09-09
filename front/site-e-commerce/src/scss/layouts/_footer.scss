@@ -1,14 +1,15 @@
 .content-footer {
     position: sticky;
     bottom: 0;
-    width: 100vw;
+    width: 100%;
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-template-areas:
         'lang . mode'
         'legal legal legal';
     align-items: center;
-    padding: 8px 20px;
+    padding: 8px 16px;
+    //20px
     background-color: var(--color-background);
     box-sizing: border-box;
     z-index: 1000;
