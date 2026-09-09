@@ -1,5 +1,9 @@
 .categories-overview {
-    margin: 20px 40px;
+    margin: 20px 16px;
+
+    @include respond-to('tablet') {
+        margin: 20px 40px;
+    }
 
     .underline-long {
         @include underline(0%, 0%, null);
