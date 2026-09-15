@@ -2,14 +2,8 @@
     position: sticky;
     bottom: 0;
     width: 100%;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-template-areas:
-        'lang . mode'
-        'legal legal legal';
     align-items: center;
     padding: 8px 16px;
-    //20px
     background-color: var(--color-background);
     box-sizing: border-box;
     z-index: 1000;
@@ -22,17 +16,14 @@
             font-size: $font-size-x-small;
         }
     }
-
     .content-footer-mode {
-        grid-area: mode;
-        justify-self: end;
+        position: absolute;
+        right: 20px;
+        top: 4px;
+
         display: flex;
         align-items: center;
-
-        .content-footer-mode-icon {
-            cursor: pointer;
-            color: var(--color-text);
-        }
+        justify-content: flex-end;
     }
 
     .footer-legal-links {
@@ -66,7 +57,6 @@
     @include respond-to('tablet') {
         display: flex;
         flex-wrap: nowrap;
-        //padding: 10px 20px;
         .footer-language {
             span {
                 font-size: $font-size-small;
