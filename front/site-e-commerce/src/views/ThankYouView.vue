@@ -6,9 +6,7 @@
         <h3 v-if="isFromOrder">{{ $t('order.thanks') }}</h3>
         <p v-if="isFromOrder" class="order-thanks">
             {{ $t('order.thanks-info') }}
-            <router-link to="/account" @click="orderStore.resetOrderOrigin">{{
-                $t('menu.account')
-            }}</router-link>
+            <router-link to="/account">{{ $t('menu.account') }}</router-link>
         </p>
         <div v-else>
             <h3>{{ $t('auth.thanks') }}</h3>
@@ -23,7 +21,7 @@
     </div>
 </template>
 <script setup>
-import { computed } from 'vue';
+import { computed, onUnmounted } from 'vue';
 import { useCartStore } from '@/stores/cartStore.js';
 import { useOrdersStore } from '@/stores/ordersStore';
 
@@ -32,4 +30,8 @@ const orderStore = useOrdersStore();
 
 const cartItems = computed(() => cartStore.cart);
 const isFromOrder = computed(() => orderStore.orderOrigin === 'order');
+
+onUnmounted(() => {
+    orderStore.resetOrderOrigin();
+});
 </script>
