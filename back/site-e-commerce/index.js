@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 //const initializeAdmin = require("./utils/initializeAdmin");
 const startCleanExpiredReservationsJob = require("./jobs/cleanExpiredReservationsJob");
 const { stripeWebhook } = require("./controllers/paymentsController");
-
+const startProcessEmailJobs = require("./jobs/processEmailJobs");
 const fs = require("fs");
 const path = require("path");
 
@@ -35,6 +35,7 @@ mongoose.connect(mongoUri).then(() => {
 });
 
 startCleanExpiredReservationsJob();
+startProcessEmailJobs();
 
 app.post(
   "/api/stripe-webhook",
