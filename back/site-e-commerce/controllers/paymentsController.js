@@ -3,12 +3,11 @@ const Stripe = require("stripe");
 const Payment = require("../models/Payment");
 const Order = require("../models/Order");
 const Cart = require("../models/Cart");
+const EmailJob = require("../models/EmailJob");
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const createCheckoutSession = async (req, res) => {
-  console.log("🔥 NEW CHECKOUT SESSION CONTROLLER", req.body);
-
   const { order_id } = req.body;
   const frontendUrl = process.env.FRONTEND_URL;
 
@@ -124,12 +123,21 @@ const stripeWebhook = async (req, res) => {
       if (!payment) {
         return res.status(404).json({ error: "Payment not found" });
       }
-
       const order = await Order.findByIdAndUpdate(
         payment.order_id,
         { status_order: "paid" },
-        { new: true },
-      );
+        {
+          new: true,
+          runValidators: true,
+        },
+      ).populate({
+        path: "user_id",
+        select: "email firstName lastName",
+      });
+
+      if (!order) {
+        return res.status(404).json({ error: "Order not found" });
+      }
 
       if (order?.cart_token) {
         await Cart.findOneAndUpdate(
@@ -137,6 +145,57 @@ const stripeWebhook = async (req, res) => {
           { status: "ordered" },
         );
       }
+
+      const customerEmail = order.user_id?.email;
+      const adminEmail = process.env.ADMIN_ORDER_EMAIL;
+
+      if (!customerEmail) {
+        throw new Error(`Missing customer email for order ${order._id}`);
+      }
+
+      if (!adminEmail) {
+        throw new Error("Missing ADMIN_ORDER_EMAIL environment variable");
+      }
+
+      await Promise.all([
+        EmailJob.updateOne(
+          {
+            key: `order:${order._id}:customer`,
+          },
+          {
+            $setOnInsert: {
+              key: `order:${order._id}:customer`,
+              type: "customer_order_confirmation",
+              order_id: order._id,
+              to: customerEmail,
+              status: "pending",
+              next_attempt_at: new Date(),
+            },
+          },
+          {
+            upsert: true,
+          },
+        ),
+
+        EmailJob.updateOne(
+          {
+            key: `order:${order._id}:admin`,
+          },
+          {
+            $setOnInsert: {
+              key: `order:${order._id}:admin`,
+              type: "admin_new_order",
+              order_id: order._id,
+              to: adminEmail,
+              status: "pending",
+              next_attempt_at: new Date(),
+            },
+          },
+          {
+            upsert: true,
+          },
+        ),
+      ]);
     }
 
     if (event.type === "checkout.session.expired") {
