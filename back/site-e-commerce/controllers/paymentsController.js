@@ -8,8 +8,6 @@ const EmailJob = require("../models/EmailJob");
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const createCheckoutSession = async (req, res) => {
-  console.log("🔥 NEW CHECKOUT SESSION CONTROLLER", req.body);
-
   const { order_id } = req.body;
   const frontendUrl = process.env.FRONTEND_URL;
 
@@ -140,10 +138,6 @@ const stripeWebhook = async (req, res) => {
       if (!order) {
         return res.status(404).json({ error: "Order not found" });
       }
-      console.log("EMAIL DEBUG - order:", order?._id);
-      console.log("EMAIL DEBUG - user populated:", order?.user_id);
-      console.log("EMAIL DEBUG - customer email:", order?.user_id?.email);
-      console.log("EMAIL DEBUG - admin email:", process.env.ADMIN_ORDER_EMAIL);
 
       if (order?.cart_token) {
         await Cart.findOneAndUpdate(
@@ -162,7 +156,7 @@ const stripeWebhook = async (req, res) => {
       if (!adminEmail) {
         throw new Error("Missing ADMIN_ORDER_EMAIL environment variable");
       }
-      console.log("EMAIL DEBUG - creating email jobs");
+
       await Promise.all([
         EmailJob.updateOne(
           {
