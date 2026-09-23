@@ -145,7 +145,7 @@ export const useCartStore = defineStore('cart', {
                     this.error = 'errors.cart-product-removed';
                 }
             } catch (err) {
-                if (err.response?.status === 409 && err.response?.data?.code === 'CART_EXPIRED') {
+                if (err.response?.status === 409) {
                     this.resetCart();
                     this.error = 'errors.cart-expired';
                     return;
