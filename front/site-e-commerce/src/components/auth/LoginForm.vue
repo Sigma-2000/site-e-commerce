@@ -96,27 +96,6 @@ watch(
         resetGlobalError();
     }
 );
-/*
-const handleLogin = async () => {
-    if (emailError.value || passwordError.value) {
-        return;
-    }
-    try {
-        await usersStore.login({ email: form.email, password: form.password });
-
-        if (usersStore.userInformation.role === 'admin') {
-            router.push('/panel-admin');
-        } else if (usersStore.loginOrigin === 'cart') {
-            await usersStore.fetchUser();
-            router.push('/cart');
-            usersStore.resetLoginOrigin();
-        } else {
-            router.push('/account');
-        }
-    } catch (error) {
-        console.error(error);
-    }
-};*/
 const handleLogin = async () => {
     emailError.value = validateEmail(form.email);
     passwordError.value = validatePassword(form.password);

@@ -38,8 +38,6 @@ axiosCaller.interceptors.response.use(
             try {
                 const usersStore = useUsersStore();
                 await usersStore.refreshAccessToken();
-                //const newToken = await usersStore.refreshAccessToken();
-                //originalRequest.headers.Authorization = `JWT ${newToken}`;
                 return axiosCaller(originalRequest);
             } catch (refreshError) {
                 console.error('Operation failed');

@@ -10,31 +10,6 @@ const Cart = require("../models/Cart");
  * @param {number} product.stock - Current available stock for the product.
  * @param {number} orderQuantity - The quantity of the product being ordered.
  */
-/*
-const handleReservations = (product, orderQuantity, cartToken) => {
-  let quantityToConsume = orderQuantity;
-
-  const cartReservations = product.reservedStock
-    .filter((reservation) => reservation.cartToken === cartToken)
-    .sort((a, b) => a.expiresAt - b.expiresAt);
-
-  for (const reservation of cartReservations) {
-    if (quantityToConsume <= 0) break;
-
-    const consumedQuantity = Math.min(quantityToConsume, reservation.quantity);
-
-    reservation.quantity -= consumedQuantity;
-    quantityToConsume -= consumedQuantity;
-  }
-
-  if (quantityToConsume > 0) {
-    throw new Error("Insufficient reserved quantity for this cart");
-  }
-
-  product.reservedStock = product.reservedStock.filter(
-    (reservation) => reservation.quantity > 0,
-  );
-};*/
 
 const cleanExpiredReservationsForProduct = async (product) => {
   const now = new Date();
@@ -113,6 +88,10 @@ const cleanAllExpiredReservations = async () => {
 
           await cart.save();
         }**/
+          // TODO V3:
+          // Remplacer findOne() + cart.save() par une mise à jour Mongo atomique.
+          // Un VersionError a déjà été observé lorsqu'un autre traitement
+          // modifie le panier entre la lecture et le save.
           const cart = await Cart.findOne({
             token: reservation.cartToken,
             status: "active",
