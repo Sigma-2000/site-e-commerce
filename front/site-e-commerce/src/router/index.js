@@ -46,11 +46,6 @@ const router = createRouter({
             component: () => import('../views/shop/ProductDetailsView.vue'),
         },
         {
-            path: '/:pathMatch(.*)*',
-            name: 'not-found',
-            component: () => import('../views/NotFoundView.vue'),
-        },
-        {
             path: '/sign-in',
             name: 'sign-in',
             component: () => import('../views/auth/SignInView.vue'),
@@ -131,6 +126,21 @@ const router = createRouter({
             name: 'privacy',
             component: () => import('../views/legals-mention/PrivacyView.vue'),
         },
+        {
+            path: '/forgot-password',
+            name: 'forgot-password',
+            component: () => import('../views/auth/ForgotPasswordView.vue'),
+        },
+        {
+            path: '/reset-password',
+            name: 'reset-password',
+            component: () => import('../views/auth/ResetPasswordView.vue'),
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'not-found',
+            component: () => import('../views/NotFoundView.vue'),
+        },
     ],
 
     scrollBehavior(to, from, savedPosition) {
@@ -138,10 +148,17 @@ const router = createRouter({
     },
 });
 
+//passer au meta ??
+
 router.beforeEach(async (to, from, next) => {
     const usersStore = useUsersStore();
 
-    if (to.name === 'sign-in' || to.name === 'sign-up') {
+    if (
+        to.name === 'sign-in' ||
+        to.name === 'sign-up' ||
+        to.name === 'forgot-password' ||
+        to.name === 'reset-password'
+    ) {
         return next();
     }
     try {

@@ -10,7 +10,8 @@ const buildAdminNewOrderEmail = ({ order }) => {
 
   const productsHtml = order.products
     .map(({ id: product, quantity }) => {
-      const title = product.title?.fr || product.title?.en || "Œuvre";
+      const artwork = product.artwork_id;
+      const title = artwork.title?.fr || artwork.title?.en || "Œuvre";
 
       return `
         <li>

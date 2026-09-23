@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { verifyToken, isAdmin } = require("../middlewares/authMiddleware");
-//import function from paymentsController
-//validateCart,
-//router.post("/order/validate-cart", validateCart);
+
 const {
   createOrder,
   getAllOrders,

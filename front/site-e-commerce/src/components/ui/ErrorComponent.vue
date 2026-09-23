@@ -16,10 +16,3 @@ defineProps({
 
 const { t } = useI18n();
 </script>
-
-<style>
-.error {
-    color: var(--error-color);
-    margin: 20px 0;
-}
-</style>

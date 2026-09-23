@@ -104,7 +104,7 @@ const addProductToCart = (product) => {
             stock: product.stock,
             type: category,
         };
-        console.log(productAddedToCart);
+
         cartStore.addToCart(productAddedToCart);
     }
 };
