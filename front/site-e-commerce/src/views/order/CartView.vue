@@ -175,7 +175,6 @@ const createOrderAndPayment = async () => {
         };
 
         const orderResponse = await createOrder(orderData);
-        console.log(orderResponse);
         orderStore.setCurrentOrderId(orderResponse._id);
         const checkoutSession = await createCheckoutSession({
             order_id: orderResponse._id,
@@ -198,6 +197,11 @@ watch(
         }
     }
 );
+watch(isLoggedIn, async (newValue, oldValue) => {
+    if (newValue && !oldValue) {
+        await cartStore.validateCart();
+    }
+});
 
 onMounted(() => {
     cartStore.resetErrorSuccess();

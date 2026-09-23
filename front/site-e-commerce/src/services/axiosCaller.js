@@ -21,7 +21,13 @@ axiosCaller.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
-        const noRefreshRoutes = ['/login', '/logout', '/refresh-token'];
+        const noRefreshRoutes = [
+            '/login',
+            '/logout',
+            '/refresh-token',
+            '/forgot-password',
+            '/reset-password',
+        ];
         const shouldNotRefresh = noRefreshRoutes.some((route) =>
             originalRequest.url?.includes(route)
         );
@@ -31,8 +37,9 @@ axiosCaller.interceptors.response.use(
 
             try {
                 const usersStore = useUsersStore();
-                const newToken = await usersStore.refreshAccessToken();
-                originalRequest.headers.Authorization = `JWT ${newToken}`;
+                await usersStore.refreshAccessToken();
+                //const newToken = await usersStore.refreshAccessToken();
+                //originalRequest.headers.Authorization = `JWT ${newToken}`;
                 return axiosCaller(originalRequest);
             } catch (refreshError) {
                 console.error('Operation failed');

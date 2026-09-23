@@ -91,6 +91,28 @@ const cleanAllExpiredReservations = async () => {
         product.stock += expiredQuantity;
         //ici ajout cart
         for (const reservation of expiredReservations) {
+          /***const cart = await Cart.findOne({
+            token: reservation.cartToken,
+            status: "active",
+          });
+
+          if (!cart) continue;
+
+          cart.items = cart.items
+            .map((item) => {
+              if (String(item.product_id) !== String(product._id)) {
+                return item;
+              }
+
+              return {
+                ...(item.toObject?.() ?? item),
+                quantity: item.quantity - reservation.quantity,
+              };
+            })
+            .filter((item) => item.quantity > 0);
+
+          await cart.save();
+        }**/
           const cart = await Cart.findOne({
             token: reservation.cartToken,
             status: "active",

@@ -149,7 +149,6 @@ const removeProduct = async (id) => {
 const addProductToCart = (product) => {
     if (product && product.stock > 0) {
         product.stock -= 1;
-        console.log(product._id);
 
         const productAddedToCart = {
             id: product._id,
@@ -159,7 +158,7 @@ const addProductToCart = (product) => {
             stock: product.stock,
             type: category,
         };
-        console.log(productAddedToCart);
+
         cartStore.addToCart(productAddedToCart);
         lastAddedProductId.value = product._id;
     }

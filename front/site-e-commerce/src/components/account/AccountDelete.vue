@@ -21,8 +21,10 @@ const error = computed(() => usersStore.error);
 
 const deleteAccount = async () => {
     try {
-        await usersStore.deleteAccount();
-        router.push('/sign-in');
+        const deleted = await usersStore.deleteAccount();
+        if (deleted) {
+            router.push('/sign-in');
+        }
     } catch (err) {
         console.error(err);
     }
