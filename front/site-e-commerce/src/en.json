@@ -100,7 +100,10 @@
         "payment": "Payment failed",
         "payment-failed": "Your payment failed and your order is cancelled, we redirect you into your account in few instant",
         "verification-payment": "Payment failed, verify your bank information",
-        "no-shipping-method": "Please choose a delivery method."
+        "no-shipping-method": "Please choose a delivery method.",
+        "password-confirmation": "The passwords do not match.",
+        "invalid-reset-link": "This password reset link is invalid or has expired.",
+        "forgot-password": "An error occurred while requesting a password reset. Please try again."
     },
     "success": {
         "update-address": "Your adress was updating successfully",
@@ -115,7 +118,10 @@
         "remove-product-cart": "Your article was removing successfully of your cart",
         "cart-updated": "Your cart has been updated to be align with our reservation stock available",
         "payment": "Payment approved",
-        "payment-approved": "Payment suceed, we are redirect you"
+        "payment-approved": "Payment succeed, we are redirect you",
+        "forgot-password": "If an account matches this email address, a password reset email has been sent.",
+        "reset-password": "Your password has been reset successfully. You will be redirected to the sign-in page.",
+        "cart-expired": "Your cart has expired. The reserved products have been returned to stock."
     },
     "button": {
         "buy": "Add to cart",
@@ -154,7 +160,12 @@
         "country": "Country",
         "phone": "Phone",
         "user-data-consent": "I agree that my personal data will be processed in accordance with the Privacy Policy in order to manage my user account and my orders.",
-        "thanks": "Thanks for your subscription"
+        "thanks": "Thanks for your subscription",
+        "forgot-password": "Password forgotten ?",
+        "send-reset-link": "Send reset link",
+        "reset-password": "Reset of your password",
+        "confirm-password": "Confirm your password",
+        "new-password": "Enter your new password"
     },
     "account": {
         "welcome": "Welcome",
@@ -213,7 +224,8 @@
         "pending": "Pending",
         "shipped": "Shipped",
         "delivered": "Delivered",
-        "cancelled": "Cancelled"
+        "cancelled": "Cancelled",
+        "paid": "Paid"
     },
     "order": {
         "amount": "The amount is",

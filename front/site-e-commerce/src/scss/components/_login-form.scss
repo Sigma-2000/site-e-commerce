@@ -1,6 +1,6 @@
 .login-form-view {
     .login-form {
-        margin: 20px 40px;
+        margin: 20px 40px 2px 40px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -19,12 +19,55 @@
                 border-color: var(--error-color);
             }
         }
-        .login-button {
+        .password-input-wrapper {
+            position: relative;
             width: 100%;
-            margin-bottom: 10px;
+
             @include respond-to('tablet') {
                 width: 30%;
             }
+
+            input {
+                width: 100%;
+                padding-right: 45px;
+            }
+        }
+
+        .password-input-wrapper input {
+            width: 100%;
+            padding-right: 45px;
+        }
+
+        .password-visibility-button {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        .login-button {
+            width: 100%;
+
+            @include respond-to('tablet') {
+                width: 30%;
+            }
+        }
+    }
+    .forgot-password-link {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        a {
+            color: inherit;
+            font-size: $font-size-small;
         }
     }
     .login-underline-center {

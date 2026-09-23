@@ -100,7 +100,11 @@
         "payment": "Paiement annulé",
         "payment-failed": "Votre paiement a échoué et votre commande a été annulée, vous allez étre redirigé vers votre compte dans quelques instants",
         "verification-payment": "Le paiement a échoué. Vérifiez vos informations bancaires.",
-        "no-shipping-method": "Veuillez choisir un mode de livraison."
+        "no-shipping-method": "Veuillez choisir un mode de livraison.",
+        "password-confirmation": "Les mots de passe ne correspondent pas.",
+        "forgot-password": "Une erreur s'est produite lors de la demande de réinitialisation. Veuillez réessayer.",
+        "invalid-reset-link": "Ce lien de réinitialisation est invalide ou a expiré.",
+        "cart-expired": "Votre panier a expiré. Les produits réservés ont été remis en stock."
     },
     "success": {
         "update-address": "Votre adresse a été mise à jour avec succès",
@@ -115,7 +119,9 @@
         "remove-product-cart": "Votre article a été supprimé avec succes de votre panier",
         "cart-updated": "Votre panier a été mis à jour selon en fonction des stocks réservés disponible",
         "payment": "Paiement validé",
-        "payment-approved": "Paiement confirmé, vous allez étre redirigé"
+        "payment-approved": "Paiement confirmé, vous allez étre redirigé",
+        "forgot-password": "Si un compte correspond à cette adresse,un email de réinitialisation a été envoyé.",
+        "reset-password": "Votre mot de passe a été réinitialisé avec succès. Vous allez être redirigé vers la page de connexion."
     },
     "button": {
         "buy": "Ajouter au panier",
@@ -154,7 +160,12 @@
         "country": "Pays",
         "phone": "Téléphone",
         "user-data-consent": "J'accepte que mes données personnelles soient traitées conformément à la Politique de confidentialité afin de gérer mon compte utilisateur et mes commandes.",
-        "thanks": "Merci pour votre inscription"
+        "thanks": "Merci pour votre inscription",
+        "forgot-password": "Mot de passe oublié ?",
+        "send-reset-link": "Lien de réinitialisation",
+        "reset-password": "Réinitialisation de votre mot de passe",
+        "confirm-password": "Confirmer votre mot de passe",
+        "new-password": "Nouveau mot de passe"
     },
     "account": {
         "welcome": "Bienvenue",
@@ -213,7 +224,8 @@
         "pending": "En attente",
         "shipped": "Expédiée",
         "delivered": "Livrée",
-        "cancelled": "Annulée"
+        "cancelled": "Annulée",
+        "paid": "Payer"
     },
     "order": {
         "amount": "Le montant s'éléve à",

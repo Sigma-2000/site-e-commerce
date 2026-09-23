@@ -29,7 +29,13 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       address_id: newAddress._id,
     });
-    return res.status(201).json(user);
+    return res.status(201).json({
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+    });
   } catch (error) {
     {
       res.status(500).json({ error: "User creation failed" });
@@ -52,9 +58,9 @@ const login = async (req, res) => {
     if (!match) {
       return res.status(401).json({ error: "Authentification failed" });
     }
-
+    const sessionVersion = user.session_version ?? 0;
     const token = jwt.sign(
-      { id: user._id, role: user.role },
+      { id: user._id, role: user.role, session_version: sessionVersion },
       process.env.JWT_SECRET,
       {
         expiresIn: "15m",
@@ -62,7 +68,7 @@ const login = async (req, res) => {
     );
 
     const refreshToken = jwt.sign(
-      { id: user._id },
+      { id: user._id, session_version: sessionVersion },
       process.env.JWT_REFRESH_SECRET,
       { expiresIn: "1d" },
     );
@@ -205,6 +211,42 @@ const deleteUserById = async (req, res) => {
   }
 };
 
+const deleteCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        error: "User not found",
+      });
+    }
+
+    await User.findByIdAndDelete(user._id);
+
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
+
+    return res.status(200).json({
+      message: "User successfully deleted.",
+    });
+  } catch (error) {
+    console.error("deleteCurrentUser error:", error);
+
+    return res.status(500).json({
+      error: "Error deleting current user",
+    });
+  }
+};
+
 const logout = (req, res) => {
   try {
     res.clearCookie("token", {
@@ -229,7 +271,6 @@ const logout = (req, res) => {
 
 const refreshToken = async (req, res) => {
   const { refreshToken } = req.cookies;
-  console.log(refreshToken);
 
   if (!refreshToken) {
     return res.status(401).json({
@@ -242,11 +283,32 @@ const refreshToken = async (req, res) => {
 
     const user = await User.findById(payload.id);
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "Operation failed" });
+    }
+    const currentSessionVersion = user.session_version ?? 0;
+
+    const tokenSessionVersion = payload.session_version ?? 0;
+
+    if (tokenSessionVersion !== currentSessionVersion) {
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      });
+
+      res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      });
+
+      return res.status(401).json({
+        error: "Session expired",
+      });
     }
 
     const newAccessToken = jwt.sign(
-      { id: user._id, role: user.role },
+      { id: user._id, role: user.role, session_version: currentSessionVersion },
       process.env.JWT_SECRET,
       { expiresIn: "15m" },
     );
@@ -271,6 +333,7 @@ module.exports = {
   getCurrentUser,
   updateUserAddress,
   deleteUserById,
+  deleteCurrentUser,
   logout,
   refreshToken,
 };

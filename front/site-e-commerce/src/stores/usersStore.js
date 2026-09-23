@@ -14,9 +14,11 @@ export const useUsersStore = defineStore('users', {
             try {
                 const response = await axiosCaller.post('/login', credentials);
                 this.userInformation = response.data;
+                return true;
             } catch (err) {
                 this.error = 'errors.auth';
                 console.error(err);
+                return false;
             }
         },
         async signUp(data) {
@@ -52,6 +54,18 @@ export const useUsersStore = defineStore('users', {
                 console.error(err.response?.data || err);
             }
         },
+        async deleteAccount() {
+            this.error = null;
+            try {
+                await axiosCaller.delete('/me');
+                this.userInformation = null;
+                return true;
+            } catch (err) {
+                this.error = 'errors.delete-account';
+                console.error(err);
+                return false;
+            }
+        },
         async logout() {
             try {
                 await axiosCaller.post('/logout');
@@ -60,30 +74,26 @@ export const useUsersStore = defineStore('users', {
                 console.error(err);
             }
         },
-        async deleteAccount() {
-            this.error = null;
-            if (!this.userInformation?.id) {
-                this.userInformation = null;
-                return;
-            }
+        /*
+        async deleteAccountByAdmin() {
             try {
                 await axiosCaller.delete(`/user/${this.userInformation.id}`);
-                this.userInformation = null;
             } catch (err) {
                 this.error = 'errors.delete-account';
                 console.error(err);
             }
-        },
+        },*/
         async refreshAccessToken() {
             try {
-                if (!this.userInformation) {
-                    return;
-                }
-                const response = await axiosCaller.post('/refresh-token');
+                await axiosCaller.post('/refresh-token');
 
-                return response.data.token;
+                return true;
             } catch (err) {
+                this.userInformation = null;
+
                 console.error(err);
+
+                throw err;
             }
         },
         setLoginOrigin(origin) {
@@ -91,6 +101,18 @@ export const useUsersStore = defineStore('users', {
         },
         resetLoginOrigin() {
             this.loginOrigin = null;
+        },
+        async forgotPassword(email) {
+            return axiosCaller.post('/forgot-password', {
+                email,
+            });
+        },
+        async resetPassword(token, password, passwordConfirmation) {
+            return axiosCaller.post('/reset-password', {
+                token,
+                password,
+                passwordConfirmation,
+            });
         },
         resetErrorSuccess() {
             this.error = null;

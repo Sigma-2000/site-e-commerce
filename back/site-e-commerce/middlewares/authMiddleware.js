@@ -5,20 +5,51 @@ const verifyToken = async (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token) {
-    return res.status(401).json({ error: "Unauthorized" });
+    return res.status(401).json({
+      error: "Unauthorized",
+    });
   }
 
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+
     const user = await User.findById(decodedToken.id);
+
     if (!user) {
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({
+        error: "Unauthorized",
+      });
+    }
+
+    const tokenSessionVersion = decodedToken.session_version ?? 0;
+
+    const currentSessionVersion = user.session_version ?? 0;
+
+    if (tokenSessionVersion !== currentSessionVersion) {
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      });
+
+      res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      });
+
+      return res.status(401).json({
+        error: "Session expired",
+      });
     }
 
     req.user = user;
+
     next();
   } catch (error) {
-    return res.status(401).json({ error: "Unauthorized" });
+    return res.status(401).json({
+      error: "Unauthorized",
+    });
   }
 };
 
@@ -97,10 +128,38 @@ const isAdmin = (req, res, next) => {
   }
   next();
 };
+const validateResetPassword = (req, res, next) => {
+  const { token, password, passwordConfirmation } = req.body;
+
+  if (!token || !password || !passwordConfirmation) {
+    return res.status(400).json({
+      error: "Missing required fields",
+    });
+  }
+
+  if (password !== passwordConfirmation) {
+    return res.status(400).json({
+      error: "Passwords do not match",
+    });
+  }
+
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      error:
+        "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.",
+    });
+  }
+
+  next();
+};
 
 module.exports = {
   verifyToken,
   validateRegister,
   validateLogin,
   isAdmin,
+  validateResetPassword,
 };

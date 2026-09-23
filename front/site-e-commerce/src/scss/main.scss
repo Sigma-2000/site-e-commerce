@@ -8,7 +8,8 @@
 @import 'components/update-adress';
 @import 'components/account-delete';
 @import 'components/modificate-artworks-products';
-
+@import 'components/forgot-password-form';
+@import 'components/reset-password-form';
 @import 'utils/mixins';
 
 @import 'layouts/footer';
@@ -30,4 +31,5 @@
 @import 'pages/cart-view';
 @import 'pages/payment';
 @import 'pages/legal';
-//in Sass 3.0.0 (in 2 years) @import will be delete for @use/@forward.
+@import 'pages/auth/forgot-password-view';
+@import 'pages/auth/reset-password-view'; //in Sass 3.0.0 (in 2 years) @import will be delete for @use/@forward.

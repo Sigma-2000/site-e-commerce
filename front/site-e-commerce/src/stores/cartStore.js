@@ -97,6 +97,7 @@ export const useCartStore = defineStore('cart', {
                 console.error(err);
             }
         },
+        /*
         async validateCart() {
             this.error = null;
             this.success = null;
@@ -116,10 +117,42 @@ export const useCartStore = defineStore('cart', {
             } catch (err) {
                 if (err.response?.status === 409) {
                     this.resetCart();
+                    this.error = 'errors.cart-expired';
                     return;
                 }
 
                 this.error = 'errors.cart-validation';
+                console.error(err.response?.data || err);
+            }
+        },*/ async validateCart() {
+            this.error = null;
+            this.success = null;
+
+            try {
+                const cartToken = this.getOrCreateCartToken();
+
+                const response = await axiosCaller.post('/cart/validate-cart', {
+                    cartToken,
+                    cart: this.cart,
+                });
+
+                this.cart = response.data.updatedCart;
+                this.totalPrice = response.data.total_price;
+
+                this.syncCartWithLocalStorage();
+
+                if (response.data.adjusted) {
+                    this.error = 'errors.cart-product-removed';
+                }
+            } catch (err) {
+                if (err.response?.status === 409 && err.response?.data?.code === 'CART_EXPIRED') {
+                    this.resetCart();
+                    this.error = 'errors.cart-expired';
+                    return;
+                }
+
+                this.error = 'errors.cart-validation';
+
                 console.error(err.response?.data || err);
             }
         },

@@ -30,7 +30,12 @@ const UserSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Address",
   },
+  session_version: {
+    type: Number,
+    default: 0,
+  },
 });
+
 UserSchema.virtual("orders", {
   ref: "Order",
   localField: "_id",
