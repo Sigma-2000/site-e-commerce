@@ -104,7 +104,9 @@
         "password-confirmation": "Les mots de passe ne correspondent pas.",
         "forgot-password": "Une erreur s'est produite lors de la demande de réinitialisation. Veuillez réessayer.",
         "invalid-reset-link": "Ce lien de réinitialisation est invalide ou a expiré.",
-        "cart-expired": "Votre panier a expiré. Les produits réservés ont été remis en stock."
+        "cart-expired": "Votre panier a expiré. Les produits réservés ont été remis en stock.",
+        "tracking-required": "Veuillez renseigner le numéro de suivi avant de passer la commande en expédiée.",
+        "shipping-email-failed": "La commande a bien été mise à jour, mais l'email d'expédition n'a pas pu être envoyé."
     },
     "success": {
         "update-address": "Votre adresse a été mise à jour avec succès",
@@ -133,7 +135,8 @@
         "out-of-stock": "rupture de stock",
         "validate-cart": "Valider mon panier",
         "validate-order": "Passer commande",
-        "payment": "Payer ma commande"
+        "payment": "Payer ma commande",
+        "save": "Enregistrer"
     },
     "detail": {
         "dimensions": "Dimensions",
@@ -225,7 +228,7 @@
         "shipped": "Expédiée",
         "delivered": "Livrée",
         "cancelled": "Annulée",
-        "paid": "Payer"
+        "paid": "Payée"
     },
     "order": {
         "amount": "Le montant s'éléve à",
@@ -235,7 +238,15 @@
         "delivery": "La commande doit étre livré au",
         "contact": "Son email de contact est ",
         "thanks": "Merci pour votre commande !",
-        "thanks-info": "Vous pouvez retrouver tout les détails concernant celle-ci sur votre compte."
+        "thanks-info": "Vous pouvez retrouver tout les détails concernant celle-ci sur votre compte.",
+        "delivery-method": "Mode de livraison",
+        "pickup-lyon": "Retrait à Lyon",
+        "colissimo-signature": "Colissimo avec signature",
+        "tracking-number": "Numéro de suivi",
+        "tracking-placeholder": "Numéro de suivi Colissimo",
+        "pickup-contact": "Contacter le client pour convenir des modalités du retrait.",
+        "delivered-at": "Livrée le",
+        "shipped-at": "Expédiée le"
     },
     "cart": {
         "title": "Votre panier",

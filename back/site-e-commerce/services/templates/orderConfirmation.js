@@ -142,38 +142,40 @@ const buildOrderConfirmationEmail = ({ order }) => {
   const deliveryHtml =
     order.shipping_method === "pickup_lyon"
       ? `
-        <p
-          style="
-            margin:8px 0 0;
-            font-size:14px;
-            line-height:1.6;
-          "
-        >
-          Retrait à Lyon.
-        </p>
-      `
+      <p
+        style="
+          margin:8px 0 0;
+          font-size:14px;
+          line-height:1.6;
+          color:#181818;
+        "
+      >
+        SIGMA.2000 vous contactera afin de convenir des modalités du retrait.
+      </p>
+    `
       : `
-        <p
-          style="
-            margin:8px 0 0;
-            font-size:14px;
-            line-height:1.6;
-          "
-        >
-          ${escapeHtml(customer.firstName)}
-          ${escapeHtml(customer.lastName)}
-          <br>
+      <p
+        style="
+          margin:8px 0 0;
+          font-size:14px;
+          line-height:1.6;
+          color:#555555;
+        "
+      >
+        ${escapeHtml(customer.firstName)}
+        ${escapeHtml(customer.lastName)}
+        <br>
 
-          ${escapeHtml(address.street)}
-          <br>
+        ${escapeHtml(address.street)}
+        <br>
 
-          ${escapeHtml(address.postal_code)}
-          ${escapeHtml(address.city)}
-          <br>
+        ${escapeHtml(address.postal_code)}
+        ${escapeHtml(address.city)}
+        <br>
 
-          ${escapeHtml(address.country)}
-        </p>
-      `;
+        ${escapeHtml(address.country)}
+      </p>
+    `;
 
   return `
     <!doctype html>

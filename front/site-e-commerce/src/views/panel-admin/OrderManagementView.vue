@@ -24,28 +24,51 @@
                             <p>
                                 {{ $t('account.status-order') }}
                                 <span v-if="editingOrderId === order.id">
-                                    <select
-                                        v-model="selectedStatus"
-                                        @change="updateStatus(order.id)"
-                                    >
+                                    <select v-model="selectedStatus">
                                         <option
-                                            v-for="status in validStatuses"
+                                            v-for="status in getStatusesForOrder(order)"
                                             :key="status"
                                             :value="status"
+                                            :disabled="status === 'paid'"
                                         >
                                             {{ $t(`order-status.${status}`) }}
                                         </option>
                                     </select>
+                                    <input
+                                        v-if="
+                                            selectedStatus === 'shipped' &&
+                                            order.shippingMethod === 'colissimo_signature'
+                                        "
+                                        v-model="selectedTrackingNumber"
+                                        type="text"
+                                        :placeholder="$t('order.tracking-placeholder')"
+                                    />
+
+                                    <ButtonComponent
+                                        @click="updateStatus(order)"
+                                        class="button-save"
+                                    >
+                                        {{ $t('button.save') }}
+                                    </ButtonComponent>
                                 </span>
                                 <span v-else>
-                                    <strong> {{ $t(`order-status.${order.status}`) }}</strong>
-                                </span>
-                                <Icon
+                                    <strong>
+                                        {{ $t(`order-status.${order.status}`) }}</strong
+                                    > </span
+                                ><Icon
                                     icon="fluent-mdl2:field-not-changed"
-                                    @click="toggleEdit(order.id, order.status)"
+                                    @click="toggleEdit(order)"
                                     width="20px"
                                     class="modify-icon"
                                 />
+                            </p>
+                            <p v-if="order.shippedAt">
+                                {{ $t('order.shipped-at') }} :
+                                <strong>{{ order.shippedAt }}</strong>
+                            </p>
+                            <p v-if="order.deliveredAt">
+                                {{ $t('order.delivered-at') }} :
+                                <strong>{{ order.deliveredAt }}</strong>
                             </p>
                             <p>
                                 {{ $t('order.amount') }} : <strong>{{ order.amount }} €</strong>
@@ -59,12 +82,40 @@
                             {{ $t('order.contact') }} <strong> {{ order.user.email }}</strong>
                         </p>
                         <p>
-                            {{ $t('order.delivery') }}
-                            <strong
-                                >{{ order.address.street }},
-                                {{ order.address.postalCode }}
-                                {{ order.address.city }}, {{ order.address.country }}
+                            {{ $t('order.delivery-method') }} :
+
+                            <strong v-if="order.shippingMethod === 'pickup_lyon'">
+                                {{ $t('order.pickup-lyon') }}
                             </strong>
+
+                            <strong v-else>
+                                {{ $t('order.colissimo-signature') }}
+                            </strong>
+                        </p>
+
+                        <p v-if="order.shippingMethod === 'colissimo_signature'">
+                            <strong>
+                                {{ order.address.street }},
+                                {{ order.address.postalCode }}
+                                {{ order.address.city }},
+                                {{ order.address.country }}
+                            </strong>
+                        </p>
+
+                        <p
+                            v-if="
+                                order.shippingMethod === 'colissimo_signature' &&
+                                order.trackingNumber
+                            "
+                        >
+                            {{ $t('order.tracking-number') }} :
+                            <strong>
+                                {{ order.trackingNumber }}
+                            </strong>
+                        </p>
+
+                        <p v-if="order.shippingMethod === 'pickup_lyon'">
+                            {{ $t('order.pickup-contact') }}
                         </p>
                     </div>
                     <div class="order-details-products">
@@ -96,7 +147,7 @@ import { formatDate } from '@/utils/helpers.js';
 import { Icon } from '@iconify/vue';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
 import SuccessComponent from '@/components/ui/SuccessComponent.vue';
-
+import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 const ordersStore = useOrdersStore();
 
 const orders = computed(() => ordersStore.orders);
@@ -117,6 +168,11 @@ const ordersWithUserAndAddress = computed(() =>
         status: order.status_order,
         amount: order.total_price,
         formattedDate: formatDate(order.order_date),
+        shippingMethod: order.shipping_method,
+        trackingNumber: order.tracking_number || '',
+        deliveredAt: order.delivered_at ? formatDate(order.delivered_at) : null,
+        shippedAt: order.shipped_at ? formatDate(order.shipped_at) : null,
+
         user: {
             firstName: order.user_id?.firstName || 'N/A',
             lastName: order.user_id?.lastName || 'N/A',
@@ -137,23 +193,61 @@ const ordersWithUserAndAddress = computed(() =>
     }))
 );
 
-const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
+//'cancelled']; v4
+const getStatusesForOrder = (order) => {
+    const statuses = ['pending', 'paid', 'shipped', 'delivered'];
 
+    if (order.shippingMethod === 'pickup_lyon') {
+        return statuses.filter((status) => status !== 'shipped');
+    }
+
+    return statuses;
+};
 const editingOrderId = ref(null);
 const selectedStatus = ref('');
+const selectedTrackingNumber = ref('');
 
-const toggleEdit = (orderId, currentStatus) => {
-    if (editingOrderId.value === orderId) {
+const toggleEdit = (order) => {
+    if (editingOrderId.value === order.id) {
         editingOrderId.value = null;
-    } else {
-        editingOrderId.value = orderId;
-        selectedStatus.value = currentStatus;
+        return;
     }
+
+    editingOrderId.value = order.id;
+    selectedStatus.value = order.status;
+
+    selectedTrackingNumber.value = order.trackingNumber || '';
 };
-const updateStatus = async (orderId) => {
-    await ordersStore.updateOrderStatus(orderId, selectedStatus.value);
+
+const updateStatus = async (order) => {
+    if (
+        selectedStatus.value === 'shipped' &&
+        order.shippingMethod === 'colissimo_signature' &&
+        !selectedTrackingNumber.value.trim()
+    ) {
+        ordersStore.setError('errors.tracking-required');
+
+        return;
+    }
+
+    const result = await ordersStore.updateOrderStatus(
+        order.id,
+        selectedStatus.value,
+        selectedTrackingNumber.value
+    );
+
+    if (!result) {
+        return;
+    }
+
     editingOrderId.value = null;
+    selectedTrackingNumber.value = '';
+
     await ordersStore.fetchAllOrders();
+
+    if (result.email_sent === false) {
+        ordersStore.setError('errors.shipping-email-failed');
+    }
 };
 
 onMounted(() => {

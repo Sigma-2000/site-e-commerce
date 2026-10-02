@@ -66,7 +66,7 @@
         justify-content: center;
         margin-bottom: 20px;
         a {
-            color: inherit;
+            color: var(--color-text);
             font-size: $font-size-small;
         }
     }
