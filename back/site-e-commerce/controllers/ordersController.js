@@ -188,31 +188,6 @@ const deleteOrderById = async (req, res) => {
     });
   }
 };
-/*
-const updateStatusOrderById = async (req, res) => {
-  const { id } = req.params;
-  const { status_order } = req.body;
-
-  try {
-    const order = await Order.findById(id);
-
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
-    }
-
-    const validStatuses = ["pending", "shipped", "delivered", "cancelled"];
-    if (!validStatuses.includes(status_order)) {
-      return res.status(400).json({ error: "Invalid status provided" });
-    }
-
-    order.status_order = status_order;
-    await order.save();
-
-    res.status(200).json({ message: "Order status updated", order });
-  } catch (error) {
-    res.status(500).json({ error: "Error updating order status" });
-  }
-};*/
 const updateStatusOrderById = async (req, res) => {
   const { id } = req.params;
 

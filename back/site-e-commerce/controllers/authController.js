@@ -23,21 +23,7 @@ const registerUser = async (req, res) => {
       country: address.country,
       phone: address.phone,
     });
-    /*
-    const user = await User.create({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-      address_id: newAddress._id,
-    });
-    return res.status(201).json({
-      id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      role: user.role,
-    });*/
+
     const user = await User.create({
       firstName,
       lastName,

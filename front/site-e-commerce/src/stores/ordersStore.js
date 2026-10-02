@@ -30,24 +30,7 @@ export const useOrdersStore = defineStore('orders', {
             } catch (err) {
                 console.error(err);
             }
-        } /*
-        async updateOrderStatus(orderId, status) {
-            this.error = null;
-            this.success = null;
-            try {
-                const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
-                if (!validStatuses.includes(status)) {
-                    this.error = 'errors.invalid-status';
-                    return;
-                }
-                await axiosCaller.put(`/order/${orderId}`, {
-                    status_order: status,
-                });
-            } catch (err) {
-                this.error = 'errors.update-status';
-                console.error(err);
-            }
-        },*/,
+        },
         async updateOrderStatus(orderId, status, trackingNumber = null) {
             this.error = null;
             this.success = null;
