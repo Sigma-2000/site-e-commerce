@@ -39,10 +39,6 @@ const OrderSchema = new Schema({
     required: true,
     default: 0,
   },
-  total_price: {
-    type: Number,
-    required: true,
-  },
   order_date: {
     type: Date,
     default: Date.now,
@@ -52,6 +48,22 @@ const OrderSchema = new Schema({
     enum: ["pending", "paid", "shipped", "delivered", "cancelled"],
     required: true,
     default: "pending",
+  },
+  tracking_number: {
+    type: String,
+    default: null,
+  },
+  shipped_at: {
+    type: Date,
+    default: null,
+  },
+  delivered_at: {
+    type: Date,
+    default: null,
+  },
+  total_price: {
+    type: Number,
+    required: true,
   },
   payment_id: {
     type: mongoose.Schema.Types.ObjectId,

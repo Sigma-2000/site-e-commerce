@@ -30,7 +30,7 @@ export const useOrdersStore = defineStore('orders', {
             } catch (err) {
                 console.error(err);
             }
-        },
+        } /*
         async updateOrderStatus(orderId, status) {
             this.error = null;
             this.success = null;
@@ -46,6 +46,39 @@ export const useOrdersStore = defineStore('orders', {
             } catch (err) {
                 this.error = 'errors.update-status';
                 console.error(err);
+            }
+        },*/,
+        async updateOrderStatus(orderId, status, trackingNumber = null) {
+            this.error = null;
+            this.success = null;
+
+            try {
+                const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
+
+                if (!validStatuses.includes(status)) {
+                    this.error = 'errors.invalid-status';
+                    return null;
+                }
+
+                const payload = {
+                    status_order: status,
+                };
+
+                if (status === 'shipped') {
+                    payload.tracking_number = trackingNumber?.trim() || '';
+                }
+
+                const response = await axiosCaller.put(`/order/${orderId}`, payload);
+
+                this.success = 'success.update-status';
+
+                return response.data;
+            } catch (err) {
+                this.error = 'errors.update-status';
+
+                console.error(err.response?.data || err);
+
+                return null;
             }
         },
         setFilterType(type) {
