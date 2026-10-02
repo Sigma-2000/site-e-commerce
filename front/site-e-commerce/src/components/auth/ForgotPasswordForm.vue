@@ -2,7 +2,7 @@
     <div class="forgot-password-form-view">
         <ErrorComponent v-if="emailError" :error="emailError" />
         <ErrorComponent v-if="requestError" :error="requestError" />
-        <SuccessComponent v-if="success" :success="success" />
+        <SuccessComponent v-if="success" :success="success" class="forgot-password-success" />
 
         <form v-else @submit.prevent="handleSubmit" class="forgot-password-form">
             <input

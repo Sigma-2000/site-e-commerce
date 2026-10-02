@@ -83,8 +83,17 @@
                     border: 1px solid var(--color-border);
                     border-radius: 4px;
                     padding: 12px 20px;
+                    margin: 4px 2px 4px 0px;
                     @include respond-to('tablet') {
+                        margin: 0px 0px 0px 8px;
                         width: 30%;
+                    }
+                }
+                .button-save {
+                    margin: 4px 2px 4px 0px;
+                    @include respond-to('tablet') {
+                        width: 15%;
+                        margin: 0px 0px 0px 8px;
                     }
                 }
                 .modify-icon {

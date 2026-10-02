@@ -2,6 +2,8 @@ const User = require("../models/User");
 const Address = require("../models/Address");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { sendEmail } = require("../services/emailService");
+const { buildWelcomeEmail } = require("../services/templates/welcomeEmail");
 
 const registerUser = async (req, res) => {
   const { firstName, lastName, email, password, address } = req.body;
@@ -29,6 +31,22 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       address_id: newAddress._id,
     });
+
+    try {
+      const html = buildWelcomeEmail({
+        user,
+      });
+
+      await sendEmail({
+        to: user.email,
+        subject: "Bienvenue chez SIGMA.2000",
+        html,
+        idempotencyKey: `welcome:${user._id}`,
+      });
+    } catch (emailError) {
+      console.error("Welcome email error:", emailError);
+    }
+
     return res.status(201).json({
       id: user._id,
       firstName: user.firstName,
@@ -37,9 +55,7 @@ const registerUser = async (req, res) => {
       role: user.role,
     });
   } catch (error) {
-    {
-      res.status(500).json({ error: "User creation failed" });
-    }
+    res.status(500).json({ error: "User creation failed" });
   }
 };
 

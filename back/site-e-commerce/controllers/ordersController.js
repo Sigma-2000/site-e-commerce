@@ -9,6 +9,12 @@ const {
 } = require("../utils/productReservation");
 const { calculateTotalPrice } = require("../utils/cart");
 
+const { sendEmail } = require("../services/emailService");
+
+const {
+  buildOrderShippedEmail,
+} = require("../services/templates/orderShippedEmail");
+
 /**
  * Create a new order, verify product stock, remove the ordered quantity in oldest reservation and then stock if it's needed
  * Calculate the total price.
@@ -182,29 +188,109 @@ const deleteOrderById = async (req, res) => {
     });
   }
 };
-
 const updateStatusOrderById = async (req, res) => {
   const { id } = req.params;
-  const { status_order } = req.body;
+
+  const { status_order, tracking_number } = req.body;
 
   try {
     const order = await Order.findById(id);
 
     if (!order) {
-      return res.status(404).json({ error: "Order not found" });
+      return res.status(404).json({
+        error: "Order not found",
+      });
     }
 
     const validStatuses = ["pending", "shipped", "delivered", "cancelled"];
+
     if (!validStatuses.includes(status_order)) {
-      return res.status(400).json({ error: "Invalid status provided" });
+      return res.status(400).json({
+        error: "Invalid status provided",
+      });
     }
 
+    // Une commande en retrait n'est pas expédiée.
+    if (order.shipping_method === "pickup_lyon" && status_order === "shipped") {
+      return res.status(400).json({
+        error: "Pickup orders cannot be marked as shipped",
+      });
+    }
+
+    const normalizedTrackingNumber = tracking_number?.trim() || "";
+
+    // Le numéro est obligatoire au moment où
+    // un Colissimo passe en "shipped".
+    if (
+      status_order === "shipped" &&
+      order.shipping_method === "colissimo_signature" &&
+      !normalizedTrackingNumber
+    ) {
+      return res.status(400).json({
+        error: "Tracking number required",
+      });
+    }
+
+    const shouldSendShippingEmail =
+      order.status_order !== "shipped" &&
+      status_order === "shipped" &&
+      order.shipping_method === "colissimo_signature" &&
+      !order.shipped_at;
+
     order.status_order = status_order;
+
+    if (
+      status_order === "shipped" &&
+      order.shipping_method === "colissimo_signature"
+    ) {
+      order.tracking_number = normalizedTrackingNumber;
+
+      if (!order.shipped_at) {
+        order.shipped_at = new Date();
+      }
+    }
+
+    if (status_order === "delivered" && !order.delivered_at) {
+      order.delivered_at = new Date();
+    }
+
     await order.save();
 
-    res.status(200).json({ message: "Order status updated", order });
+    let emailSent = null;
+
+    if (shouldSendShippingEmail) {
+      try {
+        await order.populate("user_id");
+
+        const html = buildOrderShippedEmail({
+          order,
+        });
+
+        await sendEmail({
+          to: order.user_id.email,
+          subject: "Votre commande SIGMA.2000 a été expédiée",
+          html,
+        });
+
+        emailSent = true;
+      } catch (emailError) {
+        emailSent = false;
+
+        console.error("Order shipped email error:", emailError);
+      }
+    }
+
+    return res.status(200).json({
+      message: "Order status updated",
+      order,
+      email_sent: emailSent,
+    });
   } catch (error) {
-    res.status(500).json({ error: "Error updating order status" });
+    console.error("updateStatusOrderById error:", error);
+
+    return res.status(500).json({
+      error: "Error updating order status",
+    });
   }
 };
 

@@ -6,7 +6,7 @@
 
         <ErrorComponent v-if="resetError" :error="resetError" />
 
-        <SuccessComponent v-if="success" :success="success" />
+        <SuccessComponent v-if="success" :success="success" class="reset-password-success" />
         <form v-else @submit.prevent="handleSubmit" class="reset-password-form">
             <div class="password-input-wrapper">
                 <input

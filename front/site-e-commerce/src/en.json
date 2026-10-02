@@ -103,7 +103,9 @@
         "no-shipping-method": "Please choose a delivery method.",
         "password-confirmation": "The passwords do not match.",
         "invalid-reset-link": "This password reset link is invalid or has expired.",
-        "forgot-password": "An error occurred while requesting a password reset. Please try again."
+        "forgot-password": "An error occurred while requesting a password reset. Please try again.",
+        "tracking-required": "Please enter the tracking number before marking the order as shipped.",
+        "shipping-email-failed": "The order was updated, but the shipping email could not be sent."
     },
     "success": {
         "update-address": "Your adress was updating successfully",
@@ -133,7 +135,8 @@
         "out-of-stock": "out of stock",
         "validate-cart": "Validate my cart",
         "validate-order": "Proceed to order",
-        "payment": "Pay my order"
+        "payment": "Pay my order",
+        "save": "Save"
     },
     "detail": {
         "dimensions": "Dimensions",
@@ -235,7 +238,15 @@
         "delivery": "The order is to be delivered to",
         "contact": "The contact email is",
         "thanks": "Thanks for you order !",
-        "thanks-info": "You can consult all the details about it in your account."
+        "thanks-info": "You can consult all the details about it in your account.",
+        "delivery-method": "Delivery method",
+        "pickup-lyon": "Pickup in Lyon",
+        "colissimo-signature": "Colissimo with signature",
+        "tracking-number": "Tracking number",
+        "tracking-placeholder": "Colissimo tracking number",
+        "pickup-contact": "Contact the customer to arrange the pickup.",
+        "delivered-at": "Delivered on",
+        "shipped-at": "Shipped on"
     },
     "cart": {
         "title": "Your cart",

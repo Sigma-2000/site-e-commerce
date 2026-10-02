@@ -32,6 +32,23 @@
                             {{ $t('account.status-order') }}
                             <strong>{{ $t(`order-status.${order.status}`) }}</strong>
                         </p>
+                        <p v-if="order.shippedAt">
+                            {{ $t('order.shipped-at') }} :
+                            <strong>{{ order.shippedAt }}</strong>
+                        </p>
+                        <p
+                            v-if="
+                                order.shippingMethod === 'colissimo_signature' &&
+                                order.trackingNumber
+                            "
+                        >
+                            {{ $t('order.tracking-number') }} :
+                            <strong>{{ order.trackingNumber }}</strong>
+                        </p>
+                        <p v-if="order.deliveredAt">
+                            {{ $t('order.delivered-at') }} :
+                            <strong>{{ order.deliveredAt }}</strong>
+                        </p>
                         <p>
                             {{ $t('order.amount') }} <strong>{{ order.amount }} €</strong>
                         </p>
@@ -85,6 +102,10 @@ const ordersWithImagesAndStatus = computed(() =>
         status: order.status_order,
         amount: order.total_price,
         formattedDate: formatDate(order.order_date),
+        shippingMethod: order.shipping_method,
+        trackingNumber: order.tracking_number || null,
+        shippedAt: order.shipped_at ? formatDate(order.shipped_at) : null,
+        deliveredAt: order.delivered_at ? formatDate(order.delivered_at) : null,
         products: order.products.map((product) => ({
             id: product.id?._id || 'unknown',
             image: product.id?.artwork_id?.images[4] || 'unknown',
