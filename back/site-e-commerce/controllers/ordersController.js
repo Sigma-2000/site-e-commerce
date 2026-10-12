@@ -3,6 +3,11 @@ const Order = require("../models/Order");
 const Product = require("../models/Product");
 const Payment = require("../models/Payment");
 const Cart = require("../models/Cart");
+const Stripe = require("stripe");
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const {
+  cancelOrderAndRestoreStock,
+} = require("../services/orderCancellationService");
 
 const {
   cleanExpiredReservationsForProduct,
@@ -202,7 +207,13 @@ const updateStatusOrderById = async (req, res) => {
       });
     }
 
-    const validStatuses = ["pending", "shipped", "delivered", "cancelled"];
+    if (order.status_order === "cancelled") {
+      return res.status(409).json({
+        error: "Cancelled orders cannot be updated",
+      });
+    }
+
+    const validStatuses = ["pending", "shipped", "delivered"];
 
     if (!validStatuses.includes(status_order)) {
       return res.status(400).json({
@@ -293,7 +304,7 @@ const updateStatusOrderById = async (req, res) => {
     });
   }
 };
-
+/*
 const cancelOrder = async (req, res) => {
   const { order_id } = req.body;
   try {
@@ -305,6 +316,26 @@ const cancelOrder = async (req, res) => {
 
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
+    }
+    if (order.status_order === "cancelled") {
+      return res.status(200).json({
+        message: "Order already cancelled",
+      });
+    }
+    if (
+      order.status_order === "shipped" ||
+      order.status_order === "delivered"
+    ) {
+      return res.status(400).json({
+        error: "Shipped or delivered orders cannot be cancelled",
+      });
+    }
+    // Temporaire :
+    // sera remplacé par le remboursement Stripe.
+    if (order.status_order === "paid") {
+      return res.status(409).json({
+        error: "Paid order requires a refund before cancellation",
+      });
     }
 
     for (const item of order.products) {
@@ -333,6 +364,196 @@ const cancelOrder = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Failed to cancel order" });
   }
+};*/
+const cancelOrder = async (req, res) => {
+  const { order_id } = req.body;
+
+  try {
+    if (!order_id) {
+      return res.status(400).json({
+        error: "Missing order_id",
+      });
+    }
+
+    const result = await cancelOrderAndRestoreStock({
+      orderId: order_id,
+
+      // Cette route concerne uniquement
+      // un checkout qui n'a pas été payé.
+      allowedStatuses: ["pending"],
+
+      // L'utilisateur ne peut annuler
+      // que sa propre commande.
+      userId: req.user.id,
+
+      paymentUpdate: {
+        payment_status: "cancelled",
+      },
+    });
+
+    if (result.alreadyCancelled) {
+      return res.status(200).json({
+        message: "Order already cancelled",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Order successfully cancelled. Stock restored.",
+    });
+  } catch (error) {
+    console.error("cancelOrder error:", error);
+
+    return res.status(error.statusCode || 500).json({
+      error: error.message || "Failed to cancel order",
+    });
+  }
+};
+const refundAndCancelOrderByAdmin = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const order = await Order.findById(id);
+
+    if (!order) {
+      return res.status(404).json({
+        error: "Order not found",
+      });
+    }
+
+    /*
+     * Déjà annulée :
+     * surtout ne pas rembourser/restocker deux fois.
+     */
+    if (order.status_order === "cancelled") {
+      return res.status(200).json({
+        message: "Order already cancelled",
+      });
+    }
+
+    /*
+     * Une commande expédiée/livrée n'est plus
+     * une simple annulation.
+     * Ce serait un retour/remboursement V4.
+     */
+    if (
+      order.status_order === "shipped" ||
+      order.status_order === "delivered"
+    ) {
+      return res.status(409).json({
+        error: "Shipped or delivered orders cannot be cancelled",
+      });
+    }
+
+    /*
+     * Cette route admin est exclusivement
+     * destinée aux commandes réellement payées.
+     */
+    if (order.status_order !== "paid") {
+      return res.status(409).json({
+        error: "Only paid orders can be refunded",
+      });
+    }
+
+    if (!order.payment_id) {
+      return res.status(404).json({
+        error: "Payment not found",
+      });
+    }
+
+    const payment = await Payment.findById(order.payment_id);
+
+    if (!payment) {
+      return res.status(404).json({
+        error: "Payment not found",
+      });
+    }
+
+    if (!payment.payment_intent_id) {
+      return res.status(400).json({
+        error: "Missing Stripe PaymentIntent",
+      });
+    }
+
+    let refund;
+
+    /*
+     * Si un remboursement Stripe existe déjà,
+     * on récupère celui-ci au lieu d'en créer
+     * un autre.
+     */
+    if (payment.stripe_refund_id) {
+      refund = await stripe.refunds.retrieve(payment.stripe_refund_id);
+    } else {
+      refund = await stripe.refunds.create(
+        {
+          payment_intent: payment.payment_intent_id,
+
+          metadata: {
+            order_id: String(order._id),
+          },
+        },
+        {
+          idempotencyKey: `order-refund:${order._id}`,
+        },
+      );
+
+      /*
+       * On mémorise tout de suite le refund Stripe.
+       * Ainsi, si la suite échoue, le prochain essai
+       * retrouvera le même remboursement.
+       */
+      await Payment.findByIdAndUpdate(payment._id, {
+        stripe_refund_id: refund.id,
+        refund_status: refund.status,
+      });
+    }
+
+    /*
+     * Si Stripe n'a pas encore terminé
+     * le remboursement, on ne touche pas encore
+     * au stock ni à la commande.
+     */
+    if (refund.status !== "succeeded") {
+      await Payment.findByIdAndUpdate(payment._id, {
+        refund_status: refund.status,
+      });
+
+      return res.status(202).json({
+        message: "Refund is processing",
+        refund_status: refund.status,
+      });
+    }
+
+    /*
+     * Stripe a remboursé :
+     * maintenant seulement on annule la commande
+     * et on restaure le stock.
+     */
+    const cancellation = await cancelOrderAndRestoreStock({
+      orderId: order._id,
+
+      allowedStatuses: ["paid"],
+
+      paymentUpdate: {
+        payment_status: "refunded",
+        stripe_refund_id: refund.id,
+        refund_status: refund.status,
+        refunded_at: new Date(),
+      },
+    });
+
+    return res.status(200).json({
+      message: "Order successfully refunded and cancelled",
+      order: cancellation.order,
+      refund_id: refund.id,
+    });
+  } catch (error) {
+    console.error("refundAndCancelOrderByAdmin error:", error);
+
+    return res.status(error.statusCode || 500).json({
+      error: error.message || "Failed to refund and cancel order",
+    });
+  }
 };
 
 module.exports = {
@@ -343,4 +564,5 @@ module.exports = {
   updateStatusOrderById,
   //validateCart,
   cancelOrder,
+  refundAndCancelOrderByAdmin,
 };

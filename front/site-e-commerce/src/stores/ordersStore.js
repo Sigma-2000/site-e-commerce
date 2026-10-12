@@ -36,7 +36,7 @@ export const useOrdersStore = defineStore('orders', {
             this.success = null;
 
             try {
-                const validStatuses = ['pending', 'shipped', 'delivered', 'cancelled'];
+                const validStatuses = ['pending', 'shipped', 'delivered'];
 
                 if (!validStatuses.includes(status)) {
                     this.error = 'errors.invalid-status';
@@ -58,6 +58,24 @@ export const useOrdersStore = defineStore('orders', {
                 return response.data;
             } catch (err) {
                 this.error = 'errors.update-status';
+
+                console.error(err.response?.data || err);
+
+                return null;
+            }
+        },
+        async refundAndCancelOrder(orderId) {
+            this.error = null;
+            this.success = null;
+
+            try {
+                const response = await axiosCaller.post(`/admin/order/${orderId}/refund`);
+
+                this.success = 'success.order-refunded';
+
+                return response.data;
+            } catch (err) {
+                this.error = 'errors.order-refund';
 
                 console.error(err.response?.data || err);
 

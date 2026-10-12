@@ -4,6 +4,9 @@ const Payment = require("../models/Payment");
 const Order = require("../models/Order");
 const Cart = require("../models/Cart");
 const EmailJob = require("../models/EmailJob");
+const {
+  cancelOrderAndRestoreStock,
+} = require("../services/orderCancellationService");
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -28,6 +31,16 @@ const createCheckoutSession = async (req, res) => {
 
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
+    }
+    if (String(order.user_id) !== String(req.user.id)) {
+      return res.status(403).json({
+        error: "Forbidden",
+      });
+    }
+    if (order.status_order !== "pending") {
+      return res.status(409).json({
+        error: "Order is not available for payment",
+      });
     }
     const lineItems = order.products.map((item) => ({
       price_data: {
@@ -201,25 +214,20 @@ const stripeWebhook = async (req, res) => {
     if (event.type === "checkout.session.expired") {
       const session = event.data.object;
 
-      const payment = await Payment.findOneAndUpdate(
-        { stripe_checkout_session_id: session.id },
-        { payment_status: "expired" },
-        { new: true },
-      );
+      const payment = await Payment.findOne({
+        stripe_checkout_session_id: session.id,
+      });
 
       if (payment) {
-        const order = await Order.findByIdAndUpdate(
-          payment.order_id,
-          { status_order: "cancelled" },
-          { new: true },
-        );
+        await cancelOrderAndRestoreStock({
+          orderId: payment.order_id,
 
-        if (order?.cart_token) {
-          await Cart.findOneAndUpdate(
-            { token: order.cart_token },
-            { status: "cancelled" },
-          );
-        }
+          allowedStatuses: ["pending"],
+
+          paymentUpdate: {
+            payment_status: "expired",
+          },
+        });
       }
     }
 

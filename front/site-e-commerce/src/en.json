@@ -105,7 +105,12 @@
         "invalid-reset-link": "This password reset link is invalid or has expired.",
         "forgot-password": "An error occurred while requesting a password reset. Please try again.",
         "tracking-required": "Please enter the tracking number before marking the order as shipped.",
-        "shipping-email-failed": "The order was updated, but the shipping email could not be sent."
+        "shipping-email-failed": "The order was updated, but the shipping email could not be sent.",
+        "order-refund": "An error occurred while cancelling and refunding the order.",
+        "order-cancel": "An error occurred while cancelling the order.",
+        "order-already-cancelled": "This order has already been cancelled.",
+        "order-cannot-cancel": "This order can no longer be cancelled.",
+        "order-refund-processing": "The refund is being processed."
     },
     "success": {
         "update-address": "Your adress was updating successfully",
@@ -123,7 +128,9 @@
         "payment-approved": "Payment succeed, we are redirect you",
         "forgot-password": "If an account matches this email address, a password reset email has been sent.",
         "reset-password": "Your password has been reset successfully. You will be redirected to the sign-in page.",
-        "cart-expired": "Your cart has expired. The reserved products have been returned to stock."
+        "cart-expired": "Your cart has expired. The reserved products have been returned to stock.",
+        "order-refunded": "The order has been successfully cancelled and refunded.",
+        "order-cancelled": "The order has been successfully cancelled."
     },
     "button": {
         "buy": "Add to cart",
@@ -136,7 +143,8 @@
         "validate-cart": "Validate my cart",
         "validate-order": "Proceed to order",
         "payment": "Pay my order",
-        "save": "Save"
+        "save": "Save",
+        "cancel-refund": "Cancel order"
     },
     "detail": {
         "dimensions": "Dimensions",
@@ -177,6 +185,7 @@
         "no-order": "You doesn't have a order.",
         "status-order": "Status of the order :",
         "cancelled-orders": "You have cancelled { cancelledCount } order(s).",
+        "order-cancellation-info": "To request the cancellation and refund of an order that has not yet been shipped, please contact us at {email}.",
         "address": "Your address",
         "delete-account": "Delete my account",
         "rgpd": "Your personal data is collected and processed to manage your account and orders. You have the right to access, rectify, and delete your data in accordance with the GDPR. For more information, please refer to our Privacy Policy."

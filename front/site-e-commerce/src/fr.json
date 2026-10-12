@@ -106,7 +106,12 @@
         "invalid-reset-link": "Ce lien de réinitialisation est invalide ou a expiré.",
         "cart-expired": "Votre panier a expiré. Les produits réservés ont été remis en stock.",
         "tracking-required": "Veuillez renseigner le numéro de suivi avant de passer la commande en expédiée.",
-        "shipping-email-failed": "La commande a bien été mise à jour, mais l'email d'expédition n'a pas pu être envoyé."
+        "shipping-email-failed": "La commande a bien été mise à jour, mais l'email d'expédition n'a pas pu être envoyé.",
+        "order-refund": "Une erreur s'est produite lors de l'annulation et du remboursement de la commande.",
+        "order-cancel": "Une erreur s'est produite lors de l'annulation de la commande.",
+        "order-already-cancelled": "Cette commande est déjà annulée.",
+        "order-cannot-cancel": "Cette commande ne peut plus être annulée.",
+        "order-refund-processing": "Le remboursement est en cours de traitement."
     },
     "success": {
         "update-address": "Votre adresse a été mise à jour avec succès",
@@ -123,7 +128,9 @@
         "payment": "Paiement validé",
         "payment-approved": "Paiement confirmé, vous allez étre redirigé",
         "forgot-password": "Si un compte correspond à cette adresse,un email de réinitialisation a été envoyé.",
-        "reset-password": "Votre mot de passe a été réinitialisé avec succès. Vous allez être redirigé vers la page de connexion."
+        "reset-password": "Votre mot de passe a été réinitialisé avec succès. Vous allez être redirigé vers la page de connexion.",
+        "order-refunded": "La commande a bien été annulée et remboursée.",
+        "order-cancelled": "La commande a bien été annulée."
     },
     "button": {
         "buy": "Ajouter au panier",
@@ -136,7 +143,8 @@
         "validate-cart": "Valider mon panier",
         "validate-order": "Passer commande",
         "payment": "Payer ma commande",
-        "save": "Enregistrer"
+        "save": "Enregistrer",
+        "cancel-refund": "Annuler la commande"
     },
     "detail": {
         "dimensions": "Dimensions",
@@ -177,6 +185,7 @@
         "no-order": "Vous n'avez pas encore de commande.",
         "status-order": "Statut de la commande :",
         "cancelled-orders": "Vous avez annulé { cancelledCount } commande(s).",
+        "order-cancellation-info": "Pour toute demande d’annulation et de remboursement d’une commande qui n’a pas encore été expédiée, contactez-nous à l’adresse {email}.",
         "address": "Votre adresse",
         "delete-account": "Supprimer mon compte",
         "rgpd": "Vos données personnelles sont collectées et traitées pour gérer votre compte et vos commandes. Vous disposez d’un droit d’accès, de rectification et de suppression de vos données conformément au RGPD. Pour plus d'informations, consultez notre Politique de confidentialité."
