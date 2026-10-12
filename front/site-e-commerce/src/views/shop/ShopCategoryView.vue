@@ -23,7 +23,7 @@
                         <div class="category-content-items">
                             <img
                                 v-if="product.artwork_id.images && product.artwork_id.images.length"
-                                :src="product.artwork_id.images[4]"
+                                :src="getOptimizedCloudinaryUrl(product.artwork_id.images[4], 800)"
                                 :alt="product.artwork_id.title[locale]"
                                 loading="lazy"
                             />
@@ -113,6 +113,7 @@ import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import { useLanguage } from '@/composables/useLanguage';
 import { useUsersStore } from '@/stores/usersStore';
 import { useCartStore } from '@/stores/cartStore';
+import { getOptimizedCloudinaryUrl } from '@/utils/cloudinary';
 
 const cartStore = useCartStore();
 const { t } = useI18n();

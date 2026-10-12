@@ -33,7 +33,15 @@ const PaymentSchema = new Schema(
     },
     payment_status: {
       type: String,
-      enum: ["pending", "completed", "failed", "paid", "cancelled", "expired"],
+      enum: [
+        "pending",
+        "completed",
+        "failed",
+        "paid",
+        "cancelled",
+        "expired",
+        "refunded",
+      ],
       required: true,
     },
     receipt_url: {
@@ -41,6 +49,20 @@ const PaymentSchema = new Schema(
     },
     paid_at: {
       type: Date,
+    },
+    stripe_refund_id: {
+      type: String,
+      default: null,
+    },
+
+    refund_status: {
+      type: String,
+      default: null,
+    },
+
+    refunded_at: {
+      type: Date,
+      default: null,
     },
   },
   { timestamps: true },

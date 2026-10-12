@@ -23,7 +23,11 @@
                             </p>
                             <p>
                                 {{ $t('account.status-order') }}
-                                <span v-if="editingOrderId === order.id">
+                                <span
+                                    v-if="
+                                        editingOrderId === order.id && order.status !== 'cancelled'
+                                    "
+                                >
                                     <select v-model="selectedStatus">
                                         <option
                                             v-for="status in getStatusesForOrder(order)"
@@ -56,6 +60,7 @@
                                         {{ $t(`order-status.${order.status}`) }}</strong
                                     > </span
                                 ><Icon
+                                    v-if="order.status !== 'cancelled'"
                                     icon="fluent-mdl2:field-not-changed"
                                     @click="toggleEdit(order)"
                                     width="20px"
@@ -131,6 +136,13 @@
                         </div>
                     </div>
                 </div>
+                <ButtonComponent
+                    v-if="order.status === 'paid'"
+                    @click="refundOrder(order)"
+                    class="button-cancel-refund"
+                >
+                    {{ $t('button.cancel-refund') }}
+                </ButtonComponent>
                 <div class="underline-center"></div>
             </div>
         </div>
@@ -158,7 +170,7 @@ const currentOrders = computed(() => {
     if (ordersStore.filterType === 'in-progress') {
         return orders.value.filter(
             (order) => order.status_order !== 'cancelled' && order.status_order !== 'delivered'
-        );
+        ); // à modifier du coup
     }
     return orders.value;
 });
@@ -249,7 +261,26 @@ const updateStatus = async (order) => {
         ordersStore.setError('errors.shipping-email-failed');
     }
 };
+const refundOrder = async (order) => {
+    const confirmed = window.confirm(
+        'Confirmer l’annulation et le remboursement de cette commande ?'
+    );
 
+    if (!confirmed) {
+        return;
+    }
+
+    const result = await ordersStore.refundAndCancelOrder(order.id);
+
+    if (!result) {
+        return;
+    }
+    editingOrderId.value = null;
+    selectedStatus.value = '';
+    selectedTrackingNumber.value = '';
+
+    await ordersStore.fetchAllOrders();
+};
 onMounted(() => {
     ordersStore.fetchAllOrders();
     ordersStore.resetErrorSuccess();

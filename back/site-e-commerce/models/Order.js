@@ -61,6 +61,10 @@ const OrderSchema = new Schema({
     type: Date,
     default: null,
   },
+  cancelled_at: {
+    type: Date,
+    default: null,
+  },
   total_price: {
     type: Number,
     required: true,
