@@ -21,7 +21,7 @@
                     ></video>
                     <img
                         v-else-if="artwork.images && artwork.images.length"
-                        :src="artwork.images[0]"
+                        :src="getOptimizedCloudinaryUrl(artwork.images[0], 1400)"
                         :alt="artwork.title[locale]"
                         loading="lazy"
                     />
@@ -53,7 +53,7 @@
                     <img
                         v-for="(image, index) in artwork.images.slice(1)"
                         :key="index"
-                        :src="image"
+                        :src="getOptimizedCloudinaryUrl(image, 1000)"
                         :alt="`${artwork.title} - ${index}`"
                         loading="lazy"
                         class="detail-image"
@@ -73,6 +73,7 @@ import { useI18n } from 'vue-i18n';
 import { useLanguage } from '@/composables/useLanguage';
 import { Icon } from '@iconify/vue';
 import { useArtworksStore } from '@/stores/artworksStore';
+import { getOptimizedCloudinaryUrl } from '@/utils/cloudinary';
 
 const { t } = useI18n();
 const { locale } = useLanguage();

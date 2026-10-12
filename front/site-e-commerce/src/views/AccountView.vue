@@ -16,6 +16,15 @@
                     ><strong>{{ validOrders.length }}</strong></template
                 >
             </i18n-t>
+            <i18n-t
+                keypath="account.order-cancellation-info"
+                tag="p"
+                class="order-cancellation-info"
+            >
+                <template #email>
+                    <a href="mailto:amelieguyot7@gmail.com"> amelieguyot7@gmail.com </a>
+                </template>
+            </i18n-t>
             <div v-for="order in ordersWithImagesAndStatus" :key="order.id">
                 <div class="order-historic-details">
                     <div class="product-details">

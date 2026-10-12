@@ -62,11 +62,13 @@
             @include underline(40%, 40%, null);
         }
     }
-
     .order-content {
-        display: flex;
-        flex-direction: column;
         margin: 20px 0px;
+        @include respond-to('tablet') {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
 
         .order-details-user {
             display: flex;
@@ -85,15 +87,15 @@
                     padding: 12px 20px;
                     margin: 4px 2px 4px 0px;
                     @include respond-to('tablet') {
-                        margin: 0px 0px 0px 8px;
-                        width: 30%;
+                        margin: 4px 0px 0px 8px;
+                        width: 40%;
                     }
                 }
                 .button-save {
                     margin: 4px 2px 4px 0px;
                     @include respond-to('tablet') {
-                        width: 15%;
-                        margin: 0px 0px 0px 8px;
+                        width: 30%;
+                        margin: 4px 0px 0px 8px;
                     }
                 }
                 .modify-icon {
@@ -103,20 +105,38 @@
             }
         }
         .order-details-products {
-            display: flex;
-            flex-direction: row;
+            display: block;
+            width: 90%;
+            object-fit: contain;
             margin: 10px 0px;
             @include respond-to('tablet') {
-                flex-direction: row;
+                display: flex;
+                flex-direction: row-reverse;
+                flex-wrap: wrap;
                 margin: 0px;
+            }
+            > div {
+                width: 160px;
             }
             img {
                 width: 40%;
+            }
 
-                @include respond-to('tablet') {
-                    width: 30%;
+            @include respond-to('tablet') {
+                gap: 20px;
+                > div {
+                    width: 250px;
+                }
+                img {
+                    width: 60%;
                 }
             }
+        }
+    }
+    .button-cancel-refund {
+        width: 100%;
+        @include respond-to('tablet') {
+            width: 30%;
         }
     }
 }

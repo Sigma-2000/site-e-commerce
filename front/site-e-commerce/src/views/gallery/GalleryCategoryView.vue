@@ -26,7 +26,7 @@
                         <div class="category-content-items">
                             <img
                                 v-if="artwork.images && artwork.images.length"
-                                :src="artwork.images[0]"
+                                :src="getOptimizedCloudinaryUrl(artwork.images[0], 800)"
                                 :alt="artwork.title[locale]"
                                 loading="lazy"
                             />
@@ -92,6 +92,7 @@ import { Icon } from '@iconify/vue';
 import { useArtworksStore } from '@/stores/artworksStore';
 import ButtonComponent from '@/components/ui/ButtonComponent.vue';
 import { useUsersStore } from '@/stores/usersStore';
+import { getOptimizedCloudinaryUrl } from '@/utils/cloudinary';
 
 const { t } = useI18n();
 const { locale } = useLanguage();

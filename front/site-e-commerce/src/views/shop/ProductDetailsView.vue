@@ -15,7 +15,7 @@
                 <div class="detail-card-main-image">
                     <img
                         v-if="product.artwork_id.images && product.artwork_id.images.length"
-                        :src="product.artwork_id.images[4]"
+                        :src="getOptimizedCloudinaryUrl(product.artwork_id.images[4], 1400)"
                         :alt="product.artwork_id.title[locale]"
                         loading="lazy"
                     />
@@ -55,7 +55,7 @@
                     <img
                         v-for="(image, index) in product.artwork_id.images.slice(0, -1)"
                         :key="index"
-                        :src="image"
+                        :src="getOptimizedCloudinaryUrl(image, 1000)"
                         :alt="`${product.artwork_id} - ${index}`"
                         loading="lazy"
                         class="detail-image"
@@ -78,6 +78,7 @@ import { useLanguage } from '@/composables/useLanguage';
 import { useProductsStore } from '@/stores/productsStore';
 import { useCartStore } from '@/stores/cartStore';
 import SuccessComponent from '@/components/ui/SuccessComponent.vue';
+import { getOptimizedCloudinaryUrl } from '@/utils/cloudinary';
 
 const productStore = useProductsStore();
 

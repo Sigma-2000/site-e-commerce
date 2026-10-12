@@ -176,6 +176,10 @@
             text-align: center;
             margin-bottom: 8px;
         }
+        .order-cancellation-info {
+            text-align: center;
+            margin-bottom: 10px;
+        }
 
         .order-historic-details {
             @include respond-to('tablet') {
