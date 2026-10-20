@@ -71,6 +71,7 @@ const createCheckoutSession = async (req, res) => {
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
+      payment_method_types: ["card"],
       line_items: lineItems,
 
       success_url: `${frontendUrl}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
@@ -122,6 +123,10 @@ const stripeWebhook = async (req, res) => {
   try {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
+
+      if (session.payment_status !== "paid") {
+        return res.json({ received: true });
+      }
 
       const payment = await Payment.findOneAndUpdate(
         { stripe_checkout_session_id: session.id },
