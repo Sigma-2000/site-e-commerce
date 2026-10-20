@@ -23,7 +23,8 @@
                         v-else-if="artwork.images && artwork.images.length"
                         :src="getOptimizedCloudinaryUrl(artwork.images[0], 1400)"
                         :alt="artwork.title[locale]"
-                        loading="lazy"
+                        loading="eager"
+                        fetchpriority="high"
                     />
                 </div>
                 <div class="item-details-card-text">

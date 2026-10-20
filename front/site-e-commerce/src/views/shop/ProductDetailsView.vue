@@ -57,7 +57,8 @@
                         :key="index"
                         :src="getOptimizedCloudinaryUrl(image, 1000)"
                         :alt="`${product.artwork_id} - ${index}`"
-                        loading="lazy"
+                        loading="eager"
+                        fetchpriority="high"
                         class="detail-image"
                     />
                 </div>
