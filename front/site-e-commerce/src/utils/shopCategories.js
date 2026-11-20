@@ -8,7 +8,7 @@ export const shopCategories = [
     {
         name: 'original',
         label: 'framing-original',
-        image: 'images/framing-original.jpg',
+        image: '/images/framing-original.jpg',
         shopImage: '/images/the-oath-of-the-geisha.jpg',
     },
 ];

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sigma2000.com/sitemap.xml
