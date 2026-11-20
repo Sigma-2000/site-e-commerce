@@ -4,7 +4,16 @@
         <h2>{{ $t('menu.about') }}</h2>
         <div class="logo-underline-long"></div>
         <div class="about-photo">
-            <img src="/images/sigma-2000-photo.jpg" alt="portrait of the artist" />
+            <img
+                src="/images/sigma-2000-photo-640.webp"
+                srcset="
+                    /images/sigma-2000-photo-320.webp 320w,
+                    /images/sigma-2000-photo-640.webp 640w
+                "
+                sizes="(max-width: 767px) 90vw, 50vw"
+                alt="Portrait de l'artiste Sigma2000"
+                decoding="async"
+            />
         </div>
         <div class="about-text">
             <p>{{ $t('homepage.presentation') }}</p>

@@ -4,7 +4,12 @@
         <h2>{{ $t('menu.account') }}</h2>
         <div class="underline-long"></div>
         <h3>{{ $t('auth.sign-up') }}</h3>
-        <img src="/images/minotaure.jpg" alt="minotaure painting" class="sign-up-img" />
+        <img
+            src="/images/minotaure-optimized.webp"
+            alt="Minotaure, peinture de Sigma2000"
+            class="sign-up-img"
+            decoding="async"
+        />
         <ErrorComponent v-if="error" :error="error" />
         <ErrorComponent v-if="emailError" :error="emailError" />
         <ErrorComponent v-if="passwordError" :error="passwordError" />

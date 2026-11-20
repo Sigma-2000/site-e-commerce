@@ -11,7 +11,12 @@
         <div class="underline-long"></div>
 
         <h3>{{ $t('auth.forgot-password') }}</h3>
-        <img src="/images/serenade.jpg" alt="sérénade painting" class="forgot-img" />
+        <img
+            src="/images/serenade-optimized.webp"
+            alt="Sérénade, peinture de Sigma2000"
+            class="forgot-img"
+            decoding="async"
+        />
 
         <ForgotPasswordForm />
     </div>

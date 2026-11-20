@@ -9,7 +9,12 @@
         <div class="underline-long"></div>
 
         <h3>{{ $t('auth.reset-password') }}</h3>
-        <img src="/images/daragon.jpg" alt="daragon painting" class="reset-img" />
+        <img
+            src="/images/daragon-optimized.webp"
+            alt="Daragon, peinture de Sigma2000"
+            class="reset-img"
+            decoding="async"
+        />
         <ResetPasswordForm />
     </div>
 </template>
