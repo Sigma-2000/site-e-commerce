@@ -11,7 +11,7 @@
             <section class="category-content-list">
                 <ul v-if="productsPaginatedList.length && !isLoadingFromAPi">
                     <li
-                        v-for="product in productsPaginatedList"
+                        v-for="(product, index) in productsPaginatedList"
                         :key="product._id"
                         class="category-items"
                     >
@@ -21,12 +21,43 @@
                         />
                         <h3>{{ product.artwork_id.title[locale] }}</h3>
                         <div class="category-content-items">
-                            <img
+                            <!--<img
                                 v-if="product.artwork_id.images && product.artwork_id.images.length"
                                 :src="getOptimizedCloudinaryUrl(product.artwork_id.images[4], 800)"
                                 :alt="product.artwork_id.title[locale]"
                                 loading="lazy"
+                            />-->
+                            <img
+                                v-if="product.artwork_id?.images?.length"
+                                :src="
+                                    getOptimizedCloudinaryUrl(
+                                        product.artwork_id.images[4] ??
+                                            product.artwork_id.images[0],
+                                        800
+                                    )
+                                "
+                                :srcset="
+                                    [400, 800, 1200]
+                                        .map(
+                                            (width) =>
+                                                `${getOptimizedCloudinaryUrl(
+                                                    product.artwork_id.images[4] ??
+                                                        product.artwork_id.images[0],
+                                                    width
+                                                )} ${width}w`
+                                        )
+                                        .join(', ')
+                                "
+                                sizes="(min-width: 768px) 50vw, 100vw"
+                                :alt="product.artwork_id.title[locale]"
+                                :loading="index === 0 ? 'eager' : 'lazy'"
+                                :fetchpriority="index === 0 ? 'high' : 'auto'"
+                                decoding="async"
+                                width="800"
+                                height="800"
+                                class="category-artwork-image"
                             />
+
                             <div class="category-content-items-more-details">
                                 <p>
                                     <strong>
@@ -101,7 +132,7 @@
 </template>
 
 <script setup>
-import { onMounted, computed, watch, ref } from 'vue';
+import { computed, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useProductsStore } from '@/stores/productsStore';
 import { useI18n } from 'vue-i18n';
@@ -155,7 +186,7 @@ const addProductToCart = (product) => {
             id: product._id,
             title: product.artwork_id.title,
             price: product.price,
-            image: product.artwork_id.images?.[4],
+            image: product.artwork_id.images?.[4] ?? product.artwork_id.images?.[0] ?? null,
             stock: product.stock,
             type: category,
         };
@@ -175,11 +206,17 @@ watch(
         }
     }
 );
+watch(
+    category,
+    async (newCategory) => {
+        if (!newCategory) return;
 
-onMounted(async () => {
-    productStore.resetPagination(); //maybe no need because it's fetching the data at mounting and the store display pagination
-    productStore.resetErrorSuccess();
-    cartStore.resetErrorSuccess();
-    await productStore.fetchProducts(category.value);
-});
+        productStore.resetPagination();
+        productStore.resetErrorSuccess();
+        cartStore.resetErrorSuccess();
+
+        await productStore.fetchProducts(newCategory);
+    },
+    { immediate: true }
+);
 </script>

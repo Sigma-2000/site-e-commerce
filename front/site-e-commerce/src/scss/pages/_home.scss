@@ -3,12 +3,21 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        /*
 
         .home-banner-img {
             //display: block;
             width: 95%;
             object-fit: cover;
             max-height: 400px;
+        }*/
+        .home-banner-img {
+            display: block;
+            width: 95%;
+            height: auto;
+            max-height: 400px;
+            aspect-ratio: 2044 / 948;
+            object-fit: cover;
         }
     }
     .home-presentation {

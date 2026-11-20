@@ -23,7 +23,14 @@
                         <router-link
                             :to="{ name: 'shop-category', params: { category: category.name } }"
                         >
-                            <img :src="category.shopImage" :alt="category.label" />
+                            <img
+                                :src="getStaticImage(category.shopImage, 640)"
+                                :srcset="getStaticImageSrcset(category.shopImage)"
+                                sizes="(max-width: 767px) 90vw, 50vw"
+                                :alt="category.label"
+                                loading="lazy"
+                                decoding="async"
+                            />
                         </router-link>
                     </div>
                     <div class="underline-ultra-long"></div>
@@ -38,6 +45,7 @@ import { useI18n } from 'vue-i18n';
 import { shopCategories } from '@/utils/shopCategories';
 import { computed } from 'vue';
 import { useUsersStore } from '@/stores/usersStore';
+import { getStaticImage, getStaticImageSrcset } from '@/utils/staticImages';
 
 const userStore = useUsersStore();
 const { t } = useI18n();

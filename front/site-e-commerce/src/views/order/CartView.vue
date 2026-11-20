@@ -18,7 +18,7 @@
             <div class="account-underline-center"></div>
             <ul class="cart-product-list">
                 <li v-for="item in cartItems" :key="item.id" class="cart-product-details">
-                    <img :src="item.image" :alt="item.title" />
+                    <img :src="item.image" :alt="item.title" loading="lazy" decoding="async" />
                     <div class="cart-text">
                         <h4>{{ item.title[locale] }}</h4>
                         <p class="cart-text-price">

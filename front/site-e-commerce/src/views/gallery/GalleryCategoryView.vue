@@ -11,7 +11,7 @@
             <section class="category-content-list">
                 <ul v-if="artworksPaginatedList.length && !isLoading">
                     <li
-                        v-for="artwork in artworksPaginatedList"
+                        v-for="(artwork, index) in artworksPaginatedList"
                         :key="artwork._id"
                         class="category-items"
                     >
@@ -27,8 +27,18 @@
                             <img
                                 v-if="artwork.images && artwork.images.length"
                                 :src="getOptimizedCloudinaryUrl(artwork.images[0], 800)"
+                                :srcset="`
+        ${getOptimizedCloudinaryUrl(artwork.images[0], 400)} 400w,
+        ${getOptimizedCloudinaryUrl(artwork.images[0], 800)} 800w,
+        ${getOptimizedCloudinaryUrl(artwork.images[0], 1200)} 1200w
+    `"
+                                sizes="(min-width: 768px) 50vw, 100vw"
                                 :alt="artwork.title[locale]"
-                                loading="lazy"
+                                :loading="index === 0 ? 'eager' : 'lazy'"
+                                :fetchpriority="index === 0 ? 'high' : 'auto'"
+                                decoding="async"
+                                width="800"
+                                height="800"
                             />
                             <div class="category-content-items-more-details">
                                 <p>{{ artwork.techniques[locale] }}</p>
@@ -81,7 +91,7 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue';
+import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import LoaderComponent from '@/components/ui/LoaderComponent.vue';
 import ErrorComponent from '@/components/ui/ErrorComponent.vue';
@@ -120,10 +130,16 @@ const hasMoreResults = computed(() => {
 const loadMoreResults = () => {
     artworkStore.loadMore(category.value);
 };
+watch(
+    category,
+    async (newCategory) => {
+        if (!newCategory) return;
 
-onMounted(async () => {
-    artworkStore.resetPagination();
-    await artworkStore.fetchArtworks(category.value);
-    artworkStore.resetErrorSuccess();
-});
+        artworkStore.resetPagination();
+        artworkStore.resetErrorSuccess();
+
+        await artworkStore.fetchArtworks(newCategory);
+    },
+    { immediate: true }
+);
 </script>
