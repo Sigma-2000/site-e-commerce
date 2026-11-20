@@ -18,7 +18,7 @@
             </div>
         </RouterLink>
         <div class="content-top-menu-icon">
-            <RouterLink to="/cart" class="cart-container">
+            <RouterLink to="/cart" class="cart-container" :aria-label="menu - cart">
                 <Icon icon="ph:shopping-cart-thin" width="24" class="menu-cart-icon" />
                 <span v-if="cartItems.length" class="menu-cart-alert"
                     ><Icon icon="noto:red-circle" width="10" height="10"

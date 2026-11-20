@@ -23,7 +23,14 @@
                         <router-link
                             :to="{ name: 'gallery-category', params: { category: category.name } }"
                         >
-                            <img :src="category.galleryImage" :alt="category.label" />
+                            <img
+                                :src="getStaticImage(category.galleryImage, 640)"
+                                :srcset="getStaticImageSrcset(category.galleryImage)"
+                                sizes="(max-width: 767px) 90vw, 50vw"
+                                :alt="category.label"
+                                loading="lazy"
+                                decoding="async"
+                            />
                         </router-link>
                     </div>
                     <div class="underline-ultra-long"></div>
@@ -38,6 +45,7 @@ import { useI18n } from 'vue-i18n';
 import { galleryCategories } from '@/utils/galleryCategories';
 import { useUsersStore } from '@/stores/usersStore';
 import { computed } from 'vue';
+import { getStaticImage, getStaticImageSrcset } from '@/utils/staticImages';
 
 const userStore = useUsersStore();
 const isAdmin = computed(() => userStore.userInformation?.role === 'admin');
