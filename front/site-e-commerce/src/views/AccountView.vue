@@ -4,7 +4,12 @@
         <h2>{{ $t('menu.account') }}</h2>
         <div class="underline-long"></div>
         <h3>{{ $t('account.welcome') }} {{ firstName }}</h3>
-        <img src="/images/souffre-d-ete.jpg" alt="souffre d'été painting" class="img-account" />
+        <img
+            src="/images/souffre-d-ete-optimized.webp"
+            alt="Souffre d'été, peinture de Sigma2000"
+            class="img-account"
+            decoding="async"
+        />
         <div class="account-underline-center"></div>
         <p v-if="cartItems.length" class="cart-account">
             {{ $t('cart.purchase') }}
@@ -29,7 +34,11 @@
                 <div class="order-historic-details">
                     <div class="product-details">
                         <div v-for="product in order.products" :key="product.id">
-                            <img :src="product.image" alt="product image" class="order-image" />
+                            <img
+                                :src="getOptimizedCloudinaryUrl(product.image, 400)"
+                                alt="product image"
+                                class="order-image"
+                            />
                             <p>{{ $t('order.quantity') }} {{ product.quantity }}</p>
                         </div>
                     </div>
@@ -92,6 +101,7 @@ import { useUsersStore } from '@/stores/usersStore';
 import { useCartStore } from '@/stores/cartStore.js';
 import { onMounted, computed } from 'vue';
 import { formatDate } from '@/utils/helpers.js';
+import { getOptimizedCloudinaryUrl } from '@/utils/cloudinary';
 
 const usersStore = useUsersStore();
 const cartStore = useCartStore();
@@ -117,7 +127,7 @@ const ordersWithImagesAndStatus = computed(() =>
         deliveredAt: order.delivered_at ? formatDate(order.delivered_at) : null,
         products: order.products.map((product) => ({
             id: product.id?._id || 'unknown',
-            image: product.id?.artwork_id?.images[4] || 'unknown',
+            image: product.id?.artwork_id?.images?.[0] ?? null,
             quantity: product.quantity || 'unknown',
         })),
     }))

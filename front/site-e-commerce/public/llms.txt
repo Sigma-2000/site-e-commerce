@@ -1,0 +1,12 @@
+
+# Sigma2000
+
+Sigma2000 is an artist's website featuring original artworks, paintings, photography, digital art and an online art shop.
+
+## Main pages
+
+- [Homepage](https://sigma2000.com/)
+- [Art gallery](https://sigma2000.com/gallery)
+- [Online shop](https://sigma2000.com/shop)
+- [About the artist](https://sigma2000.com/about)
+- [Legal notices](https://sigma2000.com/legal-notice)

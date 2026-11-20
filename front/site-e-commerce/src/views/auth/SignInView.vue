@@ -4,7 +4,12 @@
         <h2>{{ $t('menu.account') }}</h2>
         <div class="underline-long"></div>
         <h3>{{ $t('auth.sign-in') }}</h3>
-        <img src="/images/serenade.jpg" alt="sérénade painting" class="sign-in-img" />
+        <img
+            src="/images/serenade-optimized.webp"
+            alt="Sérénade, peinture de Sigma2000"
+            class="sign-in-img"
+            decoding="async"
+        />
     </div>
     <LoginForm />
 </template>
