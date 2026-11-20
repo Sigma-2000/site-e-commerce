@@ -17,7 +17,12 @@
                 <router-link to="/cart">{{ $t('cart.connect-purchase') }}</router-link>
             </p>
         </div>
-        <img src="/images/souffre-d-ete.jpg" alt="souffre d'été painting" class="thank-you-img" />
+        <img
+            src="/images/souffre-d-ete-optimized.webp"
+            alt="Souffre d'été, peinture de Sigma2000"
+            class="thank-you-img"
+            decoding="async"
+        />
     </div>
 </template>
 <script setup>
