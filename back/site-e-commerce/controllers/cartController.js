@@ -1,5 +1,6 @@
 const Cart = require("../models/Cart");
 const Product = require("../models/Product");
+const mongoose = require("mongoose");
 const {
   cleanExpiredReservationsByProductId,
   cleanExpiredReservationsForProduct,
@@ -38,6 +39,18 @@ const addToCart = async (req, res) => {
   try {
     if (!productId || !cartToken) {
       return res.status(400).json({ error: "Missing productId or cartToken" });
+    }
+    if (!Number.isSafeInteger(quantity) || quantity <= 0) {
+      return res.status(400).json({
+        code: "INVALID_QUANTITY",
+        error: "Quantity must be a positive integer",
+      });
+    }
+    if (!mongoose.isObjectIdOrHexString(productId)) {
+      return res.status(400).json({
+        code: "INVALID_PRODUCT_ID",
+        error: "Invalid product ID",
+      });
     }
 
     await cleanExpiredReservationsByProductId(productId);
@@ -110,6 +123,18 @@ const removeFromCart = async (req, res) => {
   try {
     if (!productId || !cartToken || !quantity) {
       return res.status(400).json({ error: "Missing required fields" });
+    }
+    if (!Number.isSafeInteger(quantity) || quantity <= 0) {
+      return res.status(400).json({
+        code: "INVALID_QUANTITY",
+        error: "Quantity must be a positive integer",
+      });
+    }
+    if (!mongoose.isObjectIdOrHexString(productId)) {
+      return res.status(400).json({
+        code: "INVALID_PRODUCT_ID",
+        error: "Invalid product ID",
+      });
     }
 
     const cart = await Cart.findOne({ token: cartToken });
