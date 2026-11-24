@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+/*import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import { useUsersStore } from '@/stores/usersStore.js';
 
@@ -95,12 +95,6 @@ const router = createRouter({
             name: 'orders',
             component: () => import('../views/panel-admin/OrderManagementView.vue'),
         },
-        /*
-        {
-            path: '/payment',
-            name: 'payment',
-            component: () => import('../views/order/PaymentView.vue'),
-        },*/
         {
             path: '/payment/success',
             name: 'payment-success',
@@ -177,6 +171,189 @@ router.beforeEach(async (to, from, next) => {
     }
 
     next();
+});
+
+export default router;
+*/
+
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import { useUsersStore } from '@/stores/usersStore.js';
+
+const router = createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: HomeView,
+        },
+        {
+            path: '/about',
+            name: 'about',
+            component: () => import('../views/AboutView.vue'),
+        },
+        {
+            path: '/gallery',
+            name: 'gallery',
+            component: () => import('../views/gallery/GalleryView.vue'),
+        },
+        {
+            path: '/gallery/:category',
+            name: 'gallery-category',
+            component: () => import('../views/gallery/GalleryCategoryView.vue'),
+        },
+        {
+            path: '/gallery/:category/:id',
+            name: 'artwork-details',
+            component: () => import('../views/gallery/ArtworkDetailsView.vue'),
+        },
+        {
+            path: '/shop',
+            name: 'shop',
+            component: () => import('../views/shop/ShopView.vue'),
+        },
+        {
+            path: '/shop/:category',
+            name: 'shop-category',
+            component: () => import('../views/shop/ShopCategoryView.vue'),
+        },
+        {
+            path: '/shop/:category/:id',
+            name: 'product-details',
+            component: () => import('../views/shop/ProductDetailsView.vue'),
+        },
+        {
+            path: '/sign-in',
+            name: 'sign-in',
+            component: () => import('../views/auth/SignInView.vue'),
+        },
+        {
+            path: '/sign-up',
+            name: 'sign-up',
+            component: () => import('../views/auth/SignUpView.vue'),
+        },
+        {
+            path: '/thank-you',
+            name: 'thank-you',
+            component: () => import('../views/ThankYouView.vue'),
+        },
+        {
+            path: '/account',
+            name: 'account',
+            component: () => import('../views/AccountView.vue'),
+            meta: { requiresAuth: true },
+        },
+        {
+            path: '/panel-admin',
+            name: 'panel-admin',
+            component: () => import('../views/panel-admin/PanelAdminView.vue'),
+            meta: { requiresAuth: true, requiresAdmin: true },
+        },
+        {
+            path: '/cart',
+            name: 'cart',
+            component: () => import('../views/order/CartView.vue'),
+        },
+        {
+            path: '/shop/:category/edit/:id',
+            name: 'edit-product',
+            component: () => import('../views/panel-admin/EditProductView.vue'),
+            meta: { requiresAuth: true, requiresAdmin: true },
+        },
+        {
+            path: '/gallery/:category/edit/:id',
+            name: 'edit-artwork',
+            component: () => import('../views/panel-admin/EditArtworkView.vue'),
+            meta: { requiresAuth: true, requiresAdmin: true },
+        },
+        {
+            path: '/gallery/:category/add-product/:id',
+            name: 'add-product',
+            component: () => import('../views/panel-admin/AddProductView.vue'),
+            meta: { requiresAuth: true, requiresAdmin: true },
+        },
+        {
+            path: '/panel-admin/orders',
+            name: 'orders',
+            component: () => import('../views/panel-admin/OrderManagementView.vue'),
+            meta: { requiresAuth: true, requiresAdmin: true },
+        },
+        {
+            path: '/payment/success',
+            name: 'payment-success',
+            component: () => import('../views/order/PaymentView.vue'),
+        },
+        {
+            path: '/payment/cancel',
+            name: 'payment-cancel',
+            component: () => import('../views/order/PaymentView.vue'),
+        },
+        {
+            path: '/legal-notice',
+            name: 'legal-notice',
+            component: () => import('../views/legals-mention/LegalNoticeView.vue'),
+        },
+        {
+            path: '/terms',
+            name: 'terms',
+            component: () => import('../views/legals-mention/TermsView.vue'),
+        },
+        {
+            path: '/privacy',
+            name: 'privacy',
+            component: () => import('../views/legals-mention/PrivacyView.vue'),
+        },
+        {
+            path: '/forgot-password',
+            name: 'forgot-password',
+            component: () => import('../views/auth/ForgotPasswordView.vue'),
+        },
+        {
+            path: '/reset-password',
+            name: 'reset-password',
+            component: () => import('../views/auth/ResetPasswordView.vue'),
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'not-found',
+            component: () => import('../views/NotFoundView.vue'),
+        },
+    ],
+
+    scrollBehavior() {
+        return { top: 0 };
+    },
+});
+
+router.beforeEach(async (to) => {
+    // Public pages do not wait for authentication.
+    if (!to.meta.requiresAuth && !to.meta.requiresAdmin) {
+        return true;
+    }
+
+    const usersStore = useUsersStore();
+
+    try {
+        // Always verify on the server when entering a private route.
+        // Concurrent checks are shared by the store.
+        const authenticated = await usersStore.fetchUser();
+
+        if (!authenticated || !usersStore.userInformation) {
+            return { name: 'sign-in' };
+        }
+
+        if (to.meta.requiresAdmin && usersStore.userInformation.role !== 'admin') {
+            return { name: 'account' };
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Unable to verify session:', error);
+
+        // Fail closed: don't display the protected route.
+        return false;
+    }
 });
 
 export default router;
