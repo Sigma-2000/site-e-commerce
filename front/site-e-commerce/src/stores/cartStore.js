@@ -97,34 +97,7 @@ export const useCartStore = defineStore('cart', {
                 console.error(err);
             }
         },
-        /*
         async validateCart() {
-            this.error = null;
-            this.success = null;
-
-            try {
-                const cartToken = this.getOrCreateCartToken();
-
-                const response = await axiosCaller.post('/cart/validate-cart', {
-                    cartToken,
-                    cart: this.cart,
-                });
-
-                this.cart = response.data.updatedCart;
-                this.totalPrice = response.data.total_price;
-
-                this.syncCartWithLocalStorage();
-            } catch (err) {
-                if (err.response?.status === 409) {
-                    this.resetCart();
-                    this.error = 'errors.cart-expired';
-                    return;
-                }
-
-                this.error = 'errors.cart-validation';
-                console.error(err.response?.data || err);
-            }
-        },*/ async validateCart() {
             this.error = null;
             this.success = null;
 
@@ -175,11 +148,39 @@ export const useCartStore = defineStore('cart', {
             localStorage.setItem('cart', JSON.stringify(this.cart));
             //delete persistCart
         },
+
         async loadCart() {
             const storedCart = localStorage.getItem('cart');
-            if (storedCart) {
-                this.cart = JSON.parse(storedCart);
+            const storedToken = localStorage.getItem('cartToken');
+
+            try {
+                this.cart = storedCart ? JSON.parse(storedCart) : [];
+            } catch (error) {
+                console.error('Invalid cart in localStorage:', error);
+                this.cart = [];
+                localStorage.removeItem('cart');
             }
+
+            if (!Array.isArray(this.cart)) {
+                this.cart = [];
+                localStorage.removeItem('cart');
+            }
+
+            // No products: nothing to validate on the server.
+            if (this.cart.length === 0) {
+                this.totalPrice = 0;
+                return;
+            }
+
+            // Products exist locally, but their reservation token is missing.
+            if (!storedToken) {
+                this.resetCart();
+                this.error = 'errors.cart-expired';
+                return;
+            }
+
+            this.cartToken = storedToken;
+
             await this.validateCart();
         },
         syncCartWithLocalStorage() {
