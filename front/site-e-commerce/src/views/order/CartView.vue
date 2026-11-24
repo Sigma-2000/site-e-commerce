@@ -197,8 +197,9 @@ watch(
         }
     }
 );
+
 watch(isLoggedIn, async (newValue, oldValue) => {
-    if (newValue && !oldValue) {
+    if (newValue && !oldValue && cartStore.cart.length > 0) {
         await cartStore.validateCart();
     }
 });

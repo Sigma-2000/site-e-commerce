@@ -8,19 +8,29 @@ import fr from './fr.json';
 import en from './en.json';
 import './scss/main.scss';
 
+import { useUsersStore } from '@/stores/usersStore.js';
+
 const i18n = createI18n({
     legacy: false,
     locale: 'fr',
     fallbackLocale: 'en',
     messages: {
-        en: en,
-        fr: fr,
+        en,
+        fr,
     },
 });
 
 const app = createApp(App);
 
 app.use(createPinia());
+
+const usersStore = useUsersStore();
+
+// Restore the session without blocking public navigation.
+void usersStore.fetchUser().catch((error) => {
+    console.error('Initial session restoration failed:', error);
+});
+
 app.use(router);
 app.use(i18n);
 

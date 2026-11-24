@@ -64,11 +64,13 @@ const router = createRouter({
             path: '/account',
             name: 'account',
             component: () => import('../views/AccountView.vue'),
+            meta: { requiresAuth: true },
         },
         {
             path: '/panel-admin',
             name: 'panel-admin',
             component: () => import('../views/panel-admin/PanelAdminView.vue'),
+            meta: { requiresAuth: true, requiresAdmin: true },
         },
         {
             path: '/cart',
@@ -79,28 +81,26 @@ const router = createRouter({
             path: '/shop/:category/edit/:id',
             name: 'edit-product',
             component: () => import('../views/panel-admin/EditProductView.vue'),
+            meta: { requiresAuth: true, requiresAdmin: true },
         },
         {
             path: '/gallery/:category/edit/:id',
             name: 'edit-artwork',
             component: () => import('../views/panel-admin/EditArtworkView.vue'),
+            meta: { requiresAuth: true, requiresAdmin: true },
         },
         {
             path: '/gallery/:category/add-product/:id',
             name: 'add-product',
             component: () => import('../views/panel-admin/AddProductView.vue'),
+            meta: { requiresAuth: true, requiresAdmin: true },
         },
         {
             path: '/panel-admin/orders',
             name: 'orders',
             component: () => import('../views/panel-admin/OrderManagementView.vue'),
+            meta: { requiresAuth: true, requiresAdmin: true },
         },
-        /*
-        {
-            path: '/payment',
-            name: 'payment',
-            component: () => import('../views/order/PaymentView.vue'),
-        },*/
         {
             path: '/payment/success',
             name: 'payment-success',
@@ -143,40 +143,39 @@ const router = createRouter({
         },
     ],
 
-    scrollBehavior(to, from, savedPosition) {
+    scrollBehavior() {
         return { top: 0 };
     },
 });
 
-//passer au meta ??
+router.beforeEach(async (to) => {
+    // Public pages do not wait for authentication.
+    if (!to.meta.requiresAuth && !to.meta.requiresAdmin) {
+        return true;
+    }
 
-router.beforeEach(async (to, from, next) => {
     const usersStore = useUsersStore();
 
-    if (
-        to.name === 'sign-in' ||
-        to.name === 'sign-up' ||
-        to.name === 'forgot-password' ||
-        to.name === 'reset-password'
-    ) {
-        return next();
-    }
     try {
-        await usersStore.fetchUser();
-    } catch (error) {
-        console.error(error);
-        return next('/sign-in');
-    }
-    if (to.name === 'account' || to.name === 'panel-admin') {
-        if (!usersStore.userInformation) {
-            return next('/sign-in');
-        }
-        if (to.name === 'panel-admin' && usersStore.userInformation.role !== 'admin') {
-            return next('/account');
-        }
-    }
+        // Always verify on the server when entering a private route.
+        // Concurrent checks are shared by the store.
+        const authenticated = await usersStore.fetchUser();
 
-    next();
+        if (!authenticated || !usersStore.userInformation) {
+            return { name: 'sign-in' };
+        }
+
+        if (to.meta.requiresAdmin && usersStore.userInformation.role !== 'admin') {
+            return { name: 'account' };
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Unable to verify session:', error);
+
+        // Fail closed: don't display the protected route.
+        return false;
+    }
 });
 
 export default router;
